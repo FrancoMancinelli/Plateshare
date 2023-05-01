@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:plateshare/services/firebase_service.dart';
 
 import 'InicioScreen.dart';
 import 'RecuperarScreen.dart';
@@ -17,8 +18,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  final String _usernameErrorText = '';
-  final String _passwordErrorText = '';
+  String _usernameErrorText = '';
+  String _passwordErrorText = '';
 
   
 
@@ -119,11 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: () {Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const InicioScreen()),
-                        );},
+                      onPressed: validateAndAuthenticate,
                       style: ElevatedButton.styleFrom(
                         minimumSize: const Size(double.infinity, 60.0),
                         backgroundColor: const Color(0xFFFD9A00),
@@ -256,4 +253,58 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
+  void validateAndAuthenticate() async {
+  String usernameInput = _usernameController.text;
+  String passwordInput = _passwordController.text;
+  if (usernameInput.isEmpty) {
+    setState(() {
+      _usernameErrorText = 'Introduce el username';
+    });
+  } else {
+    setState(() {
+      _usernameErrorText = '';
+    });
+  }
+
+  if (passwordInput.isEmpty) {
+    setState(() {
+      _passwordErrorText = 'Introduce la password';
+    });
+  } else {
+    setState(() {
+      _passwordErrorText = '';
+    });
+  }
+
+  if (usernameInput.isNotEmpty && passwordInput.isNotEmpty) {
+    Future<bool> flag = checkCredentials(
+        _usernameController.text, _passwordController.text);
+    if (await flag) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => const InicioScreen()),
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Error'),
+          content: const Text(
+              'Usuario o contraseña incorrectos'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK.'),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
+  }
 }
+
+}
+
+

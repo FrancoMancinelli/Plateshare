@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:plateshare/services/firebase_service.dart';
 
 import 'LoginScreen.dart';
 
@@ -15,25 +16,27 @@ class _RegistroScreenState extends State<RegistroScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _repeatPasswordController = TextEditingController();
+  final TextEditingController _repeatPasswordController =
+      TextEditingController();
 
-  final String _emailErrorText = '';
-  final String _nameErrorText = '';
-  final String _usernameErrorText = '';
-  final String _passwordErrorText = '';
-  final String _repeatPasswordErrorText = '';
+  String _emailErrorText = '';
+  String _nameErrorText = '';
+  String _usernameErrorText = '';
+  String _passwordErrorText = '';
+  String _repeatPasswordErrorText = '';
 
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     return Scaffold(
-      body: Container(
-        width: screenSize.width,
-        height: screenSize.height,
-        decoration: const BoxDecoration(
-          color: Color(0xFF056C49),
-        ),
-        child: Column(
+  body: SingleChildScrollView(
+    child: Container(
+      width: screenSize.width,
+      height: screenSize.height,
+      decoration: const BoxDecoration(
+        color: Color(0xFF056C49),
+      ),
+      child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Align(
@@ -53,7 +56,8 @@ class _RegistroScreenState extends State<RegistroScreen> {
                   onPressed: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => const LoginScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => const LoginScreen()),
                     );
                   },
                   icon: const Icon(
@@ -164,7 +168,8 @@ class _RegistroScreenState extends State<RegistroScreen> {
                       filled: true,
                       fillColor: Colors.white,
                       contentPadding: const EdgeInsets.fromLTRB(20, 20, 0, 20),
-                      prefixIcon: const Icon(Icons.lock_outline, color: Colors.black),
+                      prefixIcon:
+                          const Icon(Icons.lock_outline, color: Colors.black),
                     ),
                     obscureText: true,
                   ),
@@ -182,7 +187,8 @@ class _RegistroScreenState extends State<RegistroScreen> {
                       filled: true,
                       fillColor: Colors.white,
                       contentPadding: const EdgeInsets.fromLTRB(20, 20, 0, 20),
-                      prefixIcon: const Icon(Icons.lock_outline, color: Colors.black),
+                      prefixIcon:
+                          const Icon(Icons.lock_outline, color: Colors.black),
                     ),
                     obscureText: true,
                   ),
@@ -190,7 +196,14 @@ class _RegistroScreenState extends State<RegistroScreen> {
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: validateRegiser,
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(double.infinity, 55.0),
+                        backgroundColor: const Color(0xFFFD9A00),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                      ),
                       child: Text(
                         'Registrar',
                         style: GoogleFonts.acme(
@@ -199,13 +212,6 @@ class _RegistroScreenState extends State<RegistroScreen> {
                             color: Colors.white,
                             fontFamily: 'Acme',
                           ),
-                        ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(double.infinity, 55.0),
-                        backgroundColor: const Color(0xFFFD9A00),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
                         ),
                       ),
                     ),
@@ -261,6 +267,177 @@ class _RegistroScreenState extends State<RegistroScreen> {
           ],
         ),
       ),
+  ),
     );
+  }
+
+  Future<void> validateRegiser() async {
+    String emailInput = _emailController.text;
+    String nameInput = _nameController.text;
+    String usernameInput = _usernameController.text;
+    String passwordInput = _passwordController.text;
+    String repeatPasswordInput = _repeatPasswordController.text;
+
+    if (emailInput.isEmpty) {
+      setState(() {
+        _emailErrorText = 'Introduzca el correo';
+      });
+    } else {
+      setState(() {
+        _emailErrorText = '';
+      });
+    }
+    if (nameInput.isEmpty) {
+      setState(() {
+        _nameErrorText = 'Introduzca su nombre';
+      });
+    } else {
+      setState(() {
+        _nameErrorText = '';
+      });
+    }
+
+    if (usernameInput.isEmpty) {
+      setState(() {
+        _usernameErrorText = 'Introduzca el username';
+      });
+    } else {
+      setState(() {
+        _usernameErrorText = '';
+      });
+    }
+
+    if (passwordInput.isEmpty) {
+      setState(() {
+        _passwordErrorText = 'Introduzca la contraseña';
+      });
+    } else {
+      setState(() {
+        _passwordErrorText = '';
+      });
+    }
+
+    if (repeatPasswordInput.isEmpty) {
+      setState(() {
+        _repeatPasswordErrorText = 'Intoduzca la contraseña nuevamente';
+      });
+    } else {
+      setState(() {
+        _repeatPasswordErrorText = '';
+      });
+    }
+    //Compruebo que esten todos los campos rellenos
+    if (emailInput.isNotEmpty && nameInput.isNotEmpty && usernameInput.isNotEmpty && passwordInput.isNotEmpty && repeatPasswordInput.isNotEmpty) {
+      //Compruebo que las contraseñas coincidan
+      if (passwordInput == repeatPasswordInput) {
+        //Compruebo que el username no este en uso
+        Future<bool> userExist = checkIfUsernameExists(usernameInput);
+        if (!await userExist) {
+          //Compruebo que el correo sea valido
+          if (Validator.isEmail(emailInput)) {
+            //Compruebo que el correo no este en uso
+            Future<bool> emailExist = checkIfEmailExists(emailInput);
+            if (!await emailExist) {
+              //Si es todo valido añado al usuario y vuelvo al Login
+              addNewUser(emailInput, nameInput, usernameInput, passwordInput);
+              Future.microtask(() {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginScreen()),
+                );
+              });
+            } else {
+              showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Correo invalido'),
+        content: const Text('El correo ya esta en uso'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('OK'),
+          ),
+        ],
+      );
+    },
+  );
+            }
+          }else{
+showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Correo invalido'),
+        content: const Text('Introduce un correo valido'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('OK'),
+          ),
+        ],
+      );
+    },
+  );
+          }
+        }else{
+showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Usuario invalido'),
+        content: const Text('El nombre de usuario ya esta en uso'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('OK'),
+          ),
+        ],
+      );
+    },
+  );
+        }
+      }else{
+showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Contraseña invalida'),
+        content: const Text('Las contraseñas no coinciden'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('OK'),
+          ),
+        ],
+      );
+    },
+  );
+      }
+    }else{
+      showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Registro invalido'),
+        content: const Text('Rellena todos los campos.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('OK'),
+          ),
+        ],
+      );
+    },
+  );
+    }
+  }
+}
+
+class Validator {
+  static bool isEmail(String value) {
+    final RegExp regex =
+        RegExp(r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$');
+    return regex.hasMatch(value);
   }
 }

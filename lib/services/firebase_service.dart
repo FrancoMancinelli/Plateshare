@@ -4,7 +4,7 @@ FirebaseFirestore db = FirebaseFirestore.instance;
 
 Future<bool> checkCredentials(String username, String password) async {
   QuerySnapshot snapshot = await db
-      .collection('users')
+      .collection('user')
       .where('username', isEqualTo: username)
       .where('password', isEqualTo: password)
       .get();
@@ -13,14 +13,24 @@ Future<bool> checkCredentials(String username, String password) async {
 
 Future<bool> checkIfUsernameExists(String username) async {
   QuerySnapshot snapshot = await db
-      .collection('users')
+      .collection('user')
       .where('username', isEqualTo: username)
       .get();
   return snapshot.docs.isNotEmpty;
 }
 
-Future<void> addNewUser(String username, String password) async {
-  await db.collection('users').add({
+Future<bool> checkIfEmailExists(String email) async {
+  QuerySnapshot snapshot = await db
+      .collection('user')
+      .where('email', isEqualTo: email)
+      .get();
+  return snapshot.docs.isNotEmpty;
+}
+
+Future<void> addNewUser(String email, String name, String username, String password) async {
+  await db.collection('user').add({
+    'email': email,
+    'name': name,
     'username': username,
     'password': password,
   });
