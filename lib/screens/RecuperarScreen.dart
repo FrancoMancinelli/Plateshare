@@ -13,12 +13,11 @@ class RecuperarScreen extends StatefulWidget {
 class _RecuperarScreenState extends State<RecuperarScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _repeatPasswordController =
-      TextEditingController();
+  final TextEditingController _repeatPasswordController = TextEditingController();
 
-  String _usernameErrorText = '';
-  String _passwordErrorText = '';
-  String _repeatPasswordErrorText = '';
+  final String _usernameErrorText = '';
+  final String _passwordErrorText = '';
+  final String _repeatPasswordErrorText = '';
 
   @override
   Widget build(BuildContext context) {
@@ -50,10 +49,10 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                   onPressed: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => LoginScreen()),
+                      MaterialPageRoute(builder: (context) => const LoginScreen()),
                     );
                   },
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.arrow_back_ios,
                     color: Colors.white,
                     size: 30,
@@ -116,9 +115,9 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                           : _usernameErrorText,
                       filled: true,
                       fillColor: Colors.white,
-                      contentPadding: EdgeInsets.fromLTRB(20, 25, 0, 25),
+                      contentPadding: const EdgeInsets.fromLTRB(20, 25, 0, 25),
                       prefixIcon:
-                          Icon(Icons.person_outline, color: Colors.black),
+                          const Icon(Icons.person_outline, color: Colors.black),
                     ),
                   ),
                   const SizedBox(height: 40.0),
@@ -134,26 +133,26 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                           : _passwordErrorText,
                       filled: true,
                       fillColor: Colors.white,
-                      contentPadding: EdgeInsets.fromLTRB(20, 25, 0, 25),
-                      prefixIcon: Icon(Icons.lock_outline, color: Colors.black),
+                      contentPadding: const EdgeInsets.fromLTRB(20, 25, 0, 25),
+                      prefixIcon: const Icon(Icons.lock_outline, color: Colors.black),
                     ),
                     obscureText: true,
                   ),
                   const SizedBox(height: 40.0),
                   TextField(
-                    controller: _passwordController,
+                    controller: _repeatPasswordController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(50.0),
                       ),
                       labelText: 'Repite Contraseña',
-                      errorText: _passwordErrorText.isEmpty
+                      errorText: _repeatPasswordErrorText.isEmpty
                           ? null
                           : _passwordErrorText,
                       filled: true,
                       fillColor: Colors.white,
-                      contentPadding: EdgeInsets.fromLTRB(20, 25, 0, 25),
-                      prefixIcon: Icon(Icons.lock_outline, color: Colors.black),
+                      contentPadding: const EdgeInsets.fromLTRB(20, 25, 0, 25),
+                      prefixIcon: const Icon(Icons.lock_outline, color: Colors.black),
                     ),
                     obscureText: true,
                   ),
@@ -162,6 +161,13 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(double.infinity, 60.0),
+                        backgroundColor: const Color(0xFFFD9A00),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                      ),
                       child: Text(
                         'Confirmar',
                         style: GoogleFonts.acme(
@@ -170,13 +176,6 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                             color: Colors.white,
                             fontFamily: 'Acme',
                           ),
-                        ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: Size(double.infinity, 60.0),
-                        backgroundColor: Color(0xFFFD9A00),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
                         ),
                       ),
                     ),
@@ -189,9 +188,16 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => LoginScreen()),
+                              builder: (context) => const LoginScreen()),
                         );
                       },
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(double.infinity, 60.0),
+                        backgroundColor: const Color(0xFFF9EDDE),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                      ),
                       child: Text(
                         'Cancelar',
                         style: GoogleFonts.acme(
@@ -202,16 +208,9 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                           ),
                         ),
                       ),
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: Size(double.infinity, 60.0),
-                        backgroundColor: Color(0xFFF9EDDE),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                      ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                 ],

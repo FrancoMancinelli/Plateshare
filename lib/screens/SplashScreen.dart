@@ -26,13 +26,13 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF056C49),
+      backgroundColor: const Color(0xFF056C49),
       body: SafeArea(
         child: Container(
           width: 3390,
           height: 844,
           decoration: BoxDecoration(
-            color: Color(0xFF056C49),
+            color: const Color(0xFF056C49),
             image: DecorationImage(
               fit: BoxFit.fitWidth,
               image: Image.network(
@@ -40,7 +40,7 @@ class _SplashScreenState extends State<SplashScreen> {
               ).image,
             ),
           ),
-          alignment: AlignmentDirectional(0, 0),
+          alignment: const AlignmentDirectional(0, 0),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
@@ -49,7 +49,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 children: [
                   Expanded(
                     child: Align(
-                      alignment: AlignmentDirectional(-0.2, 0),
+                      alignment: const AlignmentDirectional(-0.2, 0),
                       child: Image.network(
                         'https://imgur.com/ziSeq5r.png',
                         width: 171,
@@ -66,26 +66,26 @@ class _SplashScreenState extends State<SplashScreen> {
                   children: [
                     Expanded(
                       child: Align(
-                        alignment: AlignmentDirectional(0, 0),
+                        alignment: const AlignmentDirectional(0, 0),
                         child: Column(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Align(
-                              alignment: AlignmentDirectional(0, 0),
+                              alignment: const AlignmentDirectional(0, 0),
                               child: Container(
                                 width: 170,
                                 height: 170,
                                 decoration: BoxDecoration(
-                                  color: Color(0xFFCCDDD7),
+                                  color: const Color(0xFFCCDDD7),
                                   shape: BoxShape.circle,
                                   border: Border.all(
-                                    color: Color(0xFF879F97),
+                                    color: const Color(0xFF879F97),
                                     width: 6,
                                   ),
                                 ),
-                                alignment: AlignmentDirectional(0, 0),
+                                alignment: const AlignmentDirectional(0, 0),
                                 child: Image.network(
                                   'https://i.imgur.com/VLY57QE.png',
                                   width: 120,
@@ -96,7 +96,7 @@ class _SplashScreenState extends State<SplashScreen> {
                             ),
                             Padding(
                               padding:
-                                  EdgeInsetsDirectional.fromSTEB(0, 15, 0, 0),
+                                  const EdgeInsetsDirectional.fromSTEB(0, 15, 0, 0),
                               child: Text(
                                 'P L A T E S H A R E',
                                 textAlign: TextAlign.center,
@@ -110,7 +110,7 @@ class _SplashScreenState extends State<SplashScreen> {
                             Text(
                               'Transforma tu cocina en una aventura',
                               style: GoogleFonts.lato(
-                                textStyle: TextStyle(
+                                textStyle: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
@@ -118,7 +118,7 @@ class _SplashScreenState extends State<SplashScreen> {
                               ),
                             ),
                             Align(
-                              alignment: AlignmentDirectional(0, 0),
+                              alignment: const AlignmentDirectional(0, 0),
                               child: Row(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -126,7 +126,7 @@ class _SplashScreenState extends State<SplashScreen> {
                                   Container(
                                     width: 100,
                                     height: 100,
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                       color: Color(0xFF056C49),
                                     ),
                                   ),

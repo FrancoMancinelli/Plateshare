@@ -5,6 +5,7 @@ import 'InicioScreen.dart';
 import 'RecuperarScreen.dart';
 import 'RegistroScreen.dart';
 
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -16,8 +17,10 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  String _usernameErrorText = '';
-  String _passwordErrorText = '';
+  final String _usernameErrorText = '';
+  final String _passwordErrorText = '';
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -89,9 +92,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           : _usernameErrorText,
                       filled: true,
                       fillColor: Colors.white,
-                      contentPadding: EdgeInsets.fromLTRB(20, 25, 0, 25),
+                      contentPadding: const EdgeInsets.fromLTRB(20, 25, 0, 25),
                       prefixIcon:
-                          Icon(Icons.person_outline, color: Colors.black),
+                          const Icon(Icons.person_outline, color: Colors.black),
                     ),
                   ),
                   const SizedBox(height: 20.0),
@@ -107,8 +110,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           : _passwordErrorText,
                       filled: true,
                       fillColor: Colors.white,
-                      contentPadding: EdgeInsets.fromLTRB(20, 25, 0, 25),
-                      prefixIcon: Icon(Icons.lock_outline, color: Colors.black),
+                      contentPadding: const EdgeInsets.fromLTRB(20, 25, 0, 25),
+                      prefixIcon: const Icon(Icons.lock_outline, color: Colors.black),
                     ),
                       obscureText: true,
                   ),
@@ -119,8 +122,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       onPressed: () {Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => InicioScreen()),
+                              builder: (context) => const InicioScreen()),
                         );},
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(double.infinity, 60.0),
+                        backgroundColor: const Color(0xFFFD9A00),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                      ),
                       child: Text(
                         'Iniciar sesión',
                         style: GoogleFonts.acme(
@@ -131,16 +141,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: Size(double.infinity, 60.0),
-                        backgroundColor: Color(0xFFFD9A00),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                      ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Row(
@@ -169,7 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   InkWell(
@@ -197,7 +200,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           GestureDetector(
                             onTap: () {Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => RegistroScreen()),
+                        MaterialPageRoute(builder: (context) => const RegistroScreen()),
                       );},
                             child: Text(
                               'Registrate',
@@ -219,12 +222,12 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: GestureDetector(
                             onTap: () {Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => RecuperarScreen()),
+                        MaterialPageRoute(builder: (context) => const RecuperarScreen()),
                       );},
                             child: Text(
                               '¿Olvidaste tu contraseña?',
                               style: GoogleFonts.acme(
-                                textStyle: TextStyle(
+                                textStyle: const TextStyle(
                                   fontSize: 20,
                                   color: Color(0xFFFD9A00),
                                   fontFamily: 'Acme',

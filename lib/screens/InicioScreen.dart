@@ -51,7 +51,7 @@ class _InicioScreenState extends State<InicioScreen> {
         child: ListView(
           children: [
             Container(
-              color: Color.fromARGB(255, 224, 206, 185),
+              color: const Color.fromARGB(255, 224, 206, 185),
               height: 120,
               child: Row(
                 children: [
@@ -189,7 +189,7 @@ class _InicioScreenState extends State<InicioScreen> {
                 ),
               ],
             ),
-            Container(
+            SizedBox(
               height: 400, // tamaño determinado del contenedor
               child: Column(
                 children: [
@@ -261,7 +261,7 @@ class _InicioScreenState extends State<InicioScreen> {
                         onTap: () {Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => LoginScreen()),
+                                builder: (context) => const LoginScreen()),
                           );},
                       ),
                     ],
@@ -329,7 +329,7 @@ class _InicioScreenState extends State<InicioScreen> {
                         ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [],
+                          children: const [],
                         ),
                       ),
                     ],

@@ -17,11 +17,11 @@ class _RegistroScreenState extends State<RegistroScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _repeatPasswordController = TextEditingController();
 
-  String _emailErrorText = '';
-  String _nameErrorText = '';
-  String _usernameErrorText = '';
-  String _passwordErrorText = '';
-  String _repeatPasswordErrorText = '';
+  final String _emailErrorText = '';
+  final String _nameErrorText = '';
+  final String _usernameErrorText = '';
+  final String _passwordErrorText = '';
+  final String _repeatPasswordErrorText = '';
 
   @override
   Widget build(BuildContext context) {
@@ -53,10 +53,10 @@ class _RegistroScreenState extends State<RegistroScreen> {
                   onPressed: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => LoginScreen()),
+                      MaterialPageRoute(builder: (context) => const LoginScreen()),
                     );
                   },
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.arrow_back_ios,
                     color: Colors.white,
                     size: 30,
@@ -111,9 +111,9 @@ class _RegistroScreenState extends State<RegistroScreen> {
                           _emailErrorText.isEmpty ? null : _emailErrorText,
                       filled: true,
                       fillColor: Colors.white,
-                      contentPadding: EdgeInsets.fromLTRB(20, 20, 0, 20),
+                      contentPadding: const EdgeInsets.fromLTRB(20, 20, 0, 20),
                       prefixIcon:
-                          Icon(Icons.email_outlined, color: Colors.black),
+                          const Icon(Icons.email_outlined, color: Colors.black),
                     ),
                   ),
                   const SizedBox(height: 20.0),
@@ -127,8 +127,8 @@ class _RegistroScreenState extends State<RegistroScreen> {
                       errorText: _nameErrorText.isEmpty ? null : _nameErrorText,
                       filled: true,
                       fillColor: Colors.white,
-                      contentPadding: EdgeInsets.fromLTRB(20, 20, 0, 20),
-                      prefixIcon: Icon(Icons.contact_emergency_outlined,
+                      contentPadding: const EdgeInsets.fromLTRB(20, 20, 0, 20),
+                      prefixIcon: const Icon(Icons.contact_emergency_outlined,
                           color: Colors.black),
                     ),
                   ),
@@ -145,9 +145,9 @@ class _RegistroScreenState extends State<RegistroScreen> {
                           : _usernameErrorText,
                       filled: true,
                       fillColor: Colors.white,
-                      contentPadding: EdgeInsets.fromLTRB(20, 20, 0, 20),
+                      contentPadding: const EdgeInsets.fromLTRB(20, 20, 0, 20),
                       prefixIcon:
-                          Icon(Icons.person_outline, color: Colors.black),
+                          const Icon(Icons.person_outline, color: Colors.black),
                     ),
                   ),
                   const SizedBox(height: 20.0),
@@ -163,8 +163,8 @@ class _RegistroScreenState extends State<RegistroScreen> {
                           : _passwordErrorText,
                       filled: true,
                       fillColor: Colors.white,
-                      contentPadding: EdgeInsets.fromLTRB(20, 20, 0, 20),
-                      prefixIcon: Icon(Icons.lock_outline, color: Colors.black),
+                      contentPadding: const EdgeInsets.fromLTRB(20, 20, 0, 20),
+                      prefixIcon: const Icon(Icons.lock_outline, color: Colors.black),
                     ),
                     obscureText: true,
                   ),
@@ -181,8 +181,8 @@ class _RegistroScreenState extends State<RegistroScreen> {
                           : _repeatPasswordErrorText,
                       filled: true,
                       fillColor: Colors.white,
-                      contentPadding: EdgeInsets.fromLTRB(20, 20, 0, 20),
-                      prefixIcon: Icon(Icons.lock_outline, color: Colors.black),
+                      contentPadding: const EdgeInsets.fromLTRB(20, 20, 0, 20),
+                      prefixIcon: const Icon(Icons.lock_outline, color: Colors.black),
                     ),
                     obscureText: true,
                   ),
@@ -202,15 +202,15 @@ class _RegistroScreenState extends State<RegistroScreen> {
                         ),
                       ),
                       style: ElevatedButton.styleFrom(
-                        minimumSize: Size(double.infinity, 55.0),
-                        backgroundColor: Color(0xFFFD9A00),
+                        minimumSize: const Size(double.infinity, 55.0),
+                        backgroundColor: const Color(0xFFFD9A00),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0),
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Row(
@@ -231,7 +231,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => LoginScreen()),
+                                builder: (context) => const LoginScreen()),
                           );
                         },
                         child: Text(

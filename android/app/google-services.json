@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "502452164005",
+    "project_id": "plateshare-tfg2023",
+    "storage_bucket": "plateshare-tfg2023.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:502452164005:android:3a14afa7654614e096c44c",
+        "android_client_info": {
+          "package_name": "com.example.plateshare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "502452164005-6j39bs65756dapu5tq0j2fikb5ttkat9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9J2llU9XIybLzRGsMViJPjSmAk8zXxfM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "502452164005-6j39bs65756dapu5tq0j2fikb5ttkat9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

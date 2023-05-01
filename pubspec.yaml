@@ -11,7 +11,8 @@ dependencies:
     sdk: flutter
   flare_flutter: ^2.0.6
   google_fonts: ^4.0.4
-  mysql1: ^0.19.1
+  firebase_core: ^2.10.0
+  cloud_firestore: ^4.5.3
 
 dev_dependencies:
   flutter_test:
