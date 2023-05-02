@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plateshare/services/firebase_service.dart';
+import 'package:bcrypt/bcrypt.dart';
 
 import 'InicioScreen.dart';
 import 'RecuperarScreen.dart';
 import 'RegistroScreen.dart';
-
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -17,11 +17,6 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
-  String _usernameErrorText = '';
-  String _passwordErrorText = '';
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -88,9 +83,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         borderRadius: BorderRadius.circular(50.0),
                       ),
                       labelText: 'Username',
-                      errorText: _usernameErrorText.isEmpty
-                          ? null
-                          : _usernameErrorText,
                       filled: true,
                       fillColor: Colors.white,
                       contentPadding: const EdgeInsets.fromLTRB(20, 25, 0, 25),
@@ -106,15 +98,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         borderRadius: BorderRadius.circular(50.0),
                       ),
                       labelText: 'Contraseña',
-                      errorText: _passwordErrorText.isEmpty
-                          ? null
-                          : _passwordErrorText,
                       filled: true,
                       fillColor: Colors.white,
                       contentPadding: const EdgeInsets.fromLTRB(20, 25, 0, 25),
-                      prefixIcon: const Icon(Icons.lock_outline, color: Colors.black),
+                      prefixIcon:
+                          const Icon(Icons.lock_outline, color: Colors.black),
                     ),
-                      obscureText: true,
+                    obscureText: true,
                   ),
                   const SizedBox(height: 50.0),
                   SizedBox(
@@ -188,17 +178,21 @@ class _LoginScreenState extends State<LoginScreen> {
                             '¿Aun no tienes cuenta? ',
                             style: GoogleFonts.acme(
                               textStyle: const TextStyle(
-                                fontSize:20,
+                                fontSize: 20,
                                 color: Colors.white,
                                 fontFamily: 'Acme',
                               ),
                             ),
                           ),
                           GestureDetector(
-                            onTap: () {Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => const RegistroScreen()),
-                      );},
+                            onTap: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const RegistroScreen()),
+                              );
+                            },
                             child: Text(
                               'Registrate',
                               style: GoogleFonts.acme(
@@ -217,10 +211,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         padding: const EdgeInsets.only(top: 10),
                         child: Center(
                           child: GestureDetector(
-                            onTap: () {Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => const RecuperarScreen()),
-                      );},
+                            onTap: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const RecuperarScreen()),
+                              );
+                            },
                             child: Text(
                               '¿Olvidaste tu contraseña?',
                               style: GoogleFonts.acme(
@@ -241,7 +239,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
             ),
-            const SizedBox(height: 30.0),
+            const SizedBox(height: 28.0),
             Expanded(
               child: Image.network(
                 'https://i.imgur.com/VhMzz4T.png',
@@ -253,58 +251,56 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
+
   void validateAndAuthenticate() async {
-  String usernameInput = _usernameController.text;
-  String passwordInput = _passwordController.text;
-  if (usernameInput.isEmpty) {
-    setState(() {
-      _usernameErrorText = 'Introduce el username';
-    });
-  } else {
-    setState(() {
-      _usernameErrorText = '';
-    });
-  }
+    String usernameInput = _usernameController.text;
+    String passwordInput = _passwordController.text;
 
-  if (passwordInput.isEmpty) {
-    setState(() {
-      _passwordErrorText = 'Introduce la password';
-    });
-  } else {
-    setState(() {
-      _passwordErrorText = '';
-    });
-  }
-
-  if (usernameInput.isNotEmpty && passwordInput.isNotEmpty) {
-    Future<bool> flag = checkCredentials(
-        _usernameController.text, _passwordController.text);
-    if (await flag) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (context) => const InicioScreen()),
-      );
+    // Si todos los campos estan rellenos
+    if (usernameInput.isNotEmpty && passwordInput.isNotEmpty) {
+      // Compruebo que exista ese usuario, con esa contraseña
+      Future<bool> flag =
+          checkCredentials(_usernameController.text, _passwordController.text);
+      if (await flag) {
+        final BuildContext _context = context;
+        Future.microtask(() {
+          Navigator.pushReplacement(
+            _context,
+            MaterialPageRoute(builder: (context) => const InicioScreen()),
+          );
+        });
+      } else {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Credenciales invalidas'),
+            content: const Text('El usuario o contraseña son incorrectos'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('OK.'),
+              ),
+            ],
+          ),
+        );
+        return;
+      }
     } else {
       showDialog(
         context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Error'),
-          content: const Text(
-              'Usuario o contraseña incorrectos'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('OK.'),
-            ),
-          ],
-        ),
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Campos incompletos'),
+            content: const Text('Rellena todos los campos'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
       );
-      return;
     }
   }
 }
-
-}
-
-

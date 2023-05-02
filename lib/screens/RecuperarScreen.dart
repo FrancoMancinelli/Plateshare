@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:plateshare/services/firebase_service.dart';
 
 import 'LoginScreen.dart';
 
@@ -13,11 +14,8 @@ class RecuperarScreen extends StatefulWidget {
 class _RecuperarScreenState extends State<RecuperarScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _repeatPasswordController = TextEditingController();
-
-  final String _usernameErrorText = '';
-  final String _passwordErrorText = '';
-  final String _repeatPasswordErrorText = '';
+  final TextEditingController _repeatPasswordController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +47,8 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                   onPressed: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => const LoginScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => const LoginScreen()),
                     );
                   },
                   icon: const Icon(
@@ -82,7 +81,7 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                 ),
                 Center(
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                    padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
                     child: Text(
                       'Enviaremos un correo electrónico para confirmar el cambio de contraseña',
                       style: GoogleFonts.acme(
@@ -99,7 +98,7 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
               ],
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(30, 20, 30, 0),
+              padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
               child: Column(
                 children: [
                   const SizedBox(height: 20.0),
@@ -110,9 +109,6 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                         borderRadius: BorderRadius.circular(50.0),
                       ),
                       labelText: 'Usuario',
-                      errorText: _usernameErrorText.isEmpty
-                          ? null
-                          : _usernameErrorText,
                       filled: true,
                       fillColor: Colors.white,
                       contentPadding: const EdgeInsets.fromLTRB(20, 25, 0, 25),
@@ -120,7 +116,7 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                           const Icon(Icons.person_outline, color: Colors.black),
                     ),
                   ),
-                  const SizedBox(height: 40.0),
+                  const SizedBox(height: 30.0),
                   TextField(
                     controller: _passwordController,
                     decoration: InputDecoration(
@@ -128,17 +124,15 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                         borderRadius: BorderRadius.circular(50.0),
                       ),
                       labelText: 'Contraseña',
-                      errorText: _passwordErrorText.isEmpty
-                          ? null
-                          : _passwordErrorText,
                       filled: true,
                       fillColor: Colors.white,
                       contentPadding: const EdgeInsets.fromLTRB(20, 25, 0, 25),
-                      prefixIcon: const Icon(Icons.lock_outline, color: Colors.black),
+                      prefixIcon:
+                          const Icon(Icons.lock_outline, color: Colors.black),
                     ),
                     obscureText: true,
                   ),
-                  const SizedBox(height: 40.0),
+                  const SizedBox(height: 30.0),
                   TextField(
                     controller: _repeatPasswordController,
                     decoration: InputDecoration(
@@ -146,13 +140,11 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                         borderRadius: BorderRadius.circular(50.0),
                       ),
                       labelText: 'Repite Contraseña',
-                      errorText: _repeatPasswordErrorText.isEmpty
-                          ? null
-                          : _passwordErrorText,
                       filled: true,
                       fillColor: Colors.white,
                       contentPadding: const EdgeInsets.fromLTRB(20, 25, 0, 25),
-                      prefixIcon: const Icon(Icons.lock_outline, color: Colors.black),
+                      prefixIcon:
+                          const Icon(Icons.lock_outline, color: Colors.black),
                     ),
                     obscureText: true,
                   ),
@@ -160,7 +152,7 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: validateFields,
                       style: ElevatedButton.styleFrom(
                         minimumSize: const Size(double.infinity, 60.0),
                         backgroundColor: const Color(0xFFFD9A00),
@@ -227,5 +219,80 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> validateFields() async {
+    String usernameInput = _usernameController.text;
+    String passwordInput = _passwordController.text;
+    String repeatPasswordInput = _repeatPasswordController.text;
+
+    // Si estan todos los campos rellenos
+    if (usernameInput.isNotEmpty &&
+        passwordInput.isNotEmpty &&
+        repeatPasswordInput.isNotEmpty) {
+      //Compruebo que el usuario exista
+      Future<bool> flag = checkIfUsernameExists(_usernameController.text);
+      if (await flag) {
+        //Comprueba que las nuevas contraseñas sean iguales
+        if (passwordInput == repeatPasswordInput) {
+          //Cambia la contraseña
+          updateUserPasswordByUsername(usernameInput, passwordInput);
+
+          Future.microtask(() {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const LoginScreen()),
+            );
+          });
+        } else {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Contraseña invalida'),
+                content: const Text('Las contraseñas no coinciden'),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('OK'),
+                  ),
+                ],
+              );
+            },
+          );
+        }
+      } else {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Usuario invalido'),
+            content: const Text('El usuario no existe'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('OK.'),
+              ),
+            ],
+          ),
+        );
+        return;
+      }
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Campos incompletos'),
+            content: const Text('Rellena todos los campos'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 }
