@@ -1,21 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:plateshare/models/User.dart';
 
 import 'LoginScreen.dart';
 
 class InicioScreen extends StatefulWidget {
-  final String username;
+  final String emailData;
+  final String nameData;
+  final String usernameData;
+  final String profilePicData;
 
-  const InicioScreen({Key? key, required this.username}) : super(key: key);
+  const InicioScreen({
+    Key? key,
+    required this.emailData,
+    required this.nameData,
+    required this.usernameData,
+    required this.profilePicData,
+  }) : super(key: key);
 
   @override
   _InicioScreenState createState() => _InicioScreenState();
 }
 
+
 final TextEditingController _searchController = TextEditingController();
 String _searchErrorText = '';
 
 class _InicioScreenState extends State<InicioScreen> {
+
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
@@ -73,7 +85,7 @@ class _InicioScreenState extends State<InicioScreen> {
                           ),
                           child: ClipOval(
                             child: Image.network(
-                              'https://imgur.com/jA1e3Za.png',
+                              widget.profilePicData,
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -88,7 +100,7 @@ class _InicioScreenState extends State<InicioScreen> {
                         Column(
                           children: [
                             Text(
-                              'Fran Mancinelli',
+                              widget.nameData,
                               style: GoogleFonts.acme(
                                 textStyle: const TextStyle(
                                   fontSize: 20,
@@ -97,8 +109,7 @@ class _InicioScreenState extends State<InicioScreen> {
                                 ),
                               ),
                             ),
-                            Text(
-                              '@fmancine',
+                           Text('@${widget.usernameData}',
                               style: GoogleFonts.acme(
                                 textStyle: const TextStyle(
                                   fontSize: 16,

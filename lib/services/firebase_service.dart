@@ -76,6 +76,41 @@ Future<void> updateUserPasswordByUsername(
   }
 }
 
+Future<String> getNameByUsername(String username) async {
+  QuerySnapshot snapshot = await db
+      .collection('user')
+      .where('username', isEqualTo: username)
+      .get();
+  if (snapshot.docs.isNotEmpty) {
+    return snapshot.docs.first.get('name');
+  } else {
+    throw Exception('User with username $username not found!');
+  }
+}
+
+Future<String> getEmailByUsername(String username) async {
+  QuerySnapshot snapshot = await db
+      .collection('user')
+      .where('username', isEqualTo: username)
+      .get();
+  if (snapshot.docs.isNotEmpty) {
+    return snapshot.docs.first.get('email');
+  } else {
+    throw Exception('User with username $username not found!');
+  }
+}
+
+Future<String> getProfilePicByUsername(String username) async {
+  QuerySnapshot snapshot = await db
+      .collection('user')
+      .where('username', isEqualTo: username)
+      .get();
+  if (snapshot.docs.isNotEmpty) {
+    return snapshot.docs.first.get('profilepic');
+  } else {
+    throw Exception('User with username $username not found!');
+  }
+}
 
 Future<String> getSaltByUsername(String username) async {
   QuerySnapshot snapshot = await db

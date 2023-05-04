@@ -1,7 +1,10 @@
 import 'package:bcrypt/bcrypt.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:plateshare/models/User.dart';
 import 'package:plateshare/services/firebase_service.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+
 
 import 'InicioScreen.dart';
 import 'RecuperarScreen.dart';
@@ -267,12 +270,16 @@ class _LoginScreenState extends State<LoginScreen> {
         Future<bool> validCredentials =
             checkCredentials(usernameInput, hashedPassword);
         if (await validCredentials) {
+          String emailData = await getEmailByUsername(usernameInput);
+          String nameData = await getNameByUsername(usernameInput);
+          String profilePicData = await getProfilePicByUsername(usernameInput);
+          
           final BuildContext _context = context;
           Future.microtask(() {
             Navigator.pushReplacement(
               _context,
               MaterialPageRoute(
-                  builder: (context) => InicioScreen(username: usernameInput)),
+                  builder: (context) => InicioScreen(emailData: emailData, nameData: nameData, usernameData: usernameInput, profilePicData: profilePicData)),
             );
           });
         } else {
