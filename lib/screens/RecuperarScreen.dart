@@ -1,3 +1,4 @@
+import 'package:bcrypt/bcrypt.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plateshare/services/firebase_service.dart';
@@ -231,12 +232,14 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
         passwordInput.isNotEmpty &&
         repeatPasswordInput.isNotEmpty) {
       //Compruebo que el usuario exista
-      Future<bool> flag = checkIfUsernameExists(_usernameController.text);
-      if (await flag) {
+      Future<bool> userExist= checkIfUsernameExists(_usernameController.text);
+      if (await userExist) {
         //Comprueba que las nuevas contraseñas sean iguales
         if (passwordInput == repeatPasswordInput) {
-          //Cambia la contraseña
-          updateUserPasswordByUsername(usernameInput, passwordInput);
+          //Hashea la contraseña y la actualiza, luego vuelve al Login
+          String salt = await getSaltByUsername(usernameInput);
+          String hashedPassword = BCrypt.hashpw(passwordInput, salt);
+          updateUserPasswordByUsername(usernameInput, hashedPassword);
 
           Future.microtask(() {
             Navigator.pushReplacement(

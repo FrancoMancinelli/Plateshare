@@ -4,7 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'LoginScreen.dart';
 
 class InicioScreen extends StatefulWidget {
-  const InicioScreen({Key? key}) : super(key: key);
+  final String username;
+
+  const InicioScreen({Key? key, required this.username}) : super(key: key);
 
   @override
   _InicioScreenState createState() => _InicioScreenState();

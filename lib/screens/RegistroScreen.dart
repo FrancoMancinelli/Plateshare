@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plateshare/services/firebase_service.dart';
+import 'package:bcrypt/bcrypt.dart';
 
 import 'LoginScreen.dart';
 
@@ -281,8 +282,10 @@ class _RegistroScreenState extends State<RegistroScreen> {
             //Compruebo que el correo no este en uso
             Future<bool> emailExist = checkIfEmailExists(emailInput);
             if (!await emailExist) {
-              //Si es todo valido añado al usuario y vuelvo al Login
-              addNewUser(emailInput, nameInput, usernameInput, passwordInput);
+              //Si es todo valido hasheo la contraseña y añado al usuario. Luego vuelvo al Login
+              String salt = BCrypt.gensalt();
+              String hashedPassword = BCrypt.hashpw(passwordInput, salt);
+              addNewUser(emailInput, nameInput, usernameInput, hashedPassword, salt);
               Future.microtask(() {
                 Navigator.pushReplacement(
                   context,

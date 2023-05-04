@@ -1,7 +1,7 @@
+import 'package:bcrypt/bcrypt.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plateshare/services/firebase_service.dart';
-import 'package:bcrypt/bcrypt.dart';
 
 import 'InicioScreen.dart';
 import 'RecuperarScreen.dart';
@@ -258,17 +258,39 @@ class _LoginScreenState extends State<LoginScreen> {
 
     // Si todos los campos estan rellenos
     if (usernameInput.isNotEmpty && passwordInput.isNotEmpty) {
-      // Compruebo que exista ese usuario, con esa contraseña
-      Future<bool> flag =
-          checkCredentials(_usernameController.text, _passwordController.text);
-      if (await flag) {
-        final BuildContext _context = context;
-        Future.microtask(() {
-          Navigator.pushReplacement(
-            _context,
-            MaterialPageRoute(builder: (context) => const InicioScreen()),
+      // Compruebo si el usuario introducido existe, de ser así, encrypto la contraseña
+      // y compruebo las credenciales
+      Future<bool> userExist = checkIfUsernameExists(usernameInput);
+      if (await userExist) {
+        String databaseSalt = await getSaltByUsername(usernameInput);
+        String hashedPassword = BCrypt.hashpw(passwordInput, databaseSalt);
+        Future<bool> validCredentials =
+            checkCredentials(usernameInput, hashedPassword);
+        if (await validCredentials) {
+          final BuildContext _context = context;
+          Future.microtask(() {
+            Navigator.pushReplacement(
+              _context,
+              MaterialPageRoute(
+                  builder: (context) => InicioScreen(username: usernameInput)),
+            );
+          });
+        } else {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('Credenciales invalidas'),
+              content: const Text('El usuario o contraseña son incorrectos'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('OK.'),
+                ),
+              ],
+            ),
           );
-        });
+          return;
+        }
       } else {
         showDialog(
           context: context,
