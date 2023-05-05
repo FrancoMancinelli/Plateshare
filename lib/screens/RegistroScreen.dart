@@ -274,6 +274,8 @@ class _RegistroScreenState extends State<RegistroScreen> {
         repeatPasswordInput.isNotEmpty) {
       //Compruebo que las contraseñas coincidan
       if (passwordInput == repeatPasswordInput) {
+        //Compruebo que la contraseña tenga al menos 8 cracteres
+        if(passwordInput.length >= 8) {
         //Compruebo que el username no este en uso
         Future<bool> userExist = checkIfUsernameExists(usernameInput);
         if (!await userExist) {
@@ -363,6 +365,23 @@ class _RegistroScreenState extends State<RegistroScreen> {
           },
         );
       }
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Contraseña insegura'),
+            content: const Text('La contraseña debe tener al menos 8 caracteres'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
     } else {
       showDialog(
         context: context,

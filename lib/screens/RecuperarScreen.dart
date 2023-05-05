@@ -232,21 +232,41 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
         passwordInput.isNotEmpty &&
         repeatPasswordInput.isNotEmpty) {
       //Compruebo que el usuario exista
-      Future<bool> userExist= checkIfUsernameExists(_usernameController.text);
+      Future<bool> userExist = checkIfUsernameExists(_usernameController.text);
       if (await userExist) {
         //Comprueba que las nuevas contraseñas sean iguales
         if (passwordInput == repeatPasswordInput) {
-          //Hashea la contraseña y la actualiza, luego vuelve al Login
-          String salt = await getSaltByUsername(usernameInput);
-          String hashedPassword = BCrypt.hashpw(passwordInput, salt);
-          updateUserPasswordByUsername(usernameInput, hashedPassword);
+          //Comprueba que la contraseña mida al menos 8 caracteres
+          if (passwordInput.length >= 8) {
+            //Hashea la contraseña y la actualiza, luego vuelve al Login
+            String salt = await getSaltByUsername(usernameInput);
+            String hashedPassword = BCrypt.hashpw(passwordInput, salt);
+            updateUserPasswordByUsername(usernameInput, hashedPassword);
 
-          Future.microtask(() {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const LoginScreen()),
+            Future.microtask(() {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginScreen()),
+              );
+            });
+          } else {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text('Contraseña insegura'),
+                  content: const Text(
+                      'La contraseña debe tener al menos 8 caracteres'),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text('OK'),
+                    ),
+                  ],
+                );
+              },
             );
-          });
+          }
         } else {
           showDialog(
             context: context,
