@@ -256,7 +256,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void validateAndAuthenticate() async {
-    String usernameInput = _usernameController.text;
+    String usernameInput = _usernameController.text.toLowerCase();
     String passwordInput = _passwordController.text;
 
     // Si todos los campos estan rellenos
