@@ -34,6 +34,7 @@ Future<void> addNewUser(
     'salt': salt,
     'followers' : 0,
     'follows' : 0,
+    'favorites': '',
   });
   
   // Añado una sub-collection
