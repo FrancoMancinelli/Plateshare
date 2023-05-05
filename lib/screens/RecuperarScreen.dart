@@ -223,7 +223,7 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
   }
 
   Future<void> validateFields() async {
-    String usernameInput = _usernameController.text;
+    String usernameInput = _usernameController.text.toLowerCase();
     String passwordInput = _passwordController.text;
     String repeatPasswordInput = _repeatPasswordController.text;
 

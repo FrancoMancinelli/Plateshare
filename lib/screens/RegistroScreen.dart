@@ -260,9 +260,9 @@ class _RegistroScreenState extends State<RegistroScreen> {
   }
 
   Future<void> validateRegiser() async {
-    String emailInput = _emailController.text;
+    String emailInput = _emailController.text.toLowerCase();
     String nameInput = _nameController.text;
-    String usernameInput = _usernameController.text;
+    String usernameInput = _usernameController.text.toLowerCase();
     String passwordInput = _passwordController.text;
     String repeatPasswordInput = _repeatPasswordController.text;
 
