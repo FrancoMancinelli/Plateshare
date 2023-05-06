@@ -1,8 +1,11 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plateshare/models/User.dart';
+import 'package:plateshare/widgets/MyAppBar.dart';
 import 'package:plateshare/widgets/MyDrawer.dart';
 
+import '../util/AppColors.dart';
 import 'LoginScreen.dart';
 
 class InicioScreen extends StatefulWidget {
@@ -23,51 +26,79 @@ class InicioScreen extends StatefulWidget {
   _InicioScreenState createState() => _InicioScreenState();
 }
 
+var screenSize;
 
 final TextEditingController _searchController = TextEditingController();
 String _searchErrorText = '';
 
 class _InicioScreenState extends State<InicioScreen> {
+  final items = <Widget>[
+    Icon(Icons.add, size: 30),
+    Icon(Icons.home, size: 30),
+    Icon(Icons.person, size: 30),
+  ];
+
+  int _selectedIndex = 1;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF056C49),
-        title: SizedBox(
-          height: 30, // ajusta la altura
-          child: TextField(
-            controller: _searchController,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(50.0),
-                borderSide: BorderSide.none, // borra el borde
-              ),
-              labelText: 'Buscar...',
-              errorText: _searchErrorText.isEmpty ? null : _searchErrorText,
-              filled: true,
-              fillColor: Colors.white,
-              contentPadding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-              prefixIcon:
-                  const Icon(Icons.search_outlined, color: Colors.black),
-            ),
+    screenSize = MediaQuery.of(context).size;
+    return SafeArea(
+      top: false,
+      child: Scaffold(
+        //extendBody: true,
+        backgroundColor: AppColors.accentColor,
+        //El AppBar y Drawer solo se muestran si la pagina es la de recetas
+        appBar: _selectedIndex == 1 ? MyAppBar() : null,
+        drawer: _selectedIndex == 1
+            ? MyDrawer(
+                nameData: widget.nameData,
+                usernameData: widget.usernameData,
+                profilePicData: widget.profilePicData,
+              )
+            : null,
+        body: SingleChildScrollView(
+          child: _getPage(_selectedIndex),
+        ),
+        //https://www.youtube.com/watch?v=TX2x41h47fE&t=7s&ab_channel=HeyFlutter%E2%80%A4com
+        bottomNavigationBar: Theme(
+          data: Theme.of(context)
+              .copyWith(iconTheme: IconThemeData(color: AppColors.whiteColor)),
+          child: CurvedNavigationBar(
+            color: AppColors.primaryColor,
+            backgroundColor: Colors.transparent,
+            buttonBackgroundColor: AppColors.orangeColor,
+            animationCurve: Curves.easeInOut,
+            animationDuration: Duration(milliseconds: 500),
+            items: items,
+            height: 60,
+            index: _selectedIndex,
+            onTap: (_selectedIndex) =>
+                setState(() => this._selectedIndex = _selectedIndex),
           ),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.filter_list_outlined),
-          ),
-        ],
       ),
-      drawer: MyDrawer(nameData: widget.nameData, usernameData: widget.usernameData, profilePicData: widget.profilePicData,),
-      body: SingleChildScrollView(
-        child: Container(
+    );
+  }
+
+  Widget _getPage(int index) {
+    switch (index) {
+      case 0:
+        return const Center(
+          child: Text('Search'),
+        );
+      case 1:
+        return Container(
           width: screenSize.width,
           height: screenSize.height,
           decoration: const BoxDecoration(
-            color: Color(0xFFF9EDDE),
+            color: AppColors.accentColor,
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -82,7 +113,7 @@ class _InicioScreenState extends State<InicioScreen> {
                       style: GoogleFonts.acme(
                         textStyle: const TextStyle(
                           fontSize: 24,
-                          color: Color(0xFF4F3119),
+                          color: AppColors.brownTextColor,
                           fontFamily: 'Acme',
                         ),
                       ),
@@ -95,7 +126,7 @@ class _InicioScreenState extends State<InicioScreen> {
                       style: GoogleFonts.acme(
                         textStyle: const TextStyle(
                           fontSize: 16,
-                          color: Color(0xFF4F3119),
+                          color: AppColors.brownTextColor,
                           fontFamily: 'Acme',
                         ),
                       ),
@@ -114,7 +145,7 @@ class _InicioScreenState extends State<InicioScreen> {
                         width: 215,
                         height: 250,
                         decoration: BoxDecoration(
-                          color: const Color(0xFFCBB79F),
+                          color: AppColors.brownRecepieColor,
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Column(
@@ -128,8 +159,13 @@ class _InicioScreenState extends State<InicioScreen> {
               ),
             ],
           ),
-        ),
-      ),
-    );
+        );
+      case 2:
+        return const Center(
+          child: Text('Add'),
+        );
+      default:
+        return Container();
+    }
   }
 }
