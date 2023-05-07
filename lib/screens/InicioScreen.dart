@@ -2,7 +2,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plateshare/models/User.dart';
-import 'package:plateshare/screens/RecepiesPage.dart';
+import 'package:plateshare/pages/RecepiesPage.dart';
 import 'package:plateshare/widgets/MyAppBar.dart';
 import 'package:plateshare/widgets/MyDrawer.dart';
 
@@ -50,11 +50,9 @@ class _InicioScreenState extends State<InicioScreen> {
       top: false,
       child: Scaffold(
         //extendBody: true,
-        backgroundColor: AppColors.accentColor,
         //El AppBar y Drawer solo se muestran si la pagina es la de recetas
         appBar: _selectedIndex == 1 ? MyAppBar() : null,
-        drawer: _selectedIndex == 1
-            ? MyDrawer(
+        drawer: _selectedIndex == 1 ? MyDrawer(
                 nameData: widget.nameData,
                 usernameData: widget.usernameData,
                 profilePicData: widget.profilePicData,
@@ -68,7 +66,7 @@ class _InicioScreenState extends State<InicioScreen> {
           data: Theme.of(context).copyWith(iconTheme: const IconThemeData(color: AppColors.whiteColor)),
           child: CurvedNavigationBar(
             color: AppColors.primaryColor,
-            backgroundColor: Colors.transparent,
+            backgroundColor: Color.fromARGB(255, 16, 141, 99),
             buttonBackgroundColor: AppColors.orangeColor,
             animationCurve: Curves.easeInOut,
             animationDuration: const Duration(milliseconds: 500),

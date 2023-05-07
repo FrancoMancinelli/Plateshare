@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plateshare/screens/InicioScreen.dart';
 import 'package:plateshare/util/AppColors.dart';
+import 'package:plateshare/widgets/RecepieContainer.dart';
 
 class RecepiesPage extends StatelessWidget {
   const RecepiesPage({
@@ -57,18 +58,7 @@ class RecepiesPage extends StatelessWidget {
               child: Stack(
                 alignment: Alignment.centerLeft,
                 children: [
-                  Container(
-                    width: 215,
-                    height: 250,
-                    decoration: BoxDecoration(
-                      color: AppColors.brownRecepieColor,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: const [],
-                    ),
-                  ),
+                  RecepieContainer(),
                 ],
               ),
             ),
