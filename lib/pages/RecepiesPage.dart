@@ -13,7 +13,7 @@ class RecepiesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: screenSize.width,
-      height: screenSize.height,
+      height: screenSize.height * 2,
       decoration: const BoxDecoration(
         color: AppColors.accentColor,
       ),
@@ -24,7 +24,7 @@ class RecepiesPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 10),
+                padding: const EdgeInsets.fromLTRB(10, 5, 0, 0),
                 child: Text(
                   'Economicas',
                   style: GoogleFonts.acme(
@@ -37,7 +37,7 @@ class RecepiesPage extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(0, 5, 15, 0),
+                padding: const EdgeInsets.fromLTRB(0, 10, 15, 0),
                 child: Text(
                   'Ver más',
                   style: GoogleFonts.acme(
@@ -52,17 +52,115 @@ class RecepiesPage extends StatelessWidget {
             ],
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+            padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              child: Stack(
-                alignment: Alignment.centerLeft,
+              child: Row(
                 children: [
+                  RecepieContainer(),
+                  RecepieContainer(),
+                  RecepieContainer(),
+                  RecepieContainer(),
+                  RecepieContainer(),
                   RecepieContainer(),
                 ],
               ),
             ),
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 20, 0, 0),
+                child: Text(
+                  "En menos de 15'",
+                  style: GoogleFonts.acme(
+                    textStyle: const TextStyle(
+                      fontSize: 24,
+                      color: AppColors.brownTextColor,
+                      fontFamily: 'Acme',
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 25, 15, 0),
+                child: Text(
+                  'Ver más',
+                  style: GoogleFonts.acme(
+                    textStyle: const TextStyle(
+                      fontSize: 16,
+                      color: AppColors.brownTextColor,
+                      fontFamily: 'Acme',
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  RecepieContainer(),
+                  RecepieContainer(),
+                  RecepieContainer(),
+                  RecepieContainer(),
+                  RecepieContainer(),
+                  RecepieContainer(),
+                ],
+              ),
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 20, 0, 0),
+                child: Text(
+                  "Postres",
+                  style: GoogleFonts.acme(
+                    textStyle: const TextStyle(
+                      fontSize: 24,
+                      color: AppColors.brownTextColor,
+                      fontFamily: 'Acme',
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 25, 15, 0),
+                child: Text(
+                  'Ver más',
+                  style: GoogleFonts.acme(
+                    textStyle: const TextStyle(
+                      fontSize: 16,
+                      color: AppColors.brownTextColor,
+                      fontFamily: 'Acme',
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  RecepieContainer(),
+                  RecepieContainer(),
+                  RecepieContainer(),
+                  RecepieContainer(),
+                  RecepieContainer(),
+                  RecepieContainer(),
+                ],
+              ),
+            ),
+          ),          
         ],
       ),
     );
