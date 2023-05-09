@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:like_button/like_button.dart';
 import 'package:plateshare/screens/LoginScreen.dart';
 import 'package:plateshare/util/AppColors.dart';
 
@@ -14,12 +15,6 @@ class RecepieContainer extends StatefulWidget {
 
 class _RecepieContainerState extends State<RecepieContainer> {
   bool isFavorite = false;
-
-  void toggleFavorite() {
-    setState(() {
-      isFavorite = !isFavorite;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +58,7 @@ class _RecepieContainerState extends State<RecepieContainer> {
                 ),
               ),
             ),
-    
+
             //PUNTUACION Y HORA | PUNTUACION Y HORA
             Row(
               mainAxisSize: MainAxisSize.max,
@@ -104,7 +99,7 @@ class _RecepieContainerState extends State<RecepieContainer> {
                 ),
               ],
             ),
-    
+
             // NOMBRE DE RECETA | LIKE
             Row(
               children: [
@@ -142,13 +137,20 @@ class _RecepieContainerState extends State<RecepieContainer> {
                           bottomRight: Radius.circular(20),
                         ),
                       ),
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.favorite,
-                          color: isFavorite ? AppColors.primaryColor : AppColors.brownRecepieColor,
-                          size: 28,
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(5, 1, 0, 0),
+                        child: LikeButton(
+                          bubblesColor: BubblesColor(dotPrimaryColor: Color.fromARGB(255, 89, 182, 151), dotSecondaryColor: Color.fromARGB(255, 76, 253, 129)),
+                          circleColor: CircleColor(end: Color.fromARGB(255, 89, 182, 151), start: Color.fromARGB(255, 76, 253, 194)),
+                          likeBuilder:(isFavorite) {
+                            return Icon(
+                              Icons.favorite,
+                              color: isFavorite ? AppColors.primaryColor : Colors.grey,
+                              size: 30,
+                            );
+                          },
+                          onTap: onLikeButtonTapped,
                         ),
-                        onPressed: toggleFavorite,
                       ),
                     ),
                   ),
@@ -159,5 +161,15 @@ class _RecepieContainerState extends State<RecepieContainer> {
         ),
       ),
     );
+  }
+
+  Future<bool> onLikeButtonTapped(bool isLiked) async {
+    /// send your request here
+    // final bool success= await sendRequest();
+
+    /// if failed, you can do nothing
+    // return success? !isLiked:isLiked;
+
+    return !isLiked;
   }
 }
