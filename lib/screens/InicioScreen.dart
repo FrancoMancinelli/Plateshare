@@ -2,6 +2,8 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plateshare/models/User.dart';
+import 'package:plateshare/pages/AddRecepiePage.dart';
+import 'package:plateshare/pages/ProfilePage.dart';
 import 'package:plateshare/pages/RecepiesPage.dart';
 import 'package:plateshare/widgets/MyAppBar.dart';
 import 'package:plateshare/widgets/MyDrawer.dart';
@@ -30,12 +32,12 @@ var screenSize;
 
 class _InicioScreenState extends State<InicioScreen> {
   final items = <Widget>[
-    const Icon(Icons.add, size: 30),
     const Icon(Icons.home, size: 30),
+    const Icon(Icons.add, size: 30),
     const Icon(Icons.person, size: 30),
   ];
 
-  int _selectedIndex = 1;
+  int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -49,10 +51,9 @@ class _InicioScreenState extends State<InicioScreen> {
     return SafeArea(
       top: false,
       child: Scaffold(
-        //extendBody: true,
         //El AppBar y Drawer solo se muestran si la pagina es la de recetas
-        appBar: _selectedIndex == 1 ? MyAppBar() : null,
-        drawer: _selectedIndex == 1 ? MyDrawer(
+        appBar: _selectedIndex == 0 ? MyAppBar() : null,
+        drawer: _selectedIndex == 0 ? MyDrawer(
                 nameData: widget.nameData,
                 usernameData: widget.usernameData,
                 profilePicData: widget.profilePicData,
@@ -83,15 +84,11 @@ class _InicioScreenState extends State<InicioScreen> {
   Widget _getPage(int index) {
     switch (index) {
       case 0:
-        return const Center(
-          child: Text('Add'),
-        );
-      case 1: // Recetas | Home
         return const RecepiesPage();
+      case 1: // Recetas | Home
+        return AddRecepiePage();
       case 2:
-        return const Center(
-          child: Text('Profile'),
-        );
+        return const ProfilePage();
       default:
         return Container();
     }
