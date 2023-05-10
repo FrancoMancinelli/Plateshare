@@ -13,7 +13,7 @@ class AddRecepiePage extends StatefulWidget {
 
 class _AddRecepiePageState extends State<AddRecepiePage> {
   final TextEditingController _tituloController = TextEditingController();
-  double _sliderValue = 30.0;
+  double _sliderValue = 45.0;
 
   void _updateSliderValue(double newValue) {
     setState(() {
@@ -221,6 +221,7 @@ class _AddRecepiePageState extends State<AddRecepiePage> {
               ),
               Slider(
                 value: _sliderValue,
+                divisions: 35,
                 min: 5.0,
                 max: 180.0,
                 onChanged: _updateSliderValue,
