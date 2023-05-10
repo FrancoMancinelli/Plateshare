@@ -4,6 +4,7 @@ import 'package:plateshare/screens/InicioScreen.dart';
 import 'package:plateshare/util/AppColors.dart';
 import 'package:plateshare/widgets/RecepieContainer.dart';
 
+
 class RecepiesPage extends StatelessWidget {
   const RecepiesPage({
     Key? key,
@@ -11,6 +12,8 @@ class RecepiesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+      var  screenSize = MediaQuery.of(context).size;
+
     return Container(
       width: screenSize.width,
       height: screenSize.height * 2,
@@ -160,7 +163,7 @@ class RecepiesPage extends StatelessWidget {
                 ],
               ),
             ),
-          ),          
+          ),    
         ],
       ),
     );

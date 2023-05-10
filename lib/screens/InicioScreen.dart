@@ -2,9 +2,10 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plateshare/models/User.dart';
-import 'package:plateshare/pages/AddRecepiePage.dart';
+import 'package:plateshare/pages/NotificationsPage.dart';
 import 'package:plateshare/pages/ProfilePage.dart';
 import 'package:plateshare/pages/RecepiesPage.dart';
+import 'package:plateshare/screens/AddRecepieScreen.dart';
 import 'package:plateshare/widgets/MyAppBar.dart';
 import 'package:plateshare/widgets/MyDrawer.dart';
 
@@ -32,12 +33,12 @@ var screenSize;
 
 class _InicioScreenState extends State<InicioScreen> {
   final items = <Widget>[
+    const Icon(Icons.notifications, size: 30),
     const Icon(Icons.home, size: 30),
-    const Icon(Icons.add, size: 30),
     const Icon(Icons.person, size: 30),
   ];
 
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -52,8 +53,8 @@ class _InicioScreenState extends State<InicioScreen> {
       top: false,
       child: Scaffold(
         //El AppBar y Drawer solo se muestran si la pagina es la de recetas
-        appBar: _selectedIndex == 0 ? MyAppBar() : null,
-        drawer: _selectedIndex == 0 ? MyDrawer(
+        appBar: _selectedIndex == 1 ? MyAppBar() : null,
+        drawer: _selectedIndex == 1 ? MyDrawer(
                 nameData: widget.nameData,
                 usernameData: widget.usernameData,
                 profilePicData: widget.profilePicData,
@@ -62,7 +63,20 @@ class _InicioScreenState extends State<InicioScreen> {
         body: SingleChildScrollView(
           child: _getPage(_selectedIndex),
         ),
-        //https://www.youtube.com/watch?v=TX2x41h47fE&t=7s&ab_channel=HeyFlutter%E2%80%A4com
+        floatingActionButton: _selectedIndex == 1 ? FloatingActionButton(
+        backgroundColor: AppColors.orangeColor,
+        child: Icon(Icons.add, size: 30,),
+        onPressed: () {
+          // Navigate to the screen where you want to add a recipe
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AddRecepieScreen(emailData: widget.emailData, nameData: widget.nameData, profilePicData: widget.profilePicData, usernameData: widget.usernameData),
+            ),
+          );
+        },
+      ) : null,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         bottomNavigationBar: Theme(
           data: Theme.of(context).copyWith(iconTheme: const IconThemeData(color: AppColors.whiteColor)),
           child: CurvedNavigationBar(
@@ -84,9 +98,9 @@ class _InicioScreenState extends State<InicioScreen> {
   Widget _getPage(int index) {
     switch (index) {
       case 0:
-        return const RecepiesPage();
+        return const NotificationsPage();
       case 1: // Recetas | Home
-        return AddRecepiePage();
+        return const RecepiesPage();
       case 2:
         return const ProfilePage();
       default:
