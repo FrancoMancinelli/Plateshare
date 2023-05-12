@@ -115,7 +115,7 @@ class _RecipeFormStepOneState extends State<RecipeFormStepOne> {
                         );
                       },
                       icon: const Icon(
-                        Icons.arrow_back_ios,
+                        Icons.close,
                         color: Colors.white,
                         size: 20,
                       ),
@@ -231,7 +231,7 @@ class _RecipeFormStepOneState extends State<RecipeFormStepOne> {
           child: Container(
             height: 50,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(10),
               color: Colors.white, // Set the desired background color
               border: Border.all(
                 color: const Color(0xFFCCDDD7), // Set the desired border color
