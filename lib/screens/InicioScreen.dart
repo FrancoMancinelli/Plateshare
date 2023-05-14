@@ -6,6 +6,7 @@ import 'package:plateshare/pages/NotificationsPage.dart';
 import 'package:plateshare/pages/ProfilePage.dart';
 import 'package:plateshare/pages/RecepiesPage.dart';
 import 'package:plateshare/screens/AddRecepieScreen.dart';
+import 'package:plateshare/screens/RecepieFormScreenOne.dart';
 import 'package:plateshare/widgets/MyAppBar.dart';
 import 'package:plateshare/widgets/MyDrawer.dart';
 
@@ -71,7 +72,7 @@ class _InicioScreenState extends State<InicioScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => AddRecepieScreen(emailData: widget.emailData, nameData: widget.nameData, profilePicData: widget.profilePicData, usernameData: widget.usernameData),
+              builder: (context) => RecepieFormScreenOne(emailData: widget.emailData, nameData: widget.nameData, profilePicData: widget.profilePicData, usernameData: widget.usernameData),
             ),
           );
         },

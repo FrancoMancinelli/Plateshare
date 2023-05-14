@@ -2,9 +2,6 @@ import 'package:bcrypt/bcrypt.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plateshare/models/User.dart';
-import 'package:plateshare/pages/RecepieFormStepOne.dart';
-import 'package:plateshare/pages/RecepieFormStepThree.dart';
-import 'package:plateshare/pages/RecepieFormStepTwo.dart';
 import 'package:plateshare/screens/InicioScreen.dart';
 import 'package:plateshare/services/firebase_service.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -34,30 +31,6 @@ class _AddRecepieScreenState extends State<AddRecepieScreen> {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-
-    Widget currentFormStep;
-    if (currentStep == 1) {
-      currentFormStep = RecipeFormStepOne(
-        emailData: widget.emailData,
-        nameData: widget.nameData,
-        profilePicData: widget.profilePicData,
-        usernameData: widget.usernameData,
-      );
-    } else if (currentStep == 2) {
-      currentFormStep = RecipeFormStepTwo(
-        emailData: widget.emailData,
-        nameData: widget.nameData,
-        profilePicData: widget.profilePicData,
-        usernameData: widget.usernameData,
-      );
-    } else {
-       currentFormStep = RecipeFormStepThree(
-        emailData: widget.emailData,
-        nameData: widget.nameData,
-        profilePicData: widget.profilePicData,
-        usernameData: widget.usernameData,
-      );
-    }
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -75,7 +48,7 @@ class _AddRecepieScreenState extends State<AddRecepieScreen> {
                   ),
                   child: Column(
                     children: [
-                      currentFormStep,
+                      
                       Align(
                         alignment: Alignment.bottomCenter,
                         child: Padding(
