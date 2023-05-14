@@ -9,6 +9,6 @@ class AppColors {
   static const Color blackColor = Color(0xFF000000);
   static const Color brownTextColor = Color(0xFF4F3119);
   static const Color brownRecepieColor = Color(0xFFCBB79F);
-  static const Color recomendationColor = Color(0xFFCCDDD7);
+  static const Color recommendationColor = Color(0xFFCCDDD7);
   // Add more color constants here as needed
 }

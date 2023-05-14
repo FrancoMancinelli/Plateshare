@@ -26,7 +26,42 @@ class RecipeFormStepThree extends StatefulWidget {
 }
 
 class _RecipeFormStepThreeState extends State<RecipeFormStepThree> {
-@override
+  final TextEditingController _tituloController = TextEditingController();
+
+  List<String> texts = [];
+  TextEditingController textController1 = TextEditingController();
+
+  void addTexts() {
+    String text1 = textController1.text;
+
+    if (text1.isNotEmpty) {
+      setState(() {
+        texts.add(text1);
+      });
+
+      textController1.clear();
+    } else {
+      showFieldRequiredSnackbar();
+    }
+  }
+
+  void showFieldRequiredSnackbar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text(
+            'Asegurate de rellenar el campo para poder añadir un nuevo paso a la lista'),
+        backgroundColor: Colors.red,
+      ),
+    );
+  }
+
+  void deleteText(int index) {
+    setState(() {
+      texts.removeAt(index);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     return Column(
@@ -63,7 +98,6 @@ class _RecipeFormStepThreeState extends State<RecipeFormStepThree> {
                               ),
                               TextButton(
                                 onPressed: () {
-                            
                                   Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
@@ -119,7 +153,7 @@ class _RecipeFormStepThreeState extends State<RecipeFormStepThree> {
             borderRadius: BorderRadius.circular(10),
             child: Container(
               height: 80,
-              color: AppColors.recomendationColor,
+              color: AppColors.recommendationColor,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -151,8 +185,140 @@ class _RecipeFormStepThreeState extends State<RecipeFormStepThree> {
             ),
           ),
         ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(10, 20, 0, 0),
+          child: Row(
+            children: [
+              RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: 'Pasos a seguir   ',
+                      style: GoogleFonts.acme(
+                        textStyle: const TextStyle(
+                          color: AppColors.brownTextColor,
+                          fontSize: 16,
+                          fontFamily: 'Acme',
+                        ),
+                      ),
+                    ),
+                    const TextSpan(
+                      text: '*',
+                      style: TextStyle(
+                        color: Color(0xFFFF6600),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
+          child: Row(
+            children: [
+              Container(
+                width: screenSize.width / 1.15,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: AppColors.whiteColor,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                      color: AppColors.recommendationColor, width: 2.5),
+                ),
+                child: TextField(
+                  controller: textController1,
+                  style: const TextStyle(
+                    color: AppColors.brownTextColor,
+                    fontSize: 15,
+                    fontFamily: 'Acme',
+                  ),
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 5),
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: AppColors.orangeColor, width: 2.5),
+                ),
+                child: InkWell(
+                  onTap: addTexts,
+                  child: const Icon(
+                    Icons.add_rounded,
+                    color: AppColors.orangeColor,
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+        SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Container(
+            height: 508,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: texts.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: AppColors.brownRecepieColor,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          padding: const EdgeInsets.all(10),
+                          margin: const EdgeInsets.symmetric(
+                              vertical: 5, horizontal: 10),
+                          child: Text(
+                            texts[index],
+                            style: GoogleFonts.acme(
+                              textStyle: const TextStyle(
+                                color: AppColors.whiteColor,
+                                fontSize: 16,
+                                fontFamily: 'Acme',
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: 30,
+                        height: 30,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                              color: AppColors.orangeColor, width: 2.5),
+                        ),
+                        child: InkWell(
+                          onTap: () {
+                            deleteText(index);
+                          },
+                          child: const Icon(
+                            Icons.close_rounded,
+                            color: AppColors.orangeColor,
+                            size: 20,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
       ],
     );
   }
 }
-  

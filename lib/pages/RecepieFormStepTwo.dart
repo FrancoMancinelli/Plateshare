@@ -36,16 +36,29 @@ class _RecipeFormStepTwoState extends State<RecipeFormStepTwo> {
   TextEditingController textController3 = TextEditingController();
 
   void addTexts() {
-    String text1 = textController1.text;
-    String text2 = textController2.text;
+  String text1 = textController1.text;
+  String text2 = textController2.text;
 
+  if (text1.isNotEmpty && text2.isNotEmpty) {
     setState(() {
       texts.add('$text1 - $text2 $dropdownValue');
     });
 
     textController1.clear();
     textController2.clear();
+  } else {
+    showFieldRequiredSnackbar(); 
   }
+}
+
+void showFieldRequiredSnackbar() {
+  ScaffoldMessenger.of(context).showSnackBar(
+    const SnackBar(
+      content: Text('Rellena el nombre del ingrediente y la cantidad para poder añadirlo a la lista'),
+      backgroundColor: Colors.red,
+    ),
+  );
+}
 
   void deleteText(int index) {
     setState(() {
@@ -153,7 +166,7 @@ class _RecipeFormStepTwoState extends State<RecipeFormStepTwo> {
             borderRadius: BorderRadius.circular(10),
             child: Container(
               height: 80,
-              color: AppColors.recomendationColor,
+              color: AppColors.recommendationColor,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -224,38 +237,40 @@ class _RecipeFormStepTwoState extends State<RecipeFormStepTwo> {
           child: Align(
             alignment: AlignmentDirectional.centerStart,
             child: Container(
-  height: 50,
-  width: 200,
-  decoration: BoxDecoration(
-    borderRadius: BorderRadius.circular(10),
-    color: Colors.white,
-    border: Border.all(
-      color: const Color(0xFFCCDDD7),
-      width: 2.5,
-    ),
-  ),
-  child: TextField(
-    controller: _tituloController,
-    decoration: const InputDecoration(
-      border: InputBorder.none,
-      hintText: 'Ej: 2',
-      hintStyle: TextStyle(
-        fontSize: 14,
-        color: Colors.grey,
-      ),
-      contentPadding: EdgeInsets.symmetric(horizontal: 10),
-    ),
-    style: const TextStyle(
-      color: AppColors.brownTextColor,
-      fontSize: 16,
-      fontFamily: 'Acme',
-    ),
-    keyboardType: TextInputType.number, // Set the keyboard type to number
-    inputFormatters: <TextInputFormatter>[
-      FilteringTextInputFormatter.digitsOnly, // Restrict input to digits only
-    ],
-  ),
-),
+              height: 50,
+              width: 200,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.white,
+                border: Border.all(
+                  color: const Color(0xFFCCDDD7),
+                  width: 2.5,
+                ),
+              ),
+              child: TextField(
+                controller: _tituloController,
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Ej: 2',
+                  hintStyle: TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey,
+                  ),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                ),
+                style: const TextStyle(
+                  color: AppColors.brownTextColor,
+                  fontSize: 16,
+                  fontFamily: 'Acme',
+                ),
+                keyboardType:
+                    TextInputType.number, // Set the keyboard type to number
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter
+                      .digitsOnly, // Restrict input to digits only
+                ],
+              ),
+            ),
           ),
         ),
 
@@ -305,7 +320,7 @@ class _RecipeFormStepTwoState extends State<RecipeFormStepTwo> {
                         color: AppColors.whiteColor,
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                            color: AppColors.recomendationColor, width: 2.5),
+                            color: AppColors.recommendationColor, width: 2.5),
                       ),
                       child: TextField(
                         controller: textController1,
@@ -328,16 +343,16 @@ class _RecipeFormStepTwoState extends State<RecipeFormStepTwo> {
                         color: AppColors.whiteColor,
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                            color: AppColors.recomendationColor, width: 2.5),
+                            color: AppColors.recommendationColor, width: 2.5),
                       ),
                       child: TextField(
-                            textAlign: TextAlign.center,
-
+                        textAlign: TextAlign.center,
                         controller: textController2,
                         keyboardType: TextInputType.number,
                         inputFormatters: <TextInputFormatter>[
-      FilteringTextInputFormatter.digitsOnly, // Restrict input to digits only
-    ],
+                          FilteringTextInputFormatter
+                              .digitsOnly, // Restrict input to digits only
+                        ],
                         style: const TextStyle(
                           color: AppColors.brownTextColor,
                           fontSize: 16,
@@ -360,7 +375,7 @@ class _RecipeFormStepTwoState extends State<RecipeFormStepTwo> {
                             10,
                           ),
                           border: Border.all(
-                              color: AppColors.recomendationColor, width: 2.5),
+                              color: AppColors.recommendationColor, width: 2.5),
                         ),
                         child: DropdownButtonFormField<String>(
                           value: dropdownValue,
@@ -405,11 +420,14 @@ class _RecipeFormStepTwoState extends State<RecipeFormStepTwo> {
                           ].map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
-                              child: Text(value, style: const TextStyle(
-                          color: AppColors.brownTextColor,
-                          fontSize: 15,
-                          fontFamily: 'Acme',
-                        ),),
+                              child: Text(
+                                value,
+                                style: const TextStyle(
+                                  color: AppColors.brownTextColor,
+                                  fontSize: 15,
+                                  fontFamily: 'Acme',
+                                ),
+                              ),
                             );
                           }).toList(),
                         ),
@@ -434,64 +452,67 @@ class _RecipeFormStepTwoState extends State<RecipeFormStepTwo> {
                 ),
               ),
               const SizedBox(height: 20),
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: texts.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: AppColors.brownRecepieColor,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            padding: const EdgeInsets.all(10),
-                            margin: const EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 10),
-                            child: Text(
-                              texts[index],
-                              style: GoogleFonts.acme(
-                                textStyle: const TextStyle(
-                                  color: AppColors.whiteColor,
-                                  fontSize: 18,
-                                  fontFamily: 'Acme',
+              Container(
+                height: 411,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: texts.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: AppColors.brownRecepieColor,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              padding: const EdgeInsets.all(10),
+                              margin: const EdgeInsets.symmetric(
+                                  vertical: 5, horizontal: 10),
+                              child: Text(
+                                texts[index],
+                                style: GoogleFonts.acme(
+                                  textStyle: const TextStyle(
+                                    color: AppColors.whiteColor,
+                                    fontSize: 18,
+                                    fontFamily: 'Acme',
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                        Container(
-                          width: 30,
-                          height: 30,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                                color: AppColors.orangeColor, width: 2.5),
-                          ),
-                          child: InkWell(
-                            onTap: () {
-                              deleteText(index);
-                            },
-                            child: const Icon(
-                              Icons.close_rounded,
-                              color: AppColors.orangeColor,
-                              size: 20,
+                          Container(
+                            width: 30,
+                            height: 30,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                  color: AppColors.orangeColor, width: 2.5),
+                            ),
+                            child: InkWell(
+                              onTap: () {
+                                deleteText(index);
+                              },
+                              child: const Icon(
+                                Icons.close_rounded,
+                                color: AppColors.orangeColor,
+                                size: 20,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
+                        ],
+                      ),
+                    );
+                  },
+                ),
               ),
             ],
           ),
         ),
 
-        //ZZZZ
+        //End
       ],
     );
   }
