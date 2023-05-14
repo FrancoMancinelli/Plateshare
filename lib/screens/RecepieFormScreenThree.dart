@@ -2,9 +2,6 @@ import 'package:bcrypt/bcrypt.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plateshare/models/User.dart';
-import 'package:plateshare/pages/RecepieFormStepOne.dart';
-import 'package:plateshare/pages/RecepieFormStepThree.dart';
-import 'package:plateshare/pages/RecepieFormStepTwo.dart';
 import 'package:plateshare/screens/InicioScreen.dart';
 import 'package:plateshare/screens/RecepieFormScreenTwo.dart';
 import 'package:plateshare/services/firebase_service.dart';
@@ -16,6 +13,11 @@ class RecepieFormScreenThree extends StatefulWidget {
   final String nameData;
   final String usernameData;
   final String profilePicData;
+  final String tituloRecepie;
+  final int tiempoRecepie;
+  final List<String> categoriasRecepie;
+  final String racionesRecepie;
+  final List<String> ingredientesRecepie;
 
   const RecepieFormScreenThree({
     Key? key,
@@ -23,6 +25,11 @@ class RecepieFormScreenThree extends StatefulWidget {
     required this.nameData,
     required this.usernameData,
     required this.profilePicData,
+    required this.tituloRecepie,
+    required this.tiempoRecepie,
+    required this.categoriasRecepie,
+    required this.racionesRecepie,
+    required this.ingredientesRecepie,
   }) : super(key: key);
 
   @override
@@ -45,18 +52,39 @@ class _RecepieFormScreenThreeState extends State<RecepieFormScreenThree> {
 
       textController1.clear();
     } else {
-      showFieldRequiredSnackbar();
+      showLowMessage(1);
     }
   }
 
-  void showFieldRequiredSnackbar() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text(
-            'Asegurate de rellenar el campo para poder añadir un nuevo paso a la lista'),
-        backgroundColor: Colors.red,
-      ),
-    );
+  void showLowMessage(int index) {
+    switch (index) {
+      case 1:
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+                'Asegurate de rellenar el campo para poder añadir un nuevo paso a la lista'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        break;
+      case 2:
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content:
+                Text('Agrega al menos 1 paso a seguir para poder continuar'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        break;
+      case 3:
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Receta agregada con éxito'),
+            backgroundColor: Colors.green,
+          ),
+        );
+        break;
+    }
   }
 
   void deleteText(int index) {
@@ -117,13 +145,6 @@ class _RecepieFormScreenThreeState extends State<RecepieFormScreenThree> {
                                             ),
                                             TextButton(
                                               onPressed: () {
-                                                // set all selection states to false
-                                                setState(() {
-                                                  buttonStates = List.generate(
-                                                      6,
-                                                      (index) => List.generate(
-                                                          4, (index) => false));
-                                                });
                                                 Navigator.pushReplacement(
                                                   context,
                                                   MaterialPageRoute(
@@ -412,7 +433,40 @@ class _RecepieFormScreenThreeState extends State<RecepieFormScreenThree> {
                                     padding:
                                         const EdgeInsets.fromLTRB(0, 5, 20, 0),
                                     child: ElevatedButton(
-                                      onPressed: () {},
+                                      onPressed: () async {
+                                        if (texts.length >= 1) {
+                                          final recipeData = {
+                                            'categorias': widget.categoriasRecepie,
+                                            'likes': 0,
+                                            'pasos': texts,
+                                            'puntuacion': 0,
+                                            'raciones': widget.racionesRecepie,
+                                            'tiempo': widget.tiempoRecepie,
+                                            'titulo': widget.tituloRecepie,
+                                          };
+
+                                          final ingredientList = widget.ingredientesRecepie;
+                                          String? documentId = await getDocumentIdByUsername(widget.usernameData);
+                                          addRecipeToUser(documentId!, recipeData, ingredientList);
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  InicioScreen(
+                                                      emailData:
+                                                          widget.emailData,
+                                                      nameData: widget.nameData,
+                                                      profilePicData:
+                                                          widget.profilePicData,
+                                                      usernameData:
+                                                          widget.usernameData),
+                                            ),
+                                          );
+                                          showLowMessage(3);
+                                        } else {
+                                          showLowMessage(2);
+                                        }
+                                      },
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors.orange,
                                         shape: RoundedRectangleBorder(
@@ -421,7 +475,7 @@ class _RecepieFormScreenThreeState extends State<RecepieFormScreenThree> {
                                         ),
                                       ),
                                       child: Text(
-                                        'Continuar',
+                                        'Publicar',
                                         style: GoogleFonts.acme(
                                           textStyle: const TextStyle(
                                             color: AppColors.whiteColor,

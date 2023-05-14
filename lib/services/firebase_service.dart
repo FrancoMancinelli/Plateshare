@@ -124,3 +124,55 @@ Future<String> getSaltByUsername(String username) async {
     throw Exception('User with username $username not found!');
   }
 }
+
+Future<String?> getDocumentIdByUsername(String username) async {
+  String? documentId;
+
+  QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance
+      .collection('user')
+      .where('username', isEqualTo: username)
+      .get();
+
+  if (snapshot.size > 0) {
+    documentId = snapshot.docs[0].id;
+  }
+
+  return documentId;
+}
+
+
+Future<void> addRecipeToUser(String username, Map<String, dynamic> recipeData, List<String> ingredientList) async {
+  final userRef = FirebaseFirestore.instance.collection('user').doc(username);
+  final recipeRef = userRef.collection('recipe').doc();
+
+  // Add recipe data to the 'recipe' document
+  await recipeRef.set(recipeData);
+
+  // Create 'ingredients' collection and add documents
+  final ingredientsRef = recipeRef.collection('ingredientes');
+  for (String ingredient in ingredientList) {
+  List<String> parts = ingredient.split(' - ');
+
+  if (parts.length == 2) {
+    String text1 = parts[0].trim();
+    String numberText = parts[1].trim();
+
+    RegExp numberRegex = RegExp(r'\d+');
+    String number = numberRegex.firstMatch(numberText)?.group(0) ?? '';
+    String text2 = numberText.replaceFirst(numberRegex, '').trim();
+
+    final ingredientData = {
+      'cantidad': number,
+      'nombre': text1,
+      'tipo': text2,
+    };
+
+    await ingredientsRef.add(ingredientData);
+  }
+}
+
+  
+  final commentsRef = recipeRef.collection('comentarios');
+  final commentsData = {'dueño': '', 'puntuacion': '', 'texto': '',};
+  await commentsRef.add(commentsData);
+}

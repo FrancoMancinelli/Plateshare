@@ -41,6 +41,21 @@ class _RecepieFormScreenOneState extends State<RecepieFormScreenOne> {
     (rowIndex) => List.generate(4, (colIndex) => false),
   );
 
+  List<String> getSelectedButtonValues() {
+  List<String> selectedValues = [];
+
+  for (int rowIndex = 0; rowIndex < buttonStates.length; rowIndex++) {
+    for (int colIndex = 0; colIndex < buttonStates[rowIndex].length; colIndex++) {
+      if (buttonStates[rowIndex][colIndex]) {
+        String value = buttonTexts[rowIndex][colIndex];
+        selectedValues.add(value);
+      }
+    }
+  }
+
+  return selectedValues;
+}
+
   void updateButtonState(int rowIndex, int colIndex) {
     setState(() {
       buttonStates[rowIndex][colIndex] = !buttonStates[rowIndex][colIndex];
@@ -57,6 +72,28 @@ class _RecepieFormScreenOneState extends State<RecepieFormScreenOne> {
         buttonStates[rowIndex][colIndex] = false;
       }
     });
+  }
+
+  void showRequired(int index) {
+    switch (index) {
+      case 1:
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Indica el titulo de la receta para poder continuar'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        break;
+      case 2:
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+                'Indica al menos una categoría a la que pertenzca tu receta para poder continuar'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        break;
+    }
   }
 
   final TextEditingController _tituloController = TextEditingController();
@@ -400,15 +437,16 @@ class _RecepieFormScreenOneState extends State<RecepieFormScreenOne> {
                                 children: List.generate(
                                   4,
                                   (colIndex) => Container(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 3.0),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 3.0),
                                     child: TextButton(
                                       onPressed: () {
                                         updateButtonState(rowIndex, colIndex);
                                       },
                                       style: TextButton.styleFrom(
-                                        minimumSize: Size(90, 35),
-                                        backgroundColor: Colors.white, // Enabled state
+                                        minimumSize: const Size(90, 35),
+                                        backgroundColor:
+                                            Colors.white, // Enabled state
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(5.0),
@@ -416,7 +454,8 @@ class _RecepieFormScreenOneState extends State<RecepieFormScreenOne> {
                                             color: buttonStates[rowIndex]
                                                     [colIndex]
                                                 ? AppColors.orangeColor
-                                                : Colors.transparent, // Border color for enabled buttons
+                                                : Colors
+                                                    .transparent, // Border color for enabled buttons
                                             width: 2.0,
                                           ),
                                         ),
@@ -471,20 +510,35 @@ class _RecepieFormScreenOneState extends State<RecepieFormScreenOne> {
                                         const EdgeInsets.fromLTRB(0, 5, 20, 0),
                                     child: ElevatedButton(
                                       onPressed: () {
-                                        // Navigate to the screen where you want to add a recipe
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                RecepieFormScreenTwo(
-                                                    emailData: widget.emailData,
-                                                    nameData: widget.nameData,
-                                                    profilePicData:
-                                                        widget.profilePicData,
-                                                    usernameData:
-                                                        widget.usernameData),
-                                          ),
-                                        );
+                                        // Check if _tituloController is not null or empty
+                                        if (_tituloController.text.isNotEmpty) {
+                                          // Check if at least one button in buttonStates is true
+                                          bool isButtonSelected =
+                                              buttonStates.any((row) =>
+                                                  row.any((col) => col));
+                                          if (isButtonSelected) {
+                                            // Navigate to the screen where you want to add a recipe
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    RecepieFormScreenTwo(
+                                                  emailData: widget.emailData,
+                                                  nameData: widget.nameData,
+                                                  profilePicData: widget.profilePicData,
+                                                  usernameData: widget.usernameData,
+                                                  tituloRecepie: _tituloController.value.text,
+                                                  tiempoRecepie: _sliderValue.toInt(),
+                                                  categoriasRecepie: getSelectedButtonValues(),
+                                                ),
+                                              ),
+                                            );
+                                          } else {
+                                            showRequired(2);
+                                          }
+                                        } else {
+                                          showRequired(1);
+                                        }
                                       },
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors.orange,

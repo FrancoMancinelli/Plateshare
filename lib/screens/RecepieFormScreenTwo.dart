@@ -14,6 +14,9 @@ class RecepieFormScreenTwo extends StatefulWidget {
   final String nameData;
   final String usernameData;
   final String profilePicData;
+  final String tituloRecepie;
+  final int tiempoRecepie;
+  final List<String> categoriasRecepie;
 
   const RecepieFormScreenTwo({
     Key? key,
@@ -21,6 +24,9 @@ class RecepieFormScreenTwo extends StatefulWidget {
     required this.nameData,
     required this.usernameData,
     required this.profilePicData,
+    required this.tituloRecepie,
+    required this.tiempoRecepie,
+    required this.categoriasRecepie,
   }) : super(key: key);
 
   @override
@@ -28,7 +34,7 @@ class RecepieFormScreenTwo extends StatefulWidget {
 }
 
 class _RecepieFormScreenTwoState extends State<RecepieFormScreenTwo> {
-  final TextEditingController _tituloController = TextEditingController();
+  final TextEditingController _racionesController = TextEditingController();
 
   List<String> texts = [];
 
@@ -48,18 +54,39 @@ class _RecepieFormScreenTwoState extends State<RecepieFormScreenTwo> {
       textController1.clear();
       textController2.clear();
     } else {
-      showFieldRequiredSnackbar();
+      showRequired(3);
     }
   }
 
-  void showFieldRequiredSnackbar() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text(
-            'Rellena el nombre del ingrediente y la cantidad para poder añadirlo a la lista'),
-        backgroundColor: Colors.red,
-      ),
-    );
+  void showRequired(int index) {
+    switch (index) {
+      case 1:
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content:
+                Text('Indica la cantidad de raciones para poder continuar'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        break;
+      case 2:
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Agrega al menos 2 ingrediente para poder continuar'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        break;
+      case 3:
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+                'Rellena el nombre del ingrediente y la cantidad para poder añadirlo a la lista'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        break;
+    }
   }
 
   void deleteText(int index) {
@@ -262,7 +289,7 @@ class _RecepieFormScreenTwoState extends State<RecepieFormScreenTwo> {
                               ),
                             ),
                             child: TextField(
-                              controller: _tituloController,
+                              controller: _racionesController,
                               decoration: const InputDecoration(
                                 border: InputBorder.none,
                                 hintText: 'Ej: 2',
@@ -595,20 +622,35 @@ class _RecepieFormScreenTwoState extends State<RecepieFormScreenTwo> {
                                         const EdgeInsets.fromLTRB(0, 5, 20, 0),
                                     child: ElevatedButton(
                                       onPressed: () {
-                                        // Navigate to the screen where you want to add a recipe
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                RecepieFormScreenThree(
-                                                    emailData: widget.emailData,
-                                                    nameData: widget.nameData,
-                                                    profilePicData:
-                                                        widget.profilePicData,
-                                                    usernameData:
-                                                        widget.usernameData),
-                                          ),
-                                        );
+                                        print(widget.tituloRecepie);
+                                        print(widget.tiempoRecepie);
+                                        print(widget.categoriasRecepie);
+                                        if (_racionesController
+                                            .text.isNotEmpty) {
+                                          if (texts.length >= 2) {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    RecepieFormScreenThree(
+                                                  emailData: widget.emailData,
+                                                  nameData: widget.nameData,
+                                                  profilePicData: widget.profilePicData,
+                                                  usernameData: widget.usernameData,
+                                                  tituloRecepie: widget.tituloRecepie,
+                                                  tiempoRecepie: widget.tiempoRecepie,
+                                                  categoriasRecepie: widget.categoriasRecepie,
+                                                  racionesRecepie: _racionesController.value.text,
+                                                  ingredientesRecepie: texts,
+                                                ),
+                                              ),
+                                            );
+                                          } else {
+                                            showRequired(2);
+                                          }
+                                        } else {
+                                          showRequired(1);
+                                        }
                                       },
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors.orange,
@@ -618,7 +660,7 @@ class _RecepieFormScreenTwoState extends State<RecepieFormScreenTwo> {
                                         ),
                                       ),
                                       child: Text(
-                                        'Publicar',
+                                        'Continuar',
                                         style: GoogleFonts.acme(
                                           textStyle: const TextStyle(
                                             color: AppColors.whiteColor,
