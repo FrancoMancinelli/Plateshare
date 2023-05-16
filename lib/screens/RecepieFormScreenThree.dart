@@ -436,13 +436,14 @@ class _RecepieFormScreenThreeState extends State<RecepieFormScreenThree> {
                                       onPressed: () async {
                                         if (texts.length >= 1) {
                                           final recipeData = {
-                                            'categorias': widget.categoriasRecepie,
+                                            'category': widget.categoriasRecepie,
                                             'likes': 0,
-                                            'pasos': texts,
-                                            'puntuacion': 0,
-                                            'raciones': widget.racionesRecepie,
-                                            'tiempo': widget.tiempoRecepie,
-                                            'titulo': widget.tituloRecepie,
+                                            'steps': texts,
+                                            'rate': 0,
+                                            'rations': widget.racionesRecepie,
+                                            'time': widget.tiempoRecepie,
+                                            'title': widget.tituloRecepie,
+                                            'image': "",
                                           };
 
                                           final ingredientList = widget.ingredientesRecepie;

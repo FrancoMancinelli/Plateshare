@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:like_button/like_button.dart';
 import 'package:plateshare/screens/LoginScreen.dart';
+import 'package:plateshare/services/firebase_service.dart';
 import 'package:plateshare/util/AppColors.dart';
 
 class RecepieContainer extends StatefulWidget {
+  final String idRecepieInDatabase;
+
   const RecepieContainer({
     Key? key,
+    required this.idRecepieInDatabase,
   }) : super(key: key);
 
   @override
@@ -15,6 +19,32 @@ class RecepieContainer extends StatefulWidget {
 
 class _RecepieContainerState extends State<RecepieContainer> {
   bool isFavorite = false;
+
+  String title = "Default data information";
+  String time = "0";
+  String rate = "0.0";
+  String image = "https://firebasestorage.googleapis.com/v0/b/plateshare-tfg2023.appspot.com/o/default_recipeimage.jpg?alt=media&token=8400f8d3-7704-4a54-8151-da4053cf9102";
+
+  @override
+  void initState() {
+    super.initState();
+    fetchRecipeData();
+  }
+
+  Future<void> fetchRecipeData() async {
+  final recipeData = await getRecipeFields(widget.idRecepieInDatabase);
+  if (recipeData.isNotEmpty) {
+    setState(() {
+      if(recipeData[0].isNotEmpty) {
+      image = recipeData[0];
+      }
+      title = recipeData[1];
+      time = recipeData[2];
+      rate = recipeData[3];
+    });
+  }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +80,7 @@ class _RecepieContainerState extends State<RecepieContainer> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Image.network(
-                    'https://i.imgur.com/ZLbmHME.png',
+                    image,
                     width: 200,
                     height: 120,
                     fit: BoxFit.cover,
@@ -70,7 +100,7 @@ class _RecepieContainerState extends State<RecepieContainer> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(1, 2, 0, 0),
                   child: Text(
-                    '4.5',
+                    rate,
                     style: GoogleFonts.acme(
                       textStyle: TextStyle(
                         color: Colors.white,
@@ -87,7 +117,7 @@ class _RecepieContainerState extends State<RecepieContainer> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(2, 2, 0, 0),
                   child: Text(
-                    '35 mins',
+                    '$time mins',
                     style: GoogleFonts.acme(
                       textStyle: TextStyle(
                         color: Colors.white,
@@ -109,7 +139,7 @@ class _RecepieContainerState extends State<RecepieContainer> {
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(8, 0, 5, 5),
                       child: Text(
-                        'Canelones de navidad y mucho más',
+                        title,
                         style: GoogleFonts.acme(
                           textStyle: TextStyle(
                             color: Colors.white,
@@ -140,12 +170,20 @@ class _RecepieContainerState extends State<RecepieContainer> {
                       child: Padding(
                         padding: EdgeInsets.fromLTRB(5, 1, 0, 0),
                         child: LikeButton(
-                          bubblesColor: BubblesColor(dotPrimaryColor: Color.fromARGB(255, 89, 182, 151), dotSecondaryColor: Color.fromARGB(255, 76, 253, 129)),
-                          circleColor: CircleColor(end: Color.fromARGB(255, 89, 182, 151), start: Color.fromARGB(255, 76, 253, 194)),
-                          likeBuilder:(isFavorite) {
+                          bubblesColor: BubblesColor(
+                              dotPrimaryColor:
+                                  Color.fromARGB(255, 89, 182, 151),
+                              dotSecondaryColor:
+                                  Color.fromARGB(255, 76, 253, 129)),
+                          circleColor: CircleColor(
+                              end: Color.fromARGB(255, 89, 182, 151),
+                              start: Color.fromARGB(255, 76, 253, 194)),
+                          likeBuilder: (isFavorite) {
                             return Icon(
                               Icons.favorite,
-                              color: isFavorite ? AppColors.primaryColor : Colors.grey,
+                              color: isFavorite
+                                  ? AppColors.primaryColor
+                                  : Colors.grey,
                               size: 30,
                             );
                           },

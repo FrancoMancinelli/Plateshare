@@ -101,7 +101,7 @@ class _InicioScreenState extends State<InicioScreen> {
       case 0:
         return const NotificationsPage();
       case 1: // Recetas | Home
-        return const RecepiesPage();
+        return RecepiesPage();
       case 2:
         return const ProfilePage();
       default:

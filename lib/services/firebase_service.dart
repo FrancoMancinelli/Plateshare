@@ -23,8 +23,8 @@ Future<bool> checkIfEmailExists(String email) async {
   return snapshot.docs.isNotEmpty;
 }
 
-Future<void> addNewUser(
-  String email, String name, String username, String password, String salt) async {
+Future<void> addNewUser(String email, String name, String username,
+    String password, String salt) async {
   final userRef = db.collection('user');
   final userDocRef = await userRef.add({
     'email': email,
@@ -32,36 +32,32 @@ Future<void> addNewUser(
     'username': username,
     'password': password,
     'salt': salt,
-    'followers' : 0,
-    'follows' : 0,
+    'followers': 0,
+    'follows': 0,
     'favorites': '',
   });
-  
+
   // Añado una sub-collection
-  final recetasRef = userDocRef.collection('recetas');
-  await recetasRef.add({
-  });
+  final recetasRef = userDocRef.collection('recipe');
+  await recetasRef.add({});
 }
 
-//TODO 
-Future<void> addNewRecepie(
-  String titulo, int tiempo, String categorias, int raciones, List<String> pasos) async {
-  final recetasRef = db.collection('recetas');
+//TODO
+Future<void> addNewRecepie(String titulo, int tiempo, String categorias,
+    int raciones, List<String> pasos) async {
+  final recetasRef = db.collection('recipe');
   final recetasDocRef = await recetasRef.add({
-    'titulo': titulo,
-    'tiempo': tiempo,
-    'categorias': categorias,
-    'raciones': raciones,
-    'pasos': pasos,
+    'title': titulo,
+    'time': tiempo,
+    'category': categorias,
+    'rations': raciones,
+    'steps': pasos,
   });
 
   // Añado una sub-collection
-  final ingredientesRef = recetasDocRef.collection('ingredientes');
-  await ingredientesRef.add({
-
-  });
+  final ingredientesRef = recetasDocRef.collection('ingredient');
+  await ingredientesRef.add({});
 }
-
 
 Future<void> updateUserPasswordByUsername(
     String username, String newPassword) async {
@@ -78,10 +74,8 @@ Future<void> updateUserPasswordByUsername(
 }
 
 Future<String> getNameByUsername(String username) async {
-  QuerySnapshot snapshot = await db
-      .collection('user')
-      .where('username', isEqualTo: username)
-      .get();
+  QuerySnapshot snapshot =
+      await db.collection('user').where('username', isEqualTo: username).get();
   if (snapshot.docs.isNotEmpty) {
     return snapshot.docs.first.get('name');
   } else {
@@ -90,10 +84,8 @@ Future<String> getNameByUsername(String username) async {
 }
 
 Future<String> getEmailByUsername(String username) async {
-  QuerySnapshot snapshot = await db
-      .collection('user')
-      .where('username', isEqualTo: username)
-      .get();
+  QuerySnapshot snapshot =
+      await db.collection('user').where('username', isEqualTo: username).get();
   if (snapshot.docs.isNotEmpty) {
     return snapshot.docs.first.get('email');
   } else {
@@ -102,10 +94,8 @@ Future<String> getEmailByUsername(String username) async {
 }
 
 Future<String> getProfilePicByUsername(String username) async {
-  QuerySnapshot snapshot = await db
-      .collection('user')
-      .where('username', isEqualTo: username)
-      .get();
+  QuerySnapshot snapshot =
+      await db.collection('user').where('username', isEqualTo: username).get();
   if (snapshot.docs.isNotEmpty) {
     return snapshot.docs.first.get('profilepic');
   } else {
@@ -114,10 +104,8 @@ Future<String> getProfilePicByUsername(String username) async {
 }
 
 Future<String> getSaltByUsername(String username) async {
-  QuerySnapshot snapshot = await db
-      .collection('user')
-      .where('username', isEqualTo: username)
-      .get();
+  QuerySnapshot snapshot =
+      await db.collection('user').where('username', isEqualTo: username).get();
   if (snapshot.docs.isNotEmpty) {
     return snapshot.docs.first.get('salt');
   } else {
@@ -128,7 +116,8 @@ Future<String> getSaltByUsername(String username) async {
 Future<String?> getDocumentIdByUsername(String username) async {
   String? documentId;
 
-  QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance
+  QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
+      .instance
       .collection('user')
       .where('username', isEqualTo: username)
       .get();
@@ -140,8 +129,8 @@ Future<String?> getDocumentIdByUsername(String username) async {
   return documentId;
 }
 
-
-Future<void> addRecipeToUser(String username, Map<String, dynamic> recipeData, List<String> ingredientList) async {
+Future<void> addRecipeToUser(String username, Map<String, dynamic> recipeData,
+    List<String> ingredientList) async {
   final userRef = FirebaseFirestore.instance.collection('user').doc(username);
   final recipeRef = userRef.collection('recipe').doc();
 
@@ -149,30 +138,141 @@ Future<void> addRecipeToUser(String username, Map<String, dynamic> recipeData, L
   await recipeRef.set(recipeData);
 
   // Create 'ingredients' collection and add documents
-  final ingredientsRef = recipeRef.collection('ingredientes');
+  final ingredientsRef = recipeRef.collection('ingredient');
   for (String ingredient in ingredientList) {
-  List<String> parts = ingredient.split(' - ');
+    List<String> parts = ingredient.split(' - ');
 
-  if (parts.length == 2) {
-    String text1 = parts[0].trim();
-    String numberText = parts[1].trim();
+    if (parts.length == 2) {
+      String text1 = parts[0].trim();
+      String numberText = parts[1].trim();
 
-    RegExp numberRegex = RegExp(r'\d+');
-    String number = numberRegex.firstMatch(numberText)?.group(0) ?? '';
-    String text2 = numberText.replaceFirst(numberRegex, '').trim();
+      RegExp numberRegex = RegExp(r'\d+');
+      String number = numberRegex.firstMatch(numberText)?.group(0) ?? '';
+      String text2 = numberText.replaceFirst(numberRegex, '').trim();
 
-    final ingredientData = {
-      'cantidad': number,
-      'nombre': text1,
-      'tipo': text2,
-    };
+      final ingredientData = {
+        'amount': number,
+        'name': text1,
+        'type': text2,
+      };
 
-    await ingredientsRef.add(ingredientData);
+      await ingredientsRef.add(ingredientData);
+    }
   }
-}
 
-  
-  final commentsRef = recipeRef.collection('comentarios');
-  final commentsData = {'dueño': '', 'puntuacion': '', 'texto': '',};
+  final commentsRef = recipeRef.collection('comment');
+  final commentsData = {
+    'owner': '',
+    'rate': '',
+    'text': '',
+  };
   await commentsRef.add(commentsData);
 }
+
+
+Future<List<String>> getRecepiesFromCategory(String categoriaAFiltrar) async {
+  final QuerySnapshot usersSnapshot = await FirebaseFirestore.instance
+      .collection('user')
+      .get();
+
+  final List<String> calienteRecipies = [];
+
+  for (final DocumentSnapshot userDoc in usersSnapshot.docs) {
+    final QuerySnapshot recepiesSnapshot =
+        await userDoc.reference.collection('recipe').get();
+
+    for (final DocumentSnapshot recepieDoc in recepiesSnapshot.docs) {
+      final List<dynamic> categorias = recepieDoc.get('category');
+      if (categorias != null && categorias.contains(categoriaAFiltrar)) {
+        calienteRecipies.add(recepieDoc.id);
+      }
+    }
+  }
+  return calienteRecipies;
+}
+
+Future<List<String>> getRecepiesLessThan15Min() async {
+  final QuerySnapshot usersSnapshot = await FirebaseFirestore.instance
+      .collection('user')
+      .get();
+
+  final List<String> recipiesWithShortTime = [];
+
+  for (final DocumentSnapshot userDoc in usersSnapshot.docs) {
+    final QuerySnapshot recepiesSnapshot =
+        await userDoc.reference.collection('recipe').get();
+
+    for (final DocumentSnapshot recepieDoc in recepiesSnapshot.docs) {
+      final int tiempo = recepieDoc.get('time');
+      if (tiempo != null && tiempo <= 15) {
+        recipiesWithShortTime.add(recepieDoc.id);
+      }
+    }
+  }
+
+  return recipiesWithShortTime;
+}
+
+Future<List<String>> getRecipiesWith3Ingredients() async {
+  final QuerySnapshot usersSnapshot = await FirebaseFirestore.instance
+      .collection('user')
+      .get();
+
+  final List<String> recipiesWithThreeIngredients = [];
+
+  for (final DocumentSnapshot userDoc in usersSnapshot.docs) {
+    final QuerySnapshot recepiesSnapshot =
+        await userDoc.reference.collection('recipe').get();
+
+    for (final DocumentSnapshot recepieDoc in recepiesSnapshot.docs) {
+      final QuerySnapshot ingredientesSnapshot = await recepieDoc.reference
+          .collection('ingredient')
+          .get();
+
+      if (ingredientesSnapshot.size == 3) {
+        recipiesWithThreeIngredients.add(recepieDoc.id);
+      }
+    }
+  }
+
+  return recipiesWithThreeIngredients;
+}
+
+
+
+Future<List<String>> getRecipeFields(String recipeId) async {
+  final QuerySnapshot userSnapshot = await FirebaseFirestore.instance
+      .collection('user')
+      .get();
+
+  final List<String> fields = [];
+
+  for (final DocumentSnapshot userDoc in userSnapshot.docs) {
+    final DocumentSnapshot recipeSnapshot = await userDoc.reference
+        .collection('recipe')
+        .doc(recipeId)
+        .get();
+
+    if (recipeSnapshot.exists) {
+      final Map<String, dynamic> recipeData =
+          recipeSnapshot.data() as Map<String, dynamic>;
+
+      final String image = recipeData['image'].toString();
+      final String title = recipeData['title'].toString();
+      final String time = recipeData['time'].toString();
+      final String rate = recipeData['rate'].toString();
+
+      fields.addAll([image, title, time, rate]);
+      break; // Exit the loop once the recipe document is found
+    }
+  }
+
+  return fields;
+}
+
+
+
+
+
+
+
