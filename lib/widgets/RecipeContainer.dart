@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:like_button/like_button.dart';
 import 'package:plateshare/screens/LoginScreen.dart';
+import 'package:plateshare/screens/RecipeDetails.dart';
 import 'package:plateshare/services/firebase_service.dart';
 import 'package:plateshare/util/AppColors.dart';
 
@@ -52,8 +53,12 @@ class _RecipeContainerState extends State<RecipeContainer> {
       padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
       child: InkWell(
         onTap: () {
-          print("Receta tocada");
-        },
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => RecipeDetailsScreen(),
+            ),
+          );        },
         child: Container(
           width: 220,
           height: 255,
