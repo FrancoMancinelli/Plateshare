@@ -3,18 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plateshare/models/User.dart';
 import 'package:plateshare/screens/InicioScreen.dart';
-import 'package:plateshare/screens/RecepieFormScreenTwo.dart';
+import 'package:plateshare/screens/RecipeFormScreenTwo.dart';
 import 'package:plateshare/services/firebase_service.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:plateshare/util/AppColors.dart';
 
-class RecepieFormScreenOne extends StatefulWidget {
+class RecipeFormScreenOne extends StatefulWidget {
   final String emailData;
   final String nameData;
   final String usernameData;
   final String profilePicData;
 
-  const RecepieFormScreenOne({
+  const RecipeFormScreenOne({
     Key? key,
     required this.emailData,
     required this.nameData,
@@ -23,10 +23,10 @@ class RecepieFormScreenOne extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _RecepieFormScreenOneState createState() => _RecepieFormScreenOneState();
+  _RecipeFormScreenOneState createState() => _RecipeFormScreenOneState();
 }
 
-class _RecepieFormScreenOneState extends State<RecepieFormScreenOne> {
+class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
   List<List<String>> buttonTexts = [
     ['Vegano', 'Gluten free', 'Sin lactosa', 'Vegetariano'],
     ['Ocasional', 'Infantil', 'Rápido', 'Salsas'],
@@ -522,7 +522,7 @@ class _RecepieFormScreenOneState extends State<RecepieFormScreenOne> {
                                               context,
                                               MaterialPageRoute(
                                                 builder: (context) =>
-                                                    RecepieFormScreenTwo(
+                                                    RecipeFormScreenTwo(
                                                   emailData: widget.emailData,
                                                   nameData: widget.nameData,
                                                   profilePicData: widget.profilePicData,

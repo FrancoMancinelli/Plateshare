@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plateshare/screens/InicioScreen.dart';
 import 'package:plateshare/util/AppColors.dart';
-import 'package:plateshare/widgets/RecepieContainer.dart';
+import 'package:plateshare/widgets/RecipeContainer.dart';
 
 class NotificationsPage extends StatelessWidget {
   const NotificationsPage({

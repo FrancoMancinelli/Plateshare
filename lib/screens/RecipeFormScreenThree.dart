@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plateshare/models/User.dart';
 import 'package:plateshare/screens/InicioScreen.dart';
-import 'package:plateshare/screens/RecepieFormScreenTwo.dart';
+import 'package:plateshare/screens/RecipeFormScreenTwo.dart';
 import 'package:plateshare/services/firebase_service.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:plateshare/util/AppColors.dart';
 
-class RecepieFormScreenThree extends StatefulWidget {
+class RecipeFormScreenThree extends StatefulWidget {
   final String emailData;
   final String nameData;
   final String usernameData;
@@ -19,7 +19,7 @@ class RecepieFormScreenThree extends StatefulWidget {
   final String racionesRecepie;
   final List<String> ingredientesRecepie;
 
-  const RecepieFormScreenThree({
+  const RecipeFormScreenThree({
     Key? key,
     required this.emailData,
     required this.nameData,
@@ -33,10 +33,10 @@ class RecepieFormScreenThree extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _RecepieFormScreenThreeState createState() => _RecepieFormScreenThreeState();
+  _RecipeFormScreenThreeState createState() => _RecipeFormScreenThreeState();
 }
 
-class _RecepieFormScreenThreeState extends State<RecepieFormScreenThree> {
+class _RecipeFormScreenThreeState extends State<RecipeFormScreenThree> {
   final TextEditingController _tituloController = TextEditingController();
 
   List<String> texts = [];

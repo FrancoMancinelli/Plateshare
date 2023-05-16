@@ -7,13 +7,13 @@ import 'package:plateshare/services/firebase_service.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:plateshare/util/AppColors.dart';
 
-class AddRecepieScreen extends StatefulWidget {
+class AddRecipeScreen extends StatefulWidget {
   final String emailData;
   final String nameData;
   final String usernameData;
   final String profilePicData;
 
-  const AddRecepieScreen({
+  const AddRecipeScreen({
     Key? key,
     required this.emailData,
     required this.nameData,
@@ -22,10 +22,10 @@ class AddRecepieScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _AddRecepieScreenState createState() => _AddRecepieScreenState();
+  _AddRecipeScreenState createState() => _AddRecipeScreenState();
 }
 
-class _AddRecepieScreenState extends State<AddRecepieScreen> {
+class _AddRecipeScreenState extends State<AddRecipeScreen> {
   int currentStep = 1;
 
   @override

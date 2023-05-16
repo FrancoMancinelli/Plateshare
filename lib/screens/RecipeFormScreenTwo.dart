@@ -4,12 +4,12 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plateshare/models/User.dart';
 import 'package:plateshare/screens/InicioScreen.dart';
-import 'package:plateshare/screens/RecepieFormScreenThree.dart';
+import 'package:plateshare/screens/RecipeFormScreenThree.dart';
 import 'package:plateshare/services/firebase_service.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:plateshare/util/AppColors.dart';
 
-class RecepieFormScreenTwo extends StatefulWidget {
+class RecipeFormScreenTwo extends StatefulWidget {
   final String emailData;
   final String nameData;
   final String usernameData;
@@ -18,7 +18,7 @@ class RecepieFormScreenTwo extends StatefulWidget {
   final int tiempoRecepie;
   final List<String> categoriasRecepie;
 
-  const RecepieFormScreenTwo({
+  const RecipeFormScreenTwo({
     Key? key,
     required this.emailData,
     required this.nameData,
@@ -30,10 +30,10 @@ class RecepieFormScreenTwo extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _RecepieFormScreenTwoState createState() => _RecepieFormScreenTwoState();
+  _RecipeFormScreenTwoState createState() => _RecipeFormScreenTwoState();
 }
 
-class _RecepieFormScreenTwoState extends State<RecepieFormScreenTwo> {
+class _RecipeFormScreenTwoState extends State<RecipeFormScreenTwo> {
   final TextEditingController _racionesController = TextEditingController();
 
   List<String> texts = [];
@@ -632,7 +632,7 @@ class _RecepieFormScreenTwoState extends State<RecepieFormScreenTwo> {
                                               context,
                                               MaterialPageRoute(
                                                 builder: (context) =>
-                                                    RecepieFormScreenThree(
+                                                    RecipeFormScreenThree(
                                                   emailData: widget.emailData,
                                                   nameData: widget.nameData,
                                                   profilePicData: widget.profilePicData,

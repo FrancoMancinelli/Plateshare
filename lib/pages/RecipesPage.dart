@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plateshare/screens/InicioScreen.dart';
 import 'package:plateshare/util/AppColors.dart';
-import 'package:plateshare/widgets/RecepieContainer.dart';
+import 'package:plateshare/widgets/RecipeContainer.dart';
 import 'dart:math';
 
 import '../services/firebase_service.dart';
 
-class RecepiesPage extends StatelessWidget {
-  RecepiesPage({
+class RecipesPage extends StatelessWidget {
+  RecipesPage({
     Key? key,
   }) : super(key: key);
 
@@ -54,91 +54,91 @@ class RecepiesPage extends StatelessWidget {
     List<String> recipes = await idRecetasSaludables;
     for (int i = 0; i < 5 && i < recipes.length; i++) {
       String idReceta = recipes[i];
-      containers.add(RecepieContainer(idRecepieInDatabase: idReceta));
+      containers.add(RecipeContainer(idRecepieInDatabase: idReceta));
     }
     break;
   case 'Económicas':
     List<String> recipes = await idRecetasEconomicas;
     for (int i = 0; i < 5 && i < recipes.length; i++) {
       String idReceta = recipes[i];
-      containers.add(RecepieContainer(idRecepieInDatabase: idReceta));
+      containers.add(RecipeContainer(idRecepieInDatabase: idReceta));
     }
     break;
   case "En menos de 15'":
     List<String> recipes = await idRecetasEn15Min;
     for (int i = 0; i < 5 && i < recipes.length; i++) {
       String idReceta = recipes[i];
-      containers.add(RecepieContainer(idRecepieInDatabase: idReceta));
+      containers.add(RecipeContainer(idRecepieInDatabase: idReceta));
     }
     break;
   case 'Postres':
     List<String> recipes = await idRecetasPostres;
     for (int i = 0; i < 5 && i < recipes.length; i++) {
       String idReceta = recipes[i];
-      containers.add(RecepieContainer(idRecepieInDatabase: idReceta));
+      containers.add(RecipeContainer(idRecepieInDatabase: idReceta));
     }
     break;
   case 'Veganas':
     List<String> recipes = await idRecetasVeganas;
     for (int i = 0; i < 5 && i < recipes.length; i++) {
       String idReceta = recipes[i];
-      containers.add(RecepieContainer(idRecepieInDatabase: idReceta));
+      containers.add(RecipeContainer(idRecepieInDatabase: idReceta));
     }
     break;
   case 'Vegetarianas':
     List<String> recipes = await idRecetasVegetarianas;
     for (int i = 0; i < 5 && i < recipes.length; i++) {
       String idReceta = recipes[i];
-      containers.add(RecepieContainer(idRecepieInDatabase: idReceta));
+      containers.add(RecipeContainer(idRecepieInDatabase: idReceta));
     }
     break;
   case 'Gluten free':
     List<String> recipes = await idRecetasGlutenFree;
     for (int i = 0; i < 5 && i < recipes.length; i++) {
       String idReceta = recipes[i];
-      containers.add(RecepieContainer(idRecepieInDatabase: idReceta));
+      containers.add(RecipeContainer(idRecepieInDatabase: idReceta));
     }
     break;
   case 'Sin lactosa':
     List<String> recipes = await idRecetasSinLactosa;
     for (int i = 0; i < 5 && i < recipes.length; i++) {
       String idReceta = recipes[i];
-      containers.add(RecepieContainer(idRecepieInDatabase: idReceta));
+      containers.add(RecipeContainer(idRecepieInDatabase: idReceta));
     }
     break;
   case 'Calientes':
     List<String> recipes = await idRecetasCalientes;
     for (int i = 0; i < 5 && i < recipes.length; i++) {
       String idReceta = recipes[i];
-      containers.add(RecepieContainer(idRecepieInDatabase: idReceta));
+      containers.add(RecipeContainer(idRecepieInDatabase: idReceta));
     }
     break;
   case 'Fríos':
     List<String> recipes = await idRecetasFrios;
     for (int i = 0; i < 5 && i < recipes.length; i++) {
       String idReceta = recipes[i];
-      containers.add(RecepieContainer(idRecepieInDatabase: idReceta));
+      containers.add(RecipeContainer(idRecepieInDatabase: idReceta));
     }
     break;
       case 'Tradicional':
     List<String> recipes = await idRecetasTradicional;
     for (int i = 0; i < 5 && i < recipes.length; i++) {
       String idReceta = recipes[i];
-      containers.add(RecepieContainer(idRecepieInDatabase: idReceta));
+      containers.add(RecipeContainer(idRecepieInDatabase: idReceta));
     }
     break;
       case 'De 3 ingredientes':
     List<String> recipes = await idRecetas3Ingredientes;
     for (int i = 0; i < 5 && i < recipes.length; i++) {
       String idReceta = recipes[i];
-      containers.add(RecepieContainer(idRecepieInDatabase: idReceta));
+      containers.add(RecipeContainer(idRecepieInDatabase: idReceta));
     }
     break;
     case 'Festivas':
     List<String> recipes = await idRecetasFestivas;
     for (int i = 0; i < 5 && i < recipes.length; i++) {
       String idReceta = recipes[i];
-      containers.add(RecepieContainer(idRecepieInDatabase: idReceta));
+      containers.add(RecipeContainer(idRecepieInDatabase: idReceta));
     }
     break;
   }

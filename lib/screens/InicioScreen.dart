@@ -4,9 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:plateshare/models/User.dart';
 import 'package:plateshare/pages/NotificationsPage.dart';
 import 'package:plateshare/pages/ProfilePage.dart';
-import 'package:plateshare/pages/RecepiesPage.dart';
-import 'package:plateshare/screens/AddRecepieScreen.dart';
-import 'package:plateshare/screens/RecepieFormScreenOne.dart';
+import 'package:plateshare/pages/RecipesPage.dart';
+import 'package:plateshare/screens/AddRecipeScreen.dart';
+import 'package:plateshare/screens/RecipeFormScreenOne.dart';
 import 'package:plateshare/widgets/MyAppBar.dart';
 import 'package:plateshare/widgets/MyDrawer.dart';
 
@@ -72,7 +72,7 @@ class _InicioScreenState extends State<InicioScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => RecepieFormScreenOne(emailData: widget.emailData, nameData: widget.nameData, profilePicData: widget.profilePicData, usernameData: widget.usernameData),
+              builder: (context) => RecipeFormScreenOne(emailData: widget.emailData, nameData: widget.nameData, profilePicData: widget.profilePicData, usernameData: widget.usernameData),
             ),
           );
         },
@@ -101,7 +101,7 @@ class _InicioScreenState extends State<InicioScreen> {
       case 0:
         return const NotificationsPage();
       case 1: // Recetas | Home
-        return RecepiesPage();
+        return RecipesPage();
       case 2:
         return const ProfilePage();
       default:
