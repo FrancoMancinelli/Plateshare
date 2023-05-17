@@ -56,7 +56,7 @@ class _RecipeContainerState extends State<RecipeContainer> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => RecipeDetailsScreen(),
+              builder: (context) => RecipeDetailsScreen(image: image,),
             ),
           );        },
         child: Container(
