@@ -11,5 +11,7 @@ class AppColors {
   static const Color brownRecepieColor = Color(0xFFCBB79F);
   static const Color recommendationColor = Color(0xFFCCDDD7);
   static const Color brownInfoRecipe = Color(0xFF9C8672);
+  static const Color brownButtonsRecipe = Color(0xFFCCB38D);
+  static const Color lightBrownRecipe = Color(0xFFA38F71);
   // Add more color constants here as needed
 }
