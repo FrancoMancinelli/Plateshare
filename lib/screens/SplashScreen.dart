@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 
 import 'LoginScreen.dart';
 
@@ -17,19 +18,15 @@ class _SplashScreenState extends State<SplashScreen> {
     _navigateToLogin();
   }
 
-    _navigateToLogin() async {
-    await Future.delayed(const Duration(milliseconds
-    
-    
-    
-    : 5000), () {});
+  _navigateToLogin() async {
+    await Future.delayed(const Duration(milliseconds: 5000), () {});
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => const LoginScreen()));
   }
 
   @override
   Widget build(BuildContext context) {
-       var screenSize = MediaQuery.of(context).size;
+    var screenSize = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: const Color(0xFF056C49),
       body: Container(
@@ -90,17 +87,17 @@ class _SplashScreenState extends State<SplashScreen> {
                                 ),
                               ),
                               alignment: const AlignmentDirectional(0, 0),
-                              child: Image.network(
-                                'https://i.imgur.com/VLY57QE.png',
-                                width: 120,
-                                height: 120,
+                              child: Lottie.network(
+                                'https://assets3.lottiefiles.com/packages/lf20_TmewUx.json',
+                                width: 200,
+                                height: 200,
                                 fit: BoxFit.cover,
                               ),
                             ),
                           ),
                           Padding(
-                            padding:
-                                const EdgeInsetsDirectional.fromSTEB(0, 15, 0, 0),
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                0, 15, 0, 0),
                             child: Text(
                               'P L A T E S H A R E',
                               textAlign: TextAlign.center,
@@ -145,27 +142,24 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
             ),
             Align(
-  alignment: Alignment.bottomCenter,
-  child: Row(
-    mainAxisSize: MainAxisSize.max,
-    children: [
-      Expanded(
-        child: Image.network(
-          'https://i.imgur.com/VhMzz4T.png',
-          width: 100,
-          height: 100,
-          fit: BoxFit.scaleDown,
-        ),
-      ),
-    ],
-  ),
-),
-
+              alignment: Alignment.bottomCenter,
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Expanded(
+                    child: Image.network(
+                      'https://i.imgur.com/VhMzz4T.png',
+                      width: 100,
+                      height: 100,
+                      fit: BoxFit.scaleDown,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 }
-
-
