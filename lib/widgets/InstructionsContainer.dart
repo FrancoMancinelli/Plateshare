@@ -32,30 +32,35 @@ class _InstructionsContainerState extends State<InstructionsContainer> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: steps.map((ingredient) {
-              return Padding(
-                padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
-                child: Text(
-                  ingredient,
-                  style: TextStyle(
-                    color: AppColors.brownTextColor,
-                    fontSize: 17,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              );
-            }).toList(),
-          ),
+    return Scrollbar(
+      thickness: 5,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: steps.map((ingredient) {
+                  return Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
+                    child: Text(
+                      ingredient,
+                      style: TextStyle(
+                        color: AppColors.brownTextColor,
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
+            //
+          ],
         ),
-        //
-      ],
+      ),
     );
   }
 

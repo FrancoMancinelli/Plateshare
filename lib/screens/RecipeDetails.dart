@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plateshare/util/AppColors.dart';
 import 'package:plateshare/widgets/IngredientContainer.dart';
 import 'package:plateshare/widgets/InstructionsContainer.dart';
 
+import '../widgets/RecipeComment.dart';
 import 'InicioScreen.dart';
 
 class RecipeDetailsScreen extends StatefulWidget {
@@ -20,6 +22,7 @@ class RecipeDetailsScreen extends StatefulWidget {
 
 var screenSize;
 int flag = 1;
+double userValoration = 0;
 
 class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
   Color firstButtonColor = AppColors.lightBrownRecipe;
@@ -50,6 +53,31 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
       return Container();
     }
   }
+
+  void showBottomMessage(int index) {
+  
+  switch (index) {
+    case 1:
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Valoración actualizada con éxito'),
+          backgroundColor: Colors.green,
+          duration: Duration(milliseconds: 1500), 
+        ),
+      );
+      break;
+    case 2:
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Se ha eliminado la valoración'),
+          backgroundColor: Colors.red,
+          duration: Duration(milliseconds: 1500), 
+        ),
+      );
+      break;
+  }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -105,11 +133,20 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                           padding: EdgeInsets.symmetric(horizontal: 8),
                           child: Row(
                             children: [
-                              Image.network(
-                                'https://firebasestorage.googleapis.com/v0/b/plateshare-tfg2023.appspot.com/o/default_profile_pic.png?alt=media&token=92c2e8f1-5871-4285-8040-8b8df60bae14',
-                                width: 35,
-                                height: 35,
-                                fit: BoxFit.cover,
+                              Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Colors.black,
+                                    width: 1.5,
+                                  ),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Image.network(
+                                  'https://firebasestorage.googleapis.com/v0/b/plateshare-tfg2023.appspot.com/o/default_profile_pic.png?alt=media&token=92c2e8f1-5871-4285-8040-8b8df60bae14',
+                                  width: 35,
+                                  height: 35,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                               SizedBox(width: 5),
                               Text(
@@ -166,7 +203,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
             delegate: SliverChildListDelegate(
               [
                 Container(
-                  height: 1000,
+                  height: 1050,
                   color: AppColors.accentColor,
                   child: SingleChildScrollView(
                     child: Column(
@@ -306,7 +343,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                                   ),
                                   onPressed: handleSecondButtonPressed,
                                   child: Text(
-                                    'Instrucciones',
+                                    'Instrucciones (0)',
                                     style: GoogleFonts.acme(
                                       textStyle: const TextStyle(
                                         fontSize: 18,
@@ -320,10 +357,20 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                             ),
                           ),
                         ),
-                        buildContainerBasedOnFlag(flag),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: AppColors.greyAccentColor,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            height: 320,
+                            child: buildContainerBasedOnFlag(flag),
+                          ),
+                        ),
 
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
+                          padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
                           child: Container(
                             color: AppColors.greyColor,
                             height: 2,
@@ -331,55 +378,132 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                           ),
                         ),
 
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 0, 12, 0),
-                          child: Row(
-                            children: [
-                              Icon(
+                        Column(
+                          children: [
+                            RatingBar.builder(
+                              initialRating: 2.5,
+                              minRating: 0,
+                              direction: Axis.horizontal,
+                              allowHalfRating: true,
+                              itemCount: 5,
+                              itemPadding:
+                                  EdgeInsets.symmetric(horizontal: 4.0),
+                              itemBuilder: (context, _) => Icon(
                                 Icons.star_rounded,
-                                color: AppColors.brownInfoRecipe,
-                                size: 36,
+                                color: AppColors.primaryColor,
                               ),
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(1, 2, 0, 0),
-                                child: Text(
-                                  '4.5',
-                                  style: GoogleFonts.acme(
-                                    textStyle: const TextStyle(
-                                      fontSize: 30,
-                                      color: AppColors.brownInfoRecipe,
-                                      fontFamily: 'Acme',
+                              onRatingUpdate: (rating) {
+                                if (rating != 0) {
+                                  showBottomMessage(1);
+                                } else {
+                                  showBottomMessage(2);
+                                }
+                              },
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(15, 5, 15, 0),
+                              child: Container(
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  color: AppColors.brownButtonsRecipe,
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          10, 5, 0, 5),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            color: Colors.black,
+                                            width: 2.0,
+                                          ),
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Image.network(
+                                          'https://firebasestorage.googleapis.com/v0/b/plateshare-tfg2023.appspot.com/o/default_profile_pic2.png?alt=media&token=61ad1f5c-b211-4068-b3da-feccba2f4b3e',
+                                          width: 40,
+                                          height: 40,
+                                        ),
+                                      ),
                                     ),
-                                  ),
+                                    Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            10, 8, 0, 8),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: AppColors
+                                                .whiteColor, // Replace with your desired background color
+                                            borderRadius:
+                                                BorderRadius.circular(30),
+                                          ),
+                                          child: TextField(
+                                            decoration: InputDecoration(
+                                              hintText:
+                                                  'Dejar un comentario...',
+                                              border: InputBorder.none,
+                                              contentPadding:
+                                                  EdgeInsets.symmetric(
+                                                      horizontal: 11,
+                                                      vertical: 11),
+                                              hintStyle: GoogleFonts.acme(
+                                                textStyle: TextStyle(
+                                                  fontSize: 15,
+                                                  color: AppColors.greyColor,
+                                                  fontFamily: 'Acme',
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    IconButton(
+                                      icon: Icon(
+                                        Icons.send_rounded,
+                                        color: AppColors.whiteColor,
+                                      ),
+                                      onPressed: () {
+                                        // Handle button press
+                                      },
+                                    ),
+                                  ],
                                 ),
                               ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Spacer(),
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(0, 2, 0, 0),
-                                child: Text(
-                                  '57 Valoraciones',
-                                  style: GoogleFonts.acme(
-                                    textStyle: const TextStyle(
-                                      fontSize: 30,
-                                      color: AppColors.brownInfoRecipe,
-                                      fontFamily: 'Acme',
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
+
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(15, 5, 15, 0),
+                          padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
                           child: Container(
-                            height: 80,
                             decoration: BoxDecoration(
-                              color: AppColors.brownButtonsRecipe,
-                              borderRadius: BorderRadius.circular(25),
+                              color: AppColors.greyAccentColor,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            height: 400,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.fromLTRB(5, 1.5, 5, 1.5),
+                              child: Scrollbar(
+                                thickness: 5,
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      children: [
+                                        RecipeComment(),
+                                        RecipeComment(),
+                                        RecipeComment(),
+                                        RecipeComment(),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ),
