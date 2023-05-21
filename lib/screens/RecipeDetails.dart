@@ -21,9 +21,13 @@ class RecipeDetailsScreen extends StatefulWidget {
   final String ownerUsername;
   final List<Ingredient> recipeIngredients;
 
+  final String userImage;
+  final String userName;
+  final String userUsername;
+
   const RecipeDetailsScreen({
     Key? key,
-    required this.recipeImage, required this.recipeTitle, required this.recipeTime, required this.recipeRate, required this.recipeLikes, required this.recipeRations, required this.recipeSteps, required this.ownerImage, required this.ownerUsername, required this.recipeIngredients,
+    required this.recipeImage, required this.recipeTitle, required this.recipeTime, required this.recipeRate, required this.recipeLikes, required this.recipeRations, required this.recipeSteps, required this.ownerImage, required this.ownerUsername, required this.recipeIngredients, required this.userImage, required this.userName, required this.userUsername,
   }) : super(key: key);
 
   @override
@@ -432,7 +436,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                                           shape: BoxShape.circle,
                                         ),
                                         child: Image.network(
-                                          'https://firebasestorage.googleapis.com/v0/b/plateshare-tfg2023.appspot.com/o/default_profile_pic2.png?alt=media&token=61ad1f5c-b211-4068-b3da-feccba2f4b3e',
+                                          widget.userImage,
                                           width: 40,
                                           height: 40,
                                         ),

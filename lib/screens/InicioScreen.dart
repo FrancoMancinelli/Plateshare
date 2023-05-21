@@ -101,7 +101,7 @@ class _InicioScreenState extends State<InicioScreen> {
       case 0:
         return const NotificationsPage();
       case 1: // Recetas | Home
-        return RecipesPage();
+        return RecipesPage(userImage: widget.profilePicData, userName: widget.nameData, userUsername: widget.usernameData,);
       case 2:
         return const ProfilePage();
       default:

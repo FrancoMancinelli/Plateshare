@@ -251,7 +251,7 @@ Future<List<String>> getUserInfoFromRecipe(String recipeId) async {
 
     if (recipeSnapshot.docs.isNotEmpty) {
       final DocumentSnapshot recipeDoc = recipeSnapshot.docs.first;
-      final DocumentSnapshot userRecipeDoc = await recipeDoc.reference.parent!.parent!.get();
+      final DocumentSnapshot userRecipeDoc = await recipeDoc.reference.parent.parent!.get();
 
       final Map<String, dynamic> userData = userRecipeDoc.data() as Map<String, dynamic>;
       final String image = userData['profilepic'].toString();

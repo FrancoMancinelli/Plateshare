@@ -10,10 +10,13 @@ import '../models/Ingredient.dart';
 
 class RecipeContainer extends StatefulWidget {
   final String idRecepieInDatabase;
+  final String userImage;
+  final String userName;
+  final String userUsername;
 
   const RecipeContainer({
     Key? key,
-    required this.idRecepieInDatabase,
+    required this.idRecepieInDatabase, required this.userImage, required this.userName, required this.userUsername,
   }) : super(key: key);
 
   @override
@@ -112,7 +115,10 @@ List<String> addIndexToItems(List<String> items) {
                 recipeSteps: steps,
                 ownerImage: ownerImage,
                 ownerUsername: owenUsername,
-                recipeIngredients: ingredients,),
+                recipeIngredients: ingredients,
+                userImage: widget.userImage,
+                userName: widget.userName,
+                userUsername: widget.userUsername,),
             ),
           );        },
         child: Container(
