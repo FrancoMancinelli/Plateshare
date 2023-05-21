@@ -443,7 +443,7 @@ class _RecipeFormScreenThreeState extends State<RecipeFormScreenThree> {
                                             'rations': widget.racionesRecepie,
                                             'time': widget.tiempoRecepie,
                                             'title': widget.tituloRecepie,
-                                            'image': "",
+                                            'image': "https://firebasestorage.googleapis.com/v0/b/plateshare-tfg2023.appspot.com/o/default_recipeimage.jpg?alt=media&token=8400f8d3-7704-4a54-8151-da4053cf9102",
                                           };
 
                                           final ingredientList = widget.ingredientesRecepie;
