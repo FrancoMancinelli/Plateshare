@@ -56,7 +56,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                       );
                     },
                     icon: const Icon(
-                      Icons.arrow_back_ios,
+                      Icons.close,
                       color: Colors.white,
                       size: 30,
                     ),
