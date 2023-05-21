@@ -329,6 +329,32 @@ Future<List<Map<String, dynamic>>> getRecipeIngredients(String recipeId) async {
   return ingredients;
 }
 
+Future<List<Map<String, dynamic>>> getRecipeComments(String recipeId) async {
+  final QuerySnapshot userSnapshot = await FirebaseFirestore.instance
+      .collection('user')
+      .get();
+
+  List<Map<String, dynamic>> comentarios = [];
+
+  for (final DocumentSnapshot userDoc in userSnapshot.docs) {
+    final DocumentSnapshot recipeSnapshot = await userDoc.reference
+        .collection('recipe')
+        .doc(recipeId)
+        .get();
+
+    if (recipeSnapshot.exists) {
+      final QuerySnapshot ingredientSnapshot = await recipeSnapshot.reference
+          .collection('comment')
+          .get();
+
+      comentarios = ingredientSnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+      break; // Exit the loop once the recipe document is found
+    }
+  }
+
+  return comentarios;
+}
+
 
 Future<List<String>> getRecipeSteps(String recipeId) async {
   final QuerySnapshot userSnapshot = await FirebaseFirestore.instance
@@ -354,6 +380,54 @@ Future<List<String>> getRecipeSteps(String recipeId) async {
   }
 
   return steps;
+}
+
+Future<String?> getUserUsernameByDocumentId(String documentId) async {
+  String? username;
+
+  DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
+      .instance
+      .collection('user')
+      .doc(documentId)
+      .get();
+
+  if (snapshot.exists) {
+    username = snapshot.data()?['username'] as String?;
+  }
+
+  return username;
+}
+
+Future<String?> getUserImageByDocumentId(String documentId) async {
+  String? username;
+
+  DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
+      .instance
+      .collection('user')
+      .doc(documentId)
+      .get();
+
+  if (snapshot.exists) {
+    username = snapshot.data()?['profilepic'] as String?;
+  }
+
+  return username;
+}
+
+Future<String?> getUserNameByDocumentId(String documentId) async {
+  String? username;
+
+  DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
+      .instance
+      .collection('user')
+      .doc(documentId)
+      .get();
+
+  if (snapshot.exists) {
+    username = snapshot.data()?['name'] as String?;
+  }
+
+  return username;
 }
 
 

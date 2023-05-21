@@ -20,6 +20,7 @@ class RecipeDetailsScreen extends StatefulWidget {
   final String ownerImage;
   final String ownerUsername;
   final List<Ingredient> recipeIngredients;
+  final List<Map<String, dynamic>> recipeComments;
 
   final String userImage;
   final String userName;
@@ -27,7 +28,20 @@ class RecipeDetailsScreen extends StatefulWidget {
 
   const RecipeDetailsScreen({
     Key? key,
-    required this.recipeImage, required this.recipeTitle, required this.recipeTime, required this.recipeRate, required this.recipeLikes, required this.recipeRations, required this.recipeSteps, required this.ownerImage, required this.ownerUsername, required this.recipeIngredients, required this.userImage, required this.userName, required this.userUsername,
+    required this.recipeImage,
+    required this.recipeTitle,
+    required this.recipeTime,
+    required this.recipeRate,
+    required this.recipeLikes,
+    required this.recipeRations,
+    required this.recipeSteps,
+    required this.ownerImage,
+    required this.ownerUsername,
+    required this.recipeIngredients,
+    required this.userImage,
+    required this.userName,
+    required this.userUsername,
+    required this.recipeComments,
   }) : super(key: key);
 
   @override
@@ -60,38 +74,41 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
 
   Widget buildContainerBasedOnFlag(int flag) {
     if (flag == 1) {
-      return IngredientContainer(recipeRations: widget.recipeRations, recipeIngredients: widget.recipeIngredients,);
+      return IngredientContainer(
+        recipeRations: widget.recipeRations,
+        recipeIngredients: widget.recipeIngredients,
+      );
     } else if (flag == 2) {
-      return InstructionsContainer(recipeSteps: widget.recipeSteps,);
+      return InstructionsContainer(
+        recipeSteps: widget.recipeSteps,
+      );
     } else {
       return Container();
     }
   }
 
   void showBottomMessage(int index) {
-  
-  switch (index) {
-    case 1:
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('Valoración actualizada con éxito'),
-          backgroundColor: Colors.green,
-          duration: Duration(milliseconds: 1500), 
-        ),
-      );
-      break;
-    case 2:
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('Se ha eliminado la valoración'),
-          backgroundColor: Colors.red,
-          duration: Duration(milliseconds: 1500), 
-        ),
-      );
-      break;
+    switch (index) {
+      case 1:
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Valoración actualizada con éxito'),
+            backgroundColor: Colors.green,
+            duration: Duration(milliseconds: 1500),
+          ),
+        );
+        break;
+      case 2:
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Se ha eliminado la valoración'),
+            backgroundColor: Colors.red,
+            duration: Duration(milliseconds: 1500),
+          ),
+        );
+        break;
+    }
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -228,8 +245,8 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                           child: Padding(
                             padding: const EdgeInsets.fromLTRB(10, 5, 0, 0),
                             child: Text(
-                                widget.recipeTitle,
-                                style: GoogleFonts.acme(
+                              widget.recipeTitle,
+                              style: GoogleFonts.acme(
                                 textStyle: const TextStyle(
                                   fontSize: 34,
                                   color: AppColors.brownTextColor,
@@ -509,10 +526,19 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                                   child: SingleChildScrollView(
                                     child: Column(
                                       children: [
-                                        RecipeComment(),
-                                        RecipeComment(),
-                                        RecipeComment(),
-                                        RecipeComment(),
+                                        ListView.builder(
+                                          shrinkWrap: true,
+                                          itemCount:
+                                              widget.recipeComments.length,
+                                          itemBuilder: (context, index) {
+                                            final comentario = widget.recipeComments[index];
+                                            final owner = comentario['owner'] as String;
+                                            final text = comentario['text'] as String;
+                                            return RecipeComment(
+                                                commentOwnerID: owner,
+                                                commentText: text);
+                                          },
+                                        )
                                       ],
                                     ),
                                   ),

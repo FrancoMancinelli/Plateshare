@@ -7,9 +7,13 @@ import 'package:plateshare/services/firebase_service.dart';
 import 'package:plateshare/util/AppColors.dart';
 
 class RecipeComment extends StatefulWidget {
-  
+  final String commentOwnerID;
+  final String commentText;
+
   const RecipeComment({
     Key? key,
+    required this.commentOwnerID,
+    required this.commentText,
   }) : super(key: key);
 
   @override
@@ -17,6 +21,32 @@ class RecipeComment extends StatefulWidget {
 }
 
 class _RecipeCommentState extends State<RecipeComment> {
+  String ownerImage = 'https://firebasestorage.googleapis.com/v0/b/plateshare-tfg2023.appspot.com/o/default_recipeimage.jpg?alt=media&token=8400f8d3-7704-4a54-8151-da4053cf9102';
+  String ownerName = 'A';
+  String ownerUsername = 'A';
+
+  @override
+  void initState() {
+    super.initState();
+    fetchCommentData();
+  }
+
+  Future<void> fetchCommentData() async {
+  final image = await getUserImageByDocumentId(widget.commentOwnerID);
+  final name = await getUserNameByDocumentId(widget.commentOwnerID);
+  final username = await getUserUsernameByDocumentId(widget.commentOwnerID);
+
+
+  
+    setState(() {
+      ownerImage = image as String;
+      ownerName = name as String;
+      ownerUsername = username as String;
+    }
+      );
+  
+}
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -42,7 +72,7 @@ class _RecipeCommentState extends State<RecipeComment> {
                       shape: BoxShape.circle,
                     ),
                     child: Image.network(
-                      'https://firebasestorage.googleapis.com/v0/b/plateshare-tfg2023.appspot.com/o/default_profile_pic2.png?alt=media&token=61ad1f5c-b211-4068-b3da-feccba2f4b3e',
+                      ownerImage,
                       width: 40,
                       height: 40,
                     ),
@@ -53,7 +83,7 @@ class _RecipeCommentState extends State<RecipeComment> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Administrador',
+                      ownerName,
                       style: GoogleFonts.acme(
                         textStyle: const TextStyle(
                           color: Colors.white,
@@ -63,7 +93,7 @@ class _RecipeCommentState extends State<RecipeComment> {
                       ),
                     ),
                     Text(
-                      '@admin',
+                      '@$ownerUsername',
                       style: GoogleFonts.acme(
                         textStyle: const TextStyle(
                           color: Colors.white,
@@ -83,7 +113,7 @@ class _RecipeCommentState extends State<RecipeComment> {
                     padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
                     //MÁXIMO 130 CARACTERES
                     child: Text(
-                      'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+                      widget.commentText,
                       style: GoogleFonts.acme(
                         textStyle: const TextStyle(
                           color: Colors.white,

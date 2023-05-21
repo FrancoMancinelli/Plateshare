@@ -36,6 +36,7 @@ class _RecipeContainerState extends State<RecipeContainer> {
   String ownerImage = "https://firebasestorage.googleapis.com/v0/b/plateshare-tfg2023.appspot.com/o/default_recipeimage.jpg?alt=media&token=8400f8d3-7704-4a54-8151-da4053cf9102";
   String owenUsername = "username";
   List<Ingredient> ingredients = [];
+  List<Map<String, dynamic>> comentarios = [];
 
   @override
   void initState() {
@@ -49,6 +50,7 @@ class _RecipeContainerState extends State<RecipeContainer> {
   final recipeOwner = await getUserInfoFromRecipe(widget.idRecepieInDatabase);
   final recipeIngredients = await getRecipeIngredients(widget.idRecepieInDatabase);
   final formattedIngredients = formatIngredients(recipeIngredients);
+  final recipeComments = await getRecipeComments(widget.idRecepieInDatabase);
 
   if (recipeData.isNotEmpty) {
     setState(() {
@@ -64,6 +66,7 @@ class _RecipeContainerState extends State<RecipeContainer> {
       ownerImage = recipeOwner[0];
       owenUsername = recipeOwner[1];
       ingredients = formattedIngredients;
+      comentarios = recipeComments;
     });
   }
 }
@@ -118,7 +121,8 @@ List<String> addIndexToItems(List<String> items) {
                 recipeIngredients: ingredients,
                 userImage: widget.userImage,
                 userName: widget.userName,
-                userUsername: widget.userUsername,),
+                userUsername: widget.userUsername,
+                recipeComments: comentarios),
             ),
           );        },
         child: Container(
