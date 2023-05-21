@@ -15,6 +15,30 @@ class IngredientContainer extends StatefulWidget {
 }
 
 class _IngredientContainerState extends State<IngredientContainer> {
+  int _currentRations = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentRations = widget.recipeRations;
+  }
+
+  void _incrementRations() {
+    setState(() {
+      if(_currentRations < 50) {
+      _currentRations++;
+
+      }
+    });
+  }
+
+  void _decrementRations() {
+    setState(() {
+      if (_currentRations > 1) {
+        _currentRations--;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +60,7 @@ class _IngredientContainerState extends State<IngredientContainer> {
                         border: Border.all(color: AppColors.blackColor, width: 2.5),
                       ),
                       child: InkWell(
-                        onTap: () {},
+                        onTap: _decrementRations,
                         child: const Icon(
                           Icons.expand_more_rounded,
                           color: AppColors.blackColor,
@@ -51,9 +75,9 @@ class _IngredientContainerState extends State<IngredientContainer> {
                           color: AppColors.brownInfoRecipe,
                           width: 100,
                           height: 35,
-                          child:  Center(
+                          child: Center(
                             child: Text(
-                              '${widget.recipeRations} Raciones',
+                              '$_currentRations Raciones',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 15,
@@ -70,7 +94,7 @@ class _IngredientContainerState extends State<IngredientContainer> {
                         border: Border.all(color: AppColors.blackColor, width: 2.5),
                       ),
                       child: InkWell(
-                        onTap: () {},
+                        onTap: _incrementRations,
                         child: const Icon(
                           Icons.expand_less_rounded,
                           color: AppColors.blackColor,
@@ -89,7 +113,7 @@ class _IngredientContainerState extends State<IngredientContainer> {
                   return Padding(
                     padding: const EdgeInsets.fromLTRB(15, 5, 15, 10),
                     child: Text(
-                      '· ${ingredient.name} - ${ingredient.amount} ${ingredient.type}',
+                      '· ${ingredient.name} - ${ingredient.amount * _currentRations} ${ingredient.type}',
                       style: TextStyle(
                         color: AppColors.brownTextColor,
                         fontSize: 17,
@@ -100,7 +124,6 @@ class _IngredientContainerState extends State<IngredientContainer> {
                 }).toList(),
               ),
             ),
-            //
           ],
         ),
       ),
