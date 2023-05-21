@@ -7,9 +7,10 @@ import 'package:plateshare/services/firebase_service.dart';
 import 'package:plateshare/util/AppColors.dart';
 
 class InstructionsContainer extends StatefulWidget {
+final List<String> recipeSteps;
 
   const InstructionsContainer({
-    Key? key,
+    Key? key, required this.recipeSteps,
   }) : super(key: key);
 
   @override
@@ -17,18 +18,6 @@ class InstructionsContainer extends StatefulWidget {
 }
 
 class _InstructionsContainerState extends State<InstructionsContainer> {
-
-  List<String> steps = [
-        '1.- Poner a precalentar el horno',
-    '2.- Poner a precalentar el horno',
-    '3.- Poner a precalentar el horno',
-    '4.- Poner a precalentar el horno',
-    '5.- Poner a precalentar el horno',
-    '6.- Poner a precalentar el horno',
-    '7.- Poner a precalentar el horno',
-    '8.- Poner a precalentar el horno',
-    '9.- Poner a precalentar el horno',
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -42,11 +31,11 @@ class _InstructionsContainerState extends State<InstructionsContainer> {
               alignment: Alignment.centerLeft,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: steps.map((ingredient) {
+                children: widget.recipeSteps.map((step) {
                   return Padding(
                     padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
                     child: Text(
-                      ingredient,
+                      step,
                       style: TextStyle(
                         color: AppColors.brownTextColor,
                         fontSize: 17,

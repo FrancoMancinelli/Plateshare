@@ -261,14 +261,44 @@ Future<List<String>> getRecipeFields(String recipeId) async {
       final String title = recipeData['title'].toString();
       final String time = recipeData['time'].toString();
       final String rate = recipeData['rate'].toString();
+      final String likes = recipeData['likes'].toString();
+      final String rations = recipeData['rations'].toString();
 
-      fields.addAll([image, title, time, rate]);
+      fields.addAll([image, title, time, rate, likes, rations]);
       break; // Exit the loop once the recipe document is found
     }
   }
 
   return fields;
 }
+
+Future<List<String>> getRecipeSteps(String recipeId) async {
+  final QuerySnapshot userSnapshot = await FirebaseFirestore.instance
+      .collection('user')
+      .get();
+
+  List<String> steps = [];
+
+  for (final DocumentSnapshot userDoc in userSnapshot.docs) {
+    final DocumentSnapshot recipeSnapshot = await userDoc.reference
+        .collection('recipe')
+        .doc(recipeId)
+        .get();
+
+    if (recipeSnapshot.exists) {
+      final Map<String, dynamic> recipeData =
+          recipeSnapshot.data() as Map<String, dynamic>;
+
+      final List<dynamic> stepsData = recipeData['steps'];
+    steps = stepsData.cast<String>().toList();
+      break; // Exit the loop once the recipe document is found
+    }
+  }
+
+  return steps;
+}
+
+
 
 
 

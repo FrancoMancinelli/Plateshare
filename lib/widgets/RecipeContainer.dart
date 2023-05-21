@@ -25,6 +25,9 @@ class _RecipeContainerState extends State<RecipeContainer> {
   String time = "0";
   String rate = "0.0";
   String image = "https://firebasestorage.googleapis.com/v0/b/plateshare-tfg2023.appspot.com/o/default_recipeimage.jpg?alt=media&token=8400f8d3-7704-4a54-8151-da4053cf9102";
+  String likes = "0";
+  String rations = "0";
+  List<String> steps = [];
 
   @override
   void initState() {
@@ -34,6 +37,8 @@ class _RecipeContainerState extends State<RecipeContainer> {
 
   Future<void> fetchRecipeData() async {
   final recipeData = await getRecipeFields(widget.idRecepieInDatabase);
+  final recipeSteps = await getRecipeSteps(widget.idRecepieInDatabase);
+
   if (recipeData.isNotEmpty) {
     setState(() {
       if(recipeData[0].isNotEmpty) {
@@ -42,6 +47,9 @@ class _RecipeContainerState extends State<RecipeContainer> {
       title = recipeData[1];
       time = recipeData[2];
       rate = recipeData[3];
+      likes = recipeData[4];
+      rations = recipeData[5];
+      steps = recipeSteps;
     });
   }
 }
@@ -56,7 +64,14 @@ class _RecipeContainerState extends State<RecipeContainer> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => RecipeDetailsScreen(image: image,),
+              builder: (context) => RecipeDetailsScreen(
+                recipeImage: image,
+                recipeRate: rate,
+                recipeTime: time,
+                recipeTitle: title,
+                recipeLikes: likes,
+                recipeRations: rations,
+                recipeSteps: steps),
             ),
           );        },
         child: Container(

@@ -9,11 +9,17 @@ import '../widgets/RecipeComment.dart';
 import 'InicioScreen.dart';
 
 class RecipeDetailsScreen extends StatefulWidget {
-  final String image;
+  final String recipeImage;
+  final String recipeTitle;
+  final String recipeTime;
+  final String recipeRate;
+  final String recipeLikes;
+  final String recipeRations;
+  final List<String> recipeSteps;
 
   const RecipeDetailsScreen({
     Key? key,
-    required this.image,
+    required this.recipeImage, required this.recipeTitle, required this.recipeTime, required this.recipeRate, required this.recipeLikes, required this.recipeRations, required this.recipeSteps,
   }) : super(key: key);
 
   @override
@@ -46,9 +52,9 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
 
   Widget buildContainerBasedOnFlag(int flag) {
     if (flag == 1) {
-      return const IngredientContainer();
+      return IngredientContainer(recipeRations: widget.recipeRations,);
     } else if (flag == 2) {
-      return const InstructionsContainer();
+      return InstructionsContainer(recipeSteps: widget.recipeSteps,);
     } else {
       return Container();
     }
@@ -114,7 +120,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
             ),
             flexibleSpace: FlexibleSpaceBar(
               background: Image.network(
-                widget.image,
+                widget.recipeImage,
                 fit: BoxFit.cover,
               ),
             ),
@@ -183,7 +189,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                               },
                             ),
                             Text(
-                              '0000',
+                              widget.recipeLikes,
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
@@ -214,8 +220,8 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                           child: Padding(
                             padding: const EdgeInsets.fromLTRB(10, 5, 0, 0),
                             child: Text(
-                              'Titulo de la receta en cuestion',
-                              style: GoogleFonts.acme(
+                                widget.recipeTitle,
+                                style: GoogleFonts.acme(
                                 textStyle: const TextStyle(
                                   fontSize: 34,
                                   color: AppColors.brownTextColor,
@@ -236,7 +242,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                               Padding(
                                 padding: const EdgeInsets.fromLTRB(1, 2, 0, 0),
                                 child: Text(
-                                  '4.5',
+                                  widget.recipeRate,
                                   style: GoogleFonts.acme(
                                     textStyle: const TextStyle(
                                       fontSize: 16,
@@ -257,7 +263,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                               Padding(
                                 padding: const EdgeInsets.fromLTRB(3, 2, 0, 0),
                                 child: Text(
-                                  '60 mins',
+                                  '${widget.recipeTime} mins',
                                   style: GoogleFonts.acme(
                                     textStyle: const TextStyle(
                                       fontSize: 16,

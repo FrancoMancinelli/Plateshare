@@ -3,7 +3,9 @@ import 'package:plateshare/screens/InicioScreen.dart';
 import 'package:plateshare/util/AppColors.dart';
 
 class IngredientContainer extends StatefulWidget {
-  const IngredientContainer({Key? key}) : super(key: key);
+  final String recipeRations;
+
+  const IngredientContainer({Key? key, required this.recipeRations}) : super(key: key);
 
   @override
   _IngredientContainerState createState() => _IngredientContainerState();
@@ -59,9 +61,9 @@ class _IngredientContainerState extends State<IngredientContainer> {
                           color: AppColors.brownInfoRecipe,
                           width: 100,
                           height: 35,
-                          child: const Center(
+                          child:  Center(
                             child: Text(
-                              '2 Raciones',
+                              '${widget.recipeRations} Raciones',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 15,
