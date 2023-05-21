@@ -6,6 +6,8 @@ import 'package:plateshare/screens/RecipeDetails.dart';
 import 'package:plateshare/services/firebase_service.dart';
 import 'package:plateshare/util/AppColors.dart';
 
+import '../models/Ingredient.dart';
+
 class RecipeContainer extends StatefulWidget {
   final String idRecepieInDatabase;
 
@@ -28,6 +30,9 @@ class _RecipeContainerState extends State<RecipeContainer> {
   String likes = "0";
   String rations = "0";
   List<String> steps = [];
+  String ownerImage = "https://firebasestorage.googleapis.com/v0/b/plateshare-tfg2023.appspot.com/o/default_recipeimage.jpg?alt=media&token=8400f8d3-7704-4a54-8151-da4053cf9102";
+  String owenUsername = "username";
+  List<Ingredient> ingredients = [];
 
   @override
   void initState() {
@@ -38,6 +43,9 @@ class _RecipeContainerState extends State<RecipeContainer> {
   Future<void> fetchRecipeData() async {
   final recipeData = await getRecipeFields(widget.idRecepieInDatabase);
   final recipeSteps = await getRecipeSteps(widget.idRecepieInDatabase);
+  final recipeOwner = await getUserInfoFromRecipe(widget.idRecepieInDatabase);
+  final recipeIngredients = await getRecipeIngredients(widget.idRecepieInDatabase);
+  final formattedIngredients = formatIngredients(recipeIngredients);
 
   if (recipeData.isNotEmpty) {
     setState(() {
@@ -49,11 +57,41 @@ class _RecipeContainerState extends State<RecipeContainer> {
       rate = recipeData[3];
       likes = recipeData[4];
       rations = recipeData[5];
-      steps = recipeSteps;
+      steps = addIndexToItems(recipeSteps);
+      ownerImage = recipeOwner[0];
+      owenUsername = recipeOwner[1];
+      ingredients = formattedIngredients;
     });
   }
 }
 
+List<Ingredient> formatIngredients(List<Map<String, dynamic>> ingredientList) {
+  List<Ingredient> ingredients = [];
+
+  for (var ingredient in ingredientList) {
+    String name = ingredient['name'] as String;
+    String type = ingredient['type'] as String;
+    int amount = int.parse(ingredient['amount'] as String);
+
+    Ingredient formattedIngredient = Ingredient(
+      name: name,
+      type: type,
+      amount: amount,
+    );
+
+    ingredients.add(formattedIngredient);
+  }
+
+  return ingredients;
+}
+
+List<String> addIndexToItems(List<String> items) {
+  return items.asMap().entries.map((entry) {
+    int index = entry.key + 1;
+    String item = entry.value;
+    return '$index.- $item';
+  }).toList();
+}
 
   @override
   Widget build(BuildContext context) {
@@ -69,9 +107,12 @@ class _RecipeContainerState extends State<RecipeContainer> {
                 recipeRate: rate,
                 recipeTime: time,
                 recipeTitle: title,
-                recipeLikes: likes,
-                recipeRations: rations,
-                recipeSteps: steps),
+                recipeLikes: int.parse(likes),
+                recipeRations: int.parse(rations),
+                recipeSteps: steps,
+                ownerImage: ownerImage,
+                ownerUsername: owenUsername,
+                recipeIngredients: ingredients,),
             ),
           );        },
         child: Container(

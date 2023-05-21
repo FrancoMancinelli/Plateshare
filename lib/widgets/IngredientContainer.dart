@@ -2,29 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:plateshare/screens/InicioScreen.dart';
 import 'package:plateshare/util/AppColors.dart';
 
-class IngredientContainer extends StatefulWidget {
-  final String recipeRations;
+import '../models/Ingredient.dart';
 
-  const IngredientContainer({Key? key, required this.recipeRations}) : super(key: key);
+class IngredientContainer extends StatefulWidget {
+  final int recipeRations;
+  final List<Ingredient> recipeIngredients;
+
+  const IngredientContainer({Key? key, required this.recipeRations, required this.recipeIngredients}) : super(key: key);
 
   @override
   _IngredientContainerState createState() => _IngredientContainerState();
 }
 
 class _IngredientContainerState extends State<IngredientContainer> {
-  List<String> ingredients = [
-    '· Carne picada - 500 Gramos',
-    '· Carne picada - 500 Gramos',
-    '· Carne picada - 500 Gramos',
-    '· Carne picada - 500 Gramos',
-    '· Carne picada - 500 Gramos',
-    '· Carne picada - 500 Gramos',
-    '· Carne picada - 500 Gramos',
-    '· Carne picada - 500 Gramos',
-    '· Carne picada - 500 Gramos',
-    '· Carne picada - 500 Gramos',
-    '· Carne picada - 500 Gramos',
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -95,11 +85,11 @@ class _IngredientContainerState extends State<IngredientContainer> {
               alignment: Alignment.centerLeft,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: ingredients.map((ingredient) {
+                children: widget.recipeIngredients.map((ingredient) {
                   return Padding(
                     padding: const EdgeInsets.fromLTRB(15, 5, 15, 10),
                     child: Text(
-                      ingredient,
+                      '· ${ingredient.name} - ${ingredient.amount} ${ingredient.type}',
                       style: TextStyle(
                         color: AppColors.brownTextColor,
                         fontSize: 17,

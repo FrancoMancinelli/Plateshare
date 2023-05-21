@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:plateshare/models/Ingredient.dart';
 import 'package:plateshare/util/AppColors.dart';
 import 'package:plateshare/widgets/IngredientContainer.dart';
 import 'package:plateshare/widgets/InstructionsContainer.dart';
@@ -13,13 +14,16 @@ class RecipeDetailsScreen extends StatefulWidget {
   final String recipeTitle;
   final String recipeTime;
   final String recipeRate;
-  final String recipeLikes;
-  final String recipeRations;
+  final int recipeLikes;
+  final int recipeRations;
   final List<String> recipeSteps;
+  final String ownerImage;
+  final String ownerUsername;
+  final List<Ingredient> recipeIngredients;
 
   const RecipeDetailsScreen({
     Key? key,
-    required this.recipeImage, required this.recipeTitle, required this.recipeTime, required this.recipeRate, required this.recipeLikes, required this.recipeRations, required this.recipeSteps,
+    required this.recipeImage, required this.recipeTitle, required this.recipeTime, required this.recipeRate, required this.recipeLikes, required this.recipeRations, required this.recipeSteps, required this.ownerImage, required this.ownerUsername, required this.recipeIngredients,
   }) : super(key: key);
 
   @override
@@ -52,7 +56,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
 
   Widget buildContainerBasedOnFlag(int flag) {
     if (flag == 1) {
-      return IngredientContainer(recipeRations: widget.recipeRations,);
+      return IngredientContainer(recipeRations: widget.recipeRations, recipeIngredients: widget.recipeIngredients,);
     } else if (flag == 2) {
       return InstructionsContainer(recipeSteps: widget.recipeSteps,);
     } else {
@@ -148,7 +152,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                                   shape: BoxShape.circle,
                                 ),
                                 child: Image.network(
-                                  'https://firebasestorage.googleapis.com/v0/b/plateshare-tfg2023.appspot.com/o/default_profile_pic.png?alt=media&token=92c2e8f1-5871-4285-8040-8b8df60bae14',
+                                  widget.ownerImage,
                                   width: 35,
                                   height: 35,
                                   fit: BoxFit.cover,
@@ -156,7 +160,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                               ),
                               SizedBox(width: 5),
                               Text(
-                                '@username',
+                                '@${widget.ownerUsername}',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 14,
@@ -189,7 +193,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                               },
                             ),
                             Text(
-                              widget.recipeLikes,
+                              widget.recipeLikes.toString(),
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
@@ -324,7 +328,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                                   ),
                                   onPressed: handleFirstButtonPressed,
                                   child: Text(
-                                    'Ingredientes (0)',
+                                    'Ingredientes (${widget.recipeIngredients.length})',
                                     style: GoogleFonts.acme(
                                       textStyle: const TextStyle(
                                         fontSize: 18,
@@ -349,7 +353,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                                   ),
                                   onPressed: handleSecondButtonPressed,
                                   child: Text(
-                                    'Instrucciones (0)',
+                                    'Instrucciones (${widget.recipeSteps.length})',
                                     style: GoogleFonts.acme(
                                       textStyle: const TextStyle(
                                         fontSize: 18,

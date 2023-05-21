@@ -238,6 +238,36 @@ Future<List<String>> getRecipiesWith3Ingredients() async {
   return recipiesWithThreeIngredients;
 }
 
+Future<List<String>> getUserInfoFromRecipe(String recipeId) async {
+  final QuerySnapshot userSnapshot = await FirebaseFirestore.instance
+      .collection('user')
+      .get();
+
+  for (final DocumentSnapshot userDoc in userSnapshot.docs) {
+    final QuerySnapshot recipeSnapshot = await userDoc.reference
+        .collection('recipe')
+        .where(FieldPath.documentId, isEqualTo: recipeId)
+        .get();
+
+    if (recipeSnapshot.docs.isNotEmpty) {
+      final DocumentSnapshot recipeDoc = recipeSnapshot.docs.first;
+      final DocumentSnapshot userRecipeDoc = await recipeDoc.reference.parent!.parent!.get();
+
+      final Map<String, dynamic> userData = userRecipeDoc.data() as Map<String, dynamic>;
+      final String image = userData['profilepic'].toString();
+      final String username = userData['username'].toString();
+      print(image);
+      print(username);
+      return [image, username];
+    }
+  }
+
+  return []; // Return an empty list if the recipe document is not found
+}
+
+
+
+
 
 
 Future<List<String>> getRecipeFields(String recipeId) async {
@@ -271,6 +301,34 @@ Future<List<String>> getRecipeFields(String recipeId) async {
 
   return fields;
 }
+
+Future<List<Map<String, dynamic>>> getRecipeIngredients(String recipeId) async {
+  final QuerySnapshot userSnapshot = await FirebaseFirestore.instance
+      .collection('user')
+      .get();
+
+  List<Map<String, dynamic>> ingredients = [];
+
+  for (final DocumentSnapshot userDoc in userSnapshot.docs) {
+    final DocumentSnapshot recipeSnapshot = await userDoc.reference
+        .collection('recipe')
+        .doc(recipeId)
+        .get();
+
+    if (recipeSnapshot.exists) {
+      final QuerySnapshot ingredientSnapshot = await recipeSnapshot.reference
+          .collection('ingredient')
+          .get();
+
+      ingredients = ingredientSnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+      print(ingredients);
+      break; // Exit the loop once the recipe document is found
+    }
+  }
+
+  return ingredients;
+}
+
 
 Future<List<String>> getRecipeSteps(String recipeId) async {
   final QuerySnapshot userSnapshot = await FirebaseFirestore.instance
