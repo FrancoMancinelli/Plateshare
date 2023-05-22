@@ -56,6 +56,7 @@ class RecipeDetailsScreen extends StatefulWidget {
 var screenSize;
 int flag = 1;
 double userValoration = 0;
+bool isFavorite = false;
 
 class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
   Color firstButtonColor = AppColors.lightBrownRecipe;
@@ -221,11 +222,20 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                           children: [
                             IconButton(
                               icon: Icon(
-                                Icons.favorite_border,
-                                color: Colors.white,
+                                isFavorite
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
+                                color: isFavorite ? Colors.white : Colors.white,
                               ),
                               onPressed: () {
-                                // Handle favorite button press
+                                setState(() {
+                                  isFavorite = !isFavorite;
+                                  if (isFavorite == true) {
+                                    modifyLikeToRecipe(widget.recipeID, widget.userId, 1);
+                                  } else {
+                                    modifyLikeToRecipe(widget.recipeID, widget.userId, 2);
+                                  }
+                                });
                               },
                             ),
                             Text(

@@ -24,13 +24,13 @@ class RecipeContainer extends StatefulWidget {
 }
 
 class _RecipeContainerState extends State<RecipeContainer> {
-  bool isFavorite = false;
+  bool isFavorite = true;
 
   String title = "Default data information";
   String time = "0";
   String rate = "0.0";
   String image = "https://firebasestorage.googleapis.com/v0/b/plateshare-tfg2023.appspot.com/o/default_recipeimage.jpg?alt=media&token=8400f8d3-7704-4a54-8151-da4053cf9102";
-  String likes = "0";
+  int likes = 0;
   String rations = "0";
   List<String> steps = [];
   String ownerImage = "https://firebasestorage.googleapis.com/v0/b/plateshare-tfg2023.appspot.com/o/default_recipeimage.jpg?alt=media&token=8400f8d3-7704-4a54-8151-da4053cf9102";
@@ -45,7 +45,7 @@ class _RecipeContainerState extends State<RecipeContainer> {
     fetchRecipeData();
   }
 
-  Future<void> fetchRecipeData() async {
+ Future<void> fetchRecipeData() async {
   final recipeData = await getRecipeFields(widget.idRecepieInDatabase);
   final recipeSteps = await getRecipeSteps(widget.idRecepieInDatabase);
   final recipeOwner = await getUserInfoFromRecipe(widget.idRecepieInDatabase);
@@ -53,26 +53,34 @@ class _RecipeContainerState extends State<RecipeContainer> {
   final formattedIngredients = formatIngredients(recipeIngredients);
   final recipeComments = await getRecipeComments(widget.idRecepieInDatabase);
   final id = await getDocumentIdByUsername(widget.userUsername);
+  //final recipeLikesCount = await getLikesCount(widget.idRecepieInDatabase);
+  //final isLiked = await checkIfRecipeLiked(widget.idRecepieInDatabase, id);
 
-  if (recipeData.isNotEmpty) {
-    setState(() {
-      if(recipeData[0].isNotEmpty) {
-      image = recipeData[0];
-      }
-      title = recipeData[1];
-      time = recipeData[2];
-      rate = recipeData[3];
-      likes = recipeData[4];
-      rations = recipeData[5];
-      steps = addIndexToItems(recipeSteps);
-      ownerImage = recipeOwner[0];
-      ownerUsername = recipeOwner[1];
-      ingredients = formattedIngredients;
-      comentarios = recipeComments;
-      userId = id;
-    });
+  if (mounted) {
+    if (recipeData.isNotEmpty) {
+      setState(() {
+        if (recipeData[0].isNotEmpty) {
+          image = recipeData[0];
+        }
+        title = recipeData[1];
+        time = recipeData[2];
+        rate = recipeData[3];
+        //likes = recipeData[4];
+        rations = recipeData[4];
+        steps = addIndexToItems(recipeSteps);
+        ownerImage = recipeOwner[0];
+        ownerUsername = recipeOwner[1];
+        ingredients = formattedIngredients;
+        comentarios = recipeComments;
+        userId = id;
+        //likes = recipeLikesCount;
+        //isFavorite = isLiked;
+        
+      });
+    }
   }
 }
+
 
 List<Ingredient> formatIngredients(List<Map<String, dynamic>> ingredientList) {
   List<Ingredient> ingredients = [];
@@ -117,7 +125,7 @@ List<String> addIndexToItems(List<String> items) {
                 recipeRate: rate,
                 recipeTime: time,
                 recipeTitle: title,
-                recipeLikes: int.parse(likes),
+                recipeLikes: likes,
                 recipeRations: int.parse(rations),
                 recipeSteps: steps,
                 ownerImage: ownerImage,
@@ -283,11 +291,13 @@ List<String> addIndexToItems(List<String> items) {
   }
 
   Future<bool> onLikeButtonTapped(bool isLiked) async {
-    /// send your request here
-    // final bool success= await sendRequest();
-
-    /// if failed, you can do nothing
-    // return success? !isLiked:isLiked;
+    if(isLiked == true) {
+            print(isLiked);
+      modifyLikeToRecipe(widget.idRecepieInDatabase, userId, 2);
+    } else {
+      print(isLiked);
+      modifyLikeToRecipe(widget.idRecepieInDatabase, userId, 1);
+    }
 
     return !isLiked;
   }

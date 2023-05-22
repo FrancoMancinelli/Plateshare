@@ -42,23 +42,6 @@ Future<void> addNewUser(String email, String name, String username,
   await recetasRef.add({});
 }
 
-//TODO
-Future<void> addNewRecepie(String titulo, int tiempo, String categorias,
-    int raciones, List<String> pasos) async {
-  final recetasRef = db.collection('recipe');
-  final recetasDocRef = await recetasRef.add({
-    'title': titulo,
-    'time': tiempo,
-    'category': categorias,
-    'rations': raciones,
-    'steps': pasos,
-  });
-
-  // Añado una sub-collection
-  final ingredientesRef = recetasDocRef.collection('ingredient');
-  await ingredientesRef.add({});
-}
-
 Future<void> updateUserPasswordByUsername(
     String username, String newPassword) async {
   QuerySnapshot snapshot =
@@ -163,11 +146,10 @@ Future<void> addRecipeToUser(String username, Map<String, dynamic> recipeData,
   final commentsRef = recipeRef.collection('comment');
   final commentsData = {
     'owner': 'Gm8fyjV8jbQiUDajIE0V',
-    'text': '',
+    'text': '¡Gracias por compartir tu receta con nosotros!',
   };
   await commentsRef.add(commentsData);
 }
-
 
 Future<List<String>> getRecepiesFromCategory(String categoriaAFiltrar) async {
   final QuerySnapshot usersSnapshot = await FirebaseFirestore.instance
@@ -265,10 +247,6 @@ Future<List<String>> getUserInfoFromRecipe(String recipeId) async {
 }
 
 
-
-
-
-
 Future<List<String>> getRecipeFields(String recipeId) async {
   final QuerySnapshot userSnapshot = await FirebaseFirestore.instance
       .collection('user')
@@ -290,10 +268,10 @@ Future<List<String>> getRecipeFields(String recipeId) async {
       final String title = recipeData['title'].toString();
       final String time = recipeData['time'].toString();
       final String rate = recipeData['rate'].toString();
-      final String likes = recipeData['likes'].toString();
+      //final String likes = recipeData['likes'].toString();
       final String rations = recipeData['rations'].toString();
 
-      fields.addAll([image, title, time, rate, likes, rations]);
+      fields.addAll([image, title, time, rate, rations]);
       break; // Exit the loop once the recipe document is found
     }
   }
@@ -449,6 +427,74 @@ Future<void> addCommentToRecipe(String recipeId, String owner, String text) asyn
     }
   }
 }
+
+
+
+Future<bool> checkIfRecipeLiked(String recipeId, String value) async {
+  final QuerySnapshot userSnapshot = await FirebaseFirestore.instance
+      .collection('user')
+      .get();
+
+  for (final DocumentSnapshot userDoc in userSnapshot.docs) {
+    final QuerySnapshot recipeSnapshot = await userDoc.reference
+        .collection('recipe')
+        .doc(recipeId)
+        .collection('likes')
+        .where('value', isEqualTo: value)
+        .limit(1)
+        .get();
+
+    if (recipeSnapshot.docs.isNotEmpty) {
+      // The provided value exists in the 'likes' array
+      return true;
+    }
+  }
+
+  return false;
+}
+
+
+
+Future<void> modifyLikeToRecipe(String recipeId, String value, int flag) async {
+  final QuerySnapshot userSnapshot = await FirebaseFirestore.instance
+      .collection('user')
+      .get();
+
+  for (final DocumentSnapshot userDoc in userSnapshot.docs) {
+    final DocumentSnapshot recipeSnapshot = await userDoc.reference
+        .collection('recipe')
+        .doc(recipeId)
+        .get();
+
+    if (recipeSnapshot.exists) {
+      final Map<String, dynamic>? recipeData =
+          recipeSnapshot.data() as Map<String, dynamic>?;
+
+      final List<dynamic> likes =
+          (recipeData?['likes'] as List<dynamic>?) ?? [];
+
+      if (!likes.contains(value) && flag == 1) {
+        likes.add(value);
+
+        await recipeSnapshot.reference.update({'likes': likes});
+      } else if (likes.contains(value) && flag == 2) {
+        likes.remove(value);
+
+        await recipeSnapshot.reference.update({'likes': likes});
+      }
+
+      break; // Exit the loop once the recipe document is found
+    }
+  }
+}
+
+
+
+
+
+
+
+
 
 
 

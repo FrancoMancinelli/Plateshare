@@ -437,9 +437,9 @@ class _RecipeFormScreenThreeState extends State<RecipeFormScreenThree> {
                                         if (texts.length >= 1) {
                                           final recipeData = {
                                             'category': widget.categoriasRecepie,
-                                            'likes': 0,
+                                            'likes': [],
                                             'steps': texts,
-                                            'rate': 0,
+                                            'rate': 0.0,
                                             'rations': widget.racionesRecepie,
                                             'time': widget.tiempoRecepie,
                                             'title': widget.tituloRecepie,
