@@ -448,7 +448,7 @@ class _RecipeFormScreenThreeState extends State<RecipeFormScreenThree> {
 
                                           final ingredientList = widget.ingredientesRecepie;
                                           String? documentId = await getDocumentIdByUsername(widget.usernameData);
-                                          addRecipeToUser(documentId!, recipeData, ingredientList);
+                                          addRecipeToUser(documentId, recipeData, ingredientList);
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(

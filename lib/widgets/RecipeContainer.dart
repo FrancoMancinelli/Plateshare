@@ -34,9 +34,10 @@ class _RecipeContainerState extends State<RecipeContainer> {
   String rations = "0";
   List<String> steps = [];
   String ownerImage = "https://firebasestorage.googleapis.com/v0/b/plateshare-tfg2023.appspot.com/o/default_recipeimage.jpg?alt=media&token=8400f8d3-7704-4a54-8151-da4053cf9102";
-  String owenUsername = "username";
+  String ownerUsername = "username";
   List<Ingredient> ingredients = [];
   List<Map<String, dynamic>> comentarios = [];
+  String userId = 'userId';
 
   @override
   void initState() {
@@ -51,6 +52,7 @@ class _RecipeContainerState extends State<RecipeContainer> {
   final recipeIngredients = await getRecipeIngredients(widget.idRecepieInDatabase);
   final formattedIngredients = formatIngredients(recipeIngredients);
   final recipeComments = await getRecipeComments(widget.idRecepieInDatabase);
+  final id = await getDocumentIdByUsername(widget.userUsername);
 
   if (recipeData.isNotEmpty) {
     setState(() {
@@ -64,9 +66,10 @@ class _RecipeContainerState extends State<RecipeContainer> {
       rations = recipeData[5];
       steps = addIndexToItems(recipeSteps);
       ownerImage = recipeOwner[0];
-      owenUsername = recipeOwner[1];
+      ownerUsername = recipeOwner[1];
       ingredients = formattedIngredients;
       comentarios = recipeComments;
+      userId = id;
     });
   }
 }
@@ -109,6 +112,7 @@ List<String> addIndexToItems(List<String> items) {
             context,
             MaterialPageRoute(
               builder: (context) => RecipeDetailsScreen(
+                recipeID: widget.idRecepieInDatabase,
                 recipeImage: image,
                 recipeRate: rate,
                 recipeTime: time,
@@ -117,8 +121,9 @@ List<String> addIndexToItems(List<String> items) {
                 recipeRations: int.parse(rations),
                 recipeSteps: steps,
                 ownerImage: ownerImage,
-                ownerUsername: owenUsername,
+                ownerUsername: ownerUsername,
                 recipeIngredients: ingredients,
+                userId: userId,
                 userImage: widget.userImage,
                 userName: widget.userName,
                 userUsername: widget.userUsername,

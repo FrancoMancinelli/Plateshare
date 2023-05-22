@@ -113,8 +113,8 @@ Future<String> getSaltByUsername(String username) async {
   }
 }
 
-Future<String?> getDocumentIdByUsername(String username) async {
-  String? documentId;
+Future<String> getDocumentIdByUsername(String username) async {
+  String documentId = '';
 
   QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
       .instance
@@ -162,8 +162,7 @@ Future<void> addRecipeToUser(String username, Map<String, dynamic> recipeData,
 
   final commentsRef = recipeRef.collection('comment');
   final commentsData = {
-    'owner': '',
-    'rate': '',
+    'owner': 'Gm8fyjV8jbQiUDajIE0V',
     'text': '',
   };
   await commentsRef.add(commentsData);
@@ -428,6 +427,27 @@ Future<String?> getUserNameByDocumentId(String documentId) async {
   }
 
   return username;
+}
+
+Future<void> addCommentToRecipe(String recipeId, String owner, String text) async {
+  final QuerySnapshot userSnapshot = await FirebaseFirestore.instance
+      .collection('user')
+      .get();
+
+  for (final DocumentSnapshot userDoc in userSnapshot.docs) {
+    final DocumentSnapshot recipeSnapshot = await userDoc.reference
+        .collection('recipe')
+        .doc(recipeId)
+        .get();
+
+    if (recipeSnapshot.exists) {
+      await recipeSnapshot.reference.collection('comment').add({
+        'owner': owner,
+        'text': text,
+      });
+      break; // Exit the loop once the recipe document is found
+    }
+  }
 }
 
 

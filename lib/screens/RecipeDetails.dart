@@ -6,10 +6,12 @@ import 'package:plateshare/util/AppColors.dart';
 import 'package:plateshare/widgets/IngredientContainer.dart';
 import 'package:plateshare/widgets/InstructionsContainer.dart';
 
+import '../services/firebase_service.dart';
 import '../widgets/RecipeComment.dart';
 import 'InicioScreen.dart';
 
 class RecipeDetailsScreen extends StatefulWidget {
+  final String recipeID;
   final String recipeImage;
   final String recipeTitle;
   final String recipeTime;
@@ -22,6 +24,7 @@ class RecipeDetailsScreen extends StatefulWidget {
   final List<Ingredient> recipeIngredients;
   final List<Map<String, dynamic>> recipeComments;
 
+  final String userId;
   final String userImage;
   final String userName;
   final String userUsername;
@@ -42,6 +45,8 @@ class RecipeDetailsScreen extends StatefulWidget {
     required this.userName,
     required this.userUsername,
     required this.recipeComments,
+    required this.recipeID,
+    required this.userId,
   }) : super(key: key);
 
   @override
@@ -55,6 +60,7 @@ double userValoration = 0;
 class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
   Color firstButtonColor = AppColors.lightBrownRecipe;
   Color secondButtonColor = AppColors.brownButtonsRecipe;
+  final TextEditingController _commentController = TextEditingController();
 
   void handleFirstButtonPressed() {
     setState(() {
@@ -103,6 +109,15 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
           SnackBar(
             content: const Text('Se ha eliminado la valoración'),
             backgroundColor: Colors.red,
+            duration: Duration(milliseconds: 1500),
+          ),
+        );
+        break;
+      case 3:
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Comentario enviado con éxito'),
+            backgroundColor: Colors.green,
             duration: Duration(milliseconds: 1500),
           ),
         );
@@ -310,7 +325,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                               Padding(
                                 padding: const EdgeInsets.fromLTRB(0, 2, 0, 0),
                                 child: Text(
-                                  '0 Comentarios',
+                                  '${widget.recipeComments.length} Comentarios',
                                   style: GoogleFonts.acme(
                                     textStyle: const TextStyle(
                                       fontSize: 16,
@@ -465,20 +480,21 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                                             10, 8, 0, 8),
                                         child: Container(
                                           decoration: BoxDecoration(
-                                            color: AppColors
-                                                .whiteColor, // Replace with your desired background color
+                                            color: AppColors.whiteColor,
                                             borderRadius:
                                                 BorderRadius.circular(30),
                                           ),
                                           child: TextField(
+                                            controller: _commentController,
+                                            maxLength: 130,
                                             decoration: InputDecoration(
                                               hintText:
                                                   'Dejar un comentario...',
                                               border: InputBorder.none,
                                               contentPadding:
                                                   EdgeInsets.symmetric(
-                                                      horizontal: 11,
-                                                      vertical: 11),
+                                                      horizontal: 5,
+                                                      vertical: 10),
                                               hintStyle: GoogleFonts.acme(
                                                 textStyle: TextStyle(
                                                   fontSize: 15,
@@ -486,6 +502,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                                                   fontFamily: 'Acme',
                                                 ),
                                               ),
+                                              counterText: '',
                                             ),
                                           ),
                                         ),
@@ -497,7 +514,12 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                                         color: AppColors.whiteColor,
                                       ),
                                       onPressed: () {
-                                        // Handle button press
+                                        addCommentToRecipe(
+                                            widget.recipeID,
+                                            widget.userId,
+                                            _commentController.text);
+                                        _commentController.clear();
+                                        showBottomMessage(3);
                                       },
                                     ),
                                   ],
@@ -520,27 +542,28 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                                   const EdgeInsets.fromLTRB(5, 1.5, 5, 1.5),
                               child: Scrollbar(
                                 thickness: 5,
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(5, 0, 5, 0),
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      children: [
-                                        ListView.builder(
-                                          shrinkWrap: true,
-                                          itemCount:
-                                              widget.recipeComments.length,
-                                          itemBuilder: (context, index) {
-                                            final comentario = widget.recipeComments[index];
-                                            final owner = comentario['owner'] as String;
-                                            final text = comentario['text'] as String;
-                                            return RecipeComment(
-                                                commentOwnerID: owner,
-                                                commentText: text);
-                                          },
-                                        )
-                                      ],
-                                    ),
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      ListView.builder(
+                                        shrinkWrap: true,
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        itemCount: widget.recipeComments.length,
+                                        itemBuilder: (context, index) {
+                                          final comentario =
+                                              widget.recipeComments[index];
+                                          final owner =
+                                              comentario['owner'] as String;
+                                          final text =
+                                              comentario['text'] as String;
+                                          return RecipeComment(
+                                            commentOwnerID: owner,
+                                            commentText: text,
+                                          );
+                                        },
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
