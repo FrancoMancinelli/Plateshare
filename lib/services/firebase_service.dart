@@ -429,29 +429,38 @@ Future<void> addCommentToRecipe(String recipeId, String owner, String text) asyn
 }
 
 
+Future<bool> checkIfRecipeLiked(
+    String recipeOwner, String recipeId, String value) async {
+  final DocumentSnapshot<Map<String, dynamic>> recipeSnapshot =
+      await FirebaseFirestore.instance
+          .collection('user')
+          .doc(recipeOwner)
+          .collection('recipe')
+          .doc(recipeId)
+          .get();
 
-Future<bool> checkIfRecipeLiked(String recipeId, String value) async {
-  final QuerySnapshot userSnapshot = await FirebaseFirestore.instance
-      .collection('user')
-      .get();
+  final Map<String, dynamic>? data = recipeSnapshot.data();
+  final likes = data?['likes'];
 
-  for (final DocumentSnapshot userDoc in userSnapshot.docs) {
-    final QuerySnapshot recipeSnapshot = await userDoc.reference
-        .collection('recipe')
-        .doc(recipeId)
-        .collection('likes')
-        .where('value', isEqualTo: value)
-        .limit(1)
-        .get();
-
-    if (recipeSnapshot.docs.isNotEmpty) {
-      // The provided value exists in the 'likes' array
-      return true;
+  if (likes != null) {
+    if (likes is List<dynamic>) {
+      if (likes.contains(value)) {
+        // The provided value exists in the 'likes' array
+        return true;
+      }
     }
   }
 
   return false;
 }
+
+
+
+
+
+
+
+
 
 
 
