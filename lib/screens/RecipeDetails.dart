@@ -29,6 +29,8 @@ class RecipeDetailsScreen extends StatefulWidget {
   final String userName;
   final String userUsername;
 
+  final bool isFavorite;
+
   const RecipeDetailsScreen({
     Key? key,
     required this.recipeImage,
@@ -46,7 +48,8 @@ class RecipeDetailsScreen extends StatefulWidget {
     required this.userUsername,
     required this.recipeComments,
     required this.recipeID,
-    required this.userId,
+    required this.userId, 
+    required this.isFavorite,
   }) : super(key: key);
 
   @override
@@ -56,12 +59,20 @@ class RecipeDetailsScreen extends StatefulWidget {
 var screenSize;
 int flag = 1;
 double userValoration = 0;
-bool isFavorite = false;
 
 class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
   Color firstButtonColor = AppColors.lightBrownRecipe;
   Color secondButtonColor = AppColors.brownButtonsRecipe;
   final TextEditingController _commentController = TextEditingController();
+  bool isFavorite = false;
+  int amountLikes = 0;
+
+   @override
+  void initState() {
+    super.initState();
+    isFavorite = widget.isFavorite;
+    amountLikes = widget.recipeLikes;
+  }
 
   void handleFirstButtonPressed() {
     setState(() {
@@ -232,14 +243,16 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                                   isFavorite = !isFavorite;
                                   if (isFavorite == true) {
                                     modifyLikeToRecipe(widget.recipeID, widget.userId, 1);
+                                    amountLikes++;
                                   } else {
                                     modifyLikeToRecipe(widget.recipeID, widget.userId, 2);
+                                    amountLikes--;
                                   }
                                 });
                               },
                             ),
                             Text(
-                              widget.recipeLikes.toString(),
+                              amountLikes.toString(),
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,

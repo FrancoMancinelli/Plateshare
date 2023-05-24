@@ -455,47 +455,64 @@ Future<bool> checkIfRecipeLiked(
 }
 
 
-
-
-
-
-
-
-
-
-
 Future<void> modifyLikeToRecipe(String recipeId, String value, int flag) async {
   final QuerySnapshot userSnapshot = await FirebaseFirestore.instance
       .collection('user')
       .get();
 
   for (final DocumentSnapshot userDoc in userSnapshot.docs) {
-    final DocumentSnapshot recipeSnapshot = await userDoc.reference
-        .collection('recipe')
-        .doc(recipeId)
-        .get();
+    final DocumentSnapshot<Map<String, dynamic>> recipeSnapshot =
+        await userDoc.reference
+            .collection('recipe')
+            .doc(recipeId)
+            .get();
 
     if (recipeSnapshot.exists) {
-      final Map<String, dynamic>? recipeData =
-          recipeSnapshot.data() as Map<String, dynamic>?;
+      final Map<String, dynamic>? recipeData = recipeSnapshot.data();
 
-      final List<dynamic> likes =
-          (recipeData?['likes'] as List<dynamic>?) ?? [];
+      if (recipeData != null) {
+        final List<dynamic> likes = recipeData['likes'] is List<dynamic>
+            ? recipeData['likes']
+            : <dynamic>[];
 
-      if (!likes.contains(value) && flag == 1) {
-        likes.add(value);
-
-        await recipeSnapshot.reference.update({'likes': likes});
-      } else if (likes.contains(value) && flag == 2) {
-        likes.remove(value);
-
-        await recipeSnapshot.reference.update({'likes': likes});
+        if (!likes.contains(value) && flag == 1) {
+          likes.add(value);
+          await recipeSnapshot.reference.update({'likes': likes});
+        } else if (likes.contains(value) && flag == 2) {
+          likes.remove(value);
+          await recipeSnapshot.reference.update({'likes': likes});
+        }
       }
 
       break; // Exit the loop once the recipe document is found
     }
   }
 }
+
+
+
+
+Future<int> getAmountOfLikes(String recipeOwner, String recipeId) async {
+  final DocumentSnapshot<Map<String, dynamic>> recipeSnapshot =
+      await FirebaseFirestore.instance
+          .collection('user')
+          .doc(recipeOwner)
+          .collection('recipe')
+          .doc(recipeId)
+          .get();
+
+  final Map<String, dynamic>? data = recipeSnapshot.data();
+  final likes = data?['likes'];
+
+  if (likes != null) {
+    if (likes is List<dynamic>) {
+        return likes.length;
+      }
+    }
+
+  return 0;
+}
+
 
 
 

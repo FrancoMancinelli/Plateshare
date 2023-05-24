@@ -64,6 +64,7 @@ class _RecipeContainerState extends State<RecipeContainer> {
     final id = await getDocumentIdByUsername(widget.userUsername);
     final ownerId = await getDocumentIdByUsername(recipeOwner[1]);
     final liked = await checkIfRecipeLiked(ownerId, widget.idRecepieInDatabase, id);
+    final likesCount = await getAmountOfLikes(ownerId, widget.idRecepieInDatabase);
 
     if (mounted) {
       if (recipeData.isNotEmpty) {
@@ -82,6 +83,7 @@ class _RecipeContainerState extends State<RecipeContainer> {
           comentarios = recipeComments;
           userId = id;
           isFavorite = liked;
+          likes = likesCount;
         });
       }
     }
@@ -141,7 +143,8 @@ class _RecipeContainerState extends State<RecipeContainer> {
                   userImage: widget.userImage,
                   userName: widget.userName,
                   userUsername: widget.userUsername,
-                  recipeComments: comentarios),
+                  recipeComments: comentarios,
+                  isFavorite: isFavorite),
             ),
           );
         },
