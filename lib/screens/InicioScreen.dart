@@ -61,9 +61,7 @@ class _InicioScreenState extends State<InicioScreen> {
                 profilePicData: widget.profilePicData,
               )
             : null,
-        body: SingleChildScrollView(
-          child: _getPage(_selectedIndex),
-        ),
+        body: _getPage(_selectedIndex),
         floatingActionButton: _selectedIndex == 1 ? FloatingActionButton(
         backgroundColor: AppColors.orangeColor,
         child: Icon(Icons.add, size: 30,),
@@ -103,7 +101,7 @@ class _InicioScreenState extends State<InicioScreen> {
       case 1: // Recetas | Home
         return RecipesPage(userImage: widget.profilePicData, userName: widget.nameData, userUsername: widget.usernameData,);
       case 2:
-        return const ProfilePage();
+        return ProfilePage();
       default:
         return Container();
     }

@@ -13,7 +13,10 @@ class RecipesPage extends StatelessWidget {
   final String userUsername;
 
   RecipesPage({
-    Key? key, required this.userImage, required this.userName, required this.userUsername,
+    Key? key,
+    required this.userImage,
+    required this.userName,
+    required this.userUsername,
   }) : super(key: key);
 
   List<String> listClasificaciones = [
@@ -49,109 +52,174 @@ class RecipesPage extends StatelessWidget {
   String primeraSeccion = "";
   String segundaSeccion = "";
   String terceraSeccion = "";
+    String cuartaSeccion = "";
+    String quintaSeccion = "";
+
 
   Future<List<Widget>> printRecipes(String categoria) async {
-  List<Widget> containers = [];
+    List<Widget> containers = [];
 
-  switch (categoria) {
-  case 'Saludable':
-    List<String> recipes = await idRecetasSaludables;
-    for (int i = 0; i < 5 && i < recipes.length; i++) {
-      String idReceta = recipes[i];
-      containers.add(RecipeContainer(idRecepieInDatabase: idReceta, userImage: userImage, userName: userName, userUsername: userUsername,));
-    }
-    break;
-  case 'Económicas':
-    List<String> recipes = await idRecetasEconomicas;
-    for (int i = 0; i < 5 && i < recipes.length; i++) {
-      String idReceta = recipes[i];
-      containers.add(RecipeContainer(idRecepieInDatabase: idReceta, userImage: userImage, userName: userName, userUsername: userUsername,));
-    }
-    break;
-  case "En menos de 15'":
-    List<String> recipes = await idRecetasEn15Min;
-    for (int i = 0; i < 5 && i < recipes.length; i++) {
-      String idReceta = recipes[i];
-      containers.add(RecipeContainer(idRecepieInDatabase: idReceta, userImage: userImage, userName: userName, userUsername: userUsername,));
-    }
-    break;
-  case 'Postres':
-    List<String> recipes = await idRecetasPostres;
-    for (int i = 0; i < 5 && i < recipes.length; i++) {
-      String idReceta = recipes[i];
-      containers.add(RecipeContainer(idRecepieInDatabase: idReceta, userImage: userImage, userName: userName, userUsername: userUsername,));
-    }
-    break;
-  case 'Veganas':
-    List<String> recipes = await idRecetasVeganas;
-    for (int i = 0; i < 5 && i < recipes.length; i++) {
-      String idReceta = recipes[i];
-      containers.add(RecipeContainer(idRecepieInDatabase: idReceta, userImage: userImage, userName: userName, userUsername: userUsername,));
-    }
-    break;
-  case 'Vegetarianas':
-    List<String> recipes = await idRecetasVegetarianas;
-    for (int i = 0; i < 5 && i < recipes.length; i++) {
-      String idReceta = recipes[i];
-      containers.add(RecipeContainer(idRecepieInDatabase: idReceta, userImage: userImage, userName: userName, userUsername: userUsername,));
-    }
-    break;
-  case 'Gluten free':
-    List<String> recipes = await idRecetasGlutenFree;
-    for (int i = 0; i < 5 && i < recipes.length; i++) {
-      String idReceta = recipes[i];
-      containers.add(RecipeContainer(idRecepieInDatabase: idReceta, userImage: userImage, userName: userName, userUsername: userUsername,));
-    }
-    break;
-  case 'Sin lactosa':
-    List<String> recipes = await idRecetasSinLactosa;
-    for (int i = 0; i < 5 && i < recipes.length; i++) {
-      String idReceta = recipes[i];
-      containers.add(RecipeContainer(idRecepieInDatabase: idReceta, userImage: userImage, userName: userName, userUsername: userUsername,));
-    }
-    break;
-  case 'Calientes':
-    List<String> recipes = await idRecetasCalientes;
-    for (int i = 0; i < 5 && i < recipes.length; i++) {
-      String idReceta = recipes[i];
-      containers.add(RecipeContainer(idRecepieInDatabase: idReceta, userImage: userImage, userName: userName, userUsername: userUsername,));
-    }
-    break;
-  case 'Fríos':
-    List<String> recipes = await idRecetasFrios;
-    for (int i = 0; i < 5 && i < recipes.length; i++) {
-      String idReceta = recipes[i];
-      containers.add(RecipeContainer(idRecepieInDatabase: idReceta, userImage: userImage, userName: userName, userUsername: userUsername,));
-    }
-    break;
+    switch (categoria) {
+      case 'Saludable':
+        List<String> recipes = await idRecetasSaludables;
+        for (int i = 0; i < 5 && i < recipes.length; i++) {
+          String idReceta = recipes[i];
+          containers.add(RecipeContainer(
+            idRecepieInDatabase: idReceta,
+            userImage: userImage,
+            userName: userName,
+            userUsername: userUsername,
+          ));
+        }
+        break;
+      case 'Económicas':
+        List<String> recipes = await idRecetasEconomicas;
+        for (int i = 0; i < 5 && i < recipes.length; i++) {
+          String idReceta = recipes[i];
+          containers.add(RecipeContainer(
+            idRecepieInDatabase: idReceta,
+            userImage: userImage,
+            userName: userName,
+            userUsername: userUsername,
+          ));
+        }
+        break;
+      case "En menos de 15'":
+        List<String> recipes = await idRecetasEn15Min;
+        for (int i = 0; i < 5 && i < recipes.length; i++) {
+          String idReceta = recipes[i];
+          containers.add(RecipeContainer(
+            idRecepieInDatabase: idReceta,
+            userImage: userImage,
+            userName: userName,
+            userUsername: userUsername,
+          ));
+        }
+        break;
+      case 'Postres':
+        List<String> recipes = await idRecetasPostres;
+        for (int i = 0; i < 5 && i < recipes.length; i++) {
+          String idReceta = recipes[i];
+          containers.add(RecipeContainer(
+            idRecepieInDatabase: idReceta,
+            userImage: userImage,
+            userName: userName,
+            userUsername: userUsername,
+          ));
+        }
+        break;
+      case 'Veganas':
+        List<String> recipes = await idRecetasVeganas;
+        for (int i = 0; i < 5 && i < recipes.length; i++) {
+          String idReceta = recipes[i];
+          containers.add(RecipeContainer(
+            idRecepieInDatabase: idReceta,
+            userImage: userImage,
+            userName: userName,
+            userUsername: userUsername,
+          ));
+        }
+        break;
+      case 'Vegetarianas':
+        List<String> recipes = await idRecetasVegetarianas;
+        for (int i = 0; i < 5 && i < recipes.length; i++) {
+          String idReceta = recipes[i];
+          containers.add(RecipeContainer(
+            idRecepieInDatabase: idReceta,
+            userImage: userImage,
+            userName: userName,
+            userUsername: userUsername,
+          ));
+        }
+        break;
+      case 'Gluten free':
+        List<String> recipes = await idRecetasGlutenFree;
+        for (int i = 0; i < 5 && i < recipes.length; i++) {
+          String idReceta = recipes[i];
+          containers.add(RecipeContainer(
+            idRecepieInDatabase: idReceta,
+            userImage: userImage,
+            userName: userName,
+            userUsername: userUsername,
+          ));
+        }
+        break;
+      case 'Sin lactosa':
+        List<String> recipes = await idRecetasSinLactosa;
+        for (int i = 0; i < 5 && i < recipes.length; i++) {
+          String idReceta = recipes[i];
+          containers.add(RecipeContainer(
+            idRecepieInDatabase: idReceta,
+            userImage: userImage,
+            userName: userName,
+            userUsername: userUsername,
+          ));
+        }
+        break;
+      case 'Calientes':
+        List<String> recipes = await idRecetasCalientes;
+        for (int i = 0; i < 5 && i < recipes.length; i++) {
+          String idReceta = recipes[i];
+          containers.add(RecipeContainer(
+            idRecepieInDatabase: idReceta,
+            userImage: userImage,
+            userName: userName,
+            userUsername: userUsername,
+          ));
+        }
+        break;
+      case 'Fríos':
+        List<String> recipes = await idRecetasFrios;
+        for (int i = 0; i < 5 && i < recipes.length; i++) {
+          String idReceta = recipes[i];
+          containers.add(RecipeContainer(
+            idRecepieInDatabase: idReceta,
+            userImage: userImage,
+            userName: userName,
+            userUsername: userUsername,
+          ));
+        }
+        break;
       case 'Tradicional':
-    List<String> recipes = await idRecetasTradicional;
-    for (int i = 0; i < 5 && i < recipes.length; i++) {
-      String idReceta = recipes[i];
-      containers.add(RecipeContainer(idRecepieInDatabase: idReceta, userImage: userImage, userName: userName, userUsername: userUsername,));
-    }
-    break;
+        List<String> recipes = await idRecetasTradicional;
+        for (int i = 0; i < 5 && i < recipes.length; i++) {
+          String idReceta = recipes[i];
+          containers.add(RecipeContainer(
+            idRecepieInDatabase: idReceta,
+            userImage: userImage,
+            userName: userName,
+            userUsername: userUsername,
+          ));
+        }
+        break;
       case 'De 3 ingredientes':
-    List<String> recipes = await idRecetas3Ingredientes;
-    for (int i = 0; i < 5 && i < recipes.length; i++) {
-      String idReceta = recipes[i];
-      containers.add(RecipeContainer(idRecepieInDatabase: idReceta, userImage: userImage, userName: userName, userUsername: userUsername,));
+        List<String> recipes = await idRecetas3Ingredientes;
+        for (int i = 0; i < 5 && i < recipes.length; i++) {
+          String idReceta = recipes[i];
+          containers.add(RecipeContainer(
+            idRecepieInDatabase: idReceta,
+            userImage: userImage,
+            userName: userName,
+            userUsername: userUsername,
+          ));
+        }
+        break;
+      case 'Festivas':
+        List<String> recipes = await idRecetasFestivas;
+        for (int i = 0; i < 5 && i < recipes.length; i++) {
+          String idReceta = recipes[i];
+          containers.add(RecipeContainer(
+            idRecepieInDatabase: idReceta,
+            userImage: userImage,
+            userName: userName,
+            userUsername: userUsername,
+          ));
+        }
+        break;
     }
-    break;
-    case 'Festivas':
-    List<String> recipes = await idRecetasFestivas;
-    for (int i = 0; i < 5 && i < recipes.length; i++) {
-      String idReceta = recipes[i];
-      containers.add(RecipeContainer(idRecepieInDatabase: idReceta, userImage: userImage, userName: userName, userUsername: userUsername,));
-    }
-    break;
+
+    return containers;
   }
-
-
-  return containers;
-}
-
-
 
   String getRandomClasificationAndRemove() {
     if (listClasificaciones.isEmpty) {
@@ -168,14 +236,15 @@ class RecipesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var screenSize = MediaQuery.of(context).size;
+  var screenSize = MediaQuery.of(context).size;
 
-    return Container(
-      width: screenSize.width,
-      height: screenSize.height * 2,
-      decoration: const BoxDecoration(
-        color: AppColors.accentColor,
-      ),
+  return Container(
+    width: screenSize.width,
+    height: screenSize.height,
+    decoration: const BoxDecoration(
+      color: AppColors.accentColor,
+    ),
+    child: SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -213,21 +282,20 @@ class RecipesPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
             child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: FutureBuilder<List<Widget>>(
-  future: printRecipes(primeraSeccion),
-  builder: (context, snapshot) {
-    if (snapshot.hasData) {
-      return Row(
-        children: snapshot.data!,
-      );
-    } else if (snapshot.hasError) {
-      return Text('Error: ${snapshot.error}');
-    }
-    return CircularProgressIndicator();
-  },
-)
-            ),
+                scrollDirection: Axis.horizontal,
+                child: FutureBuilder<List<Widget>>(
+                  future: printRecipes(primeraSeccion),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Row(
+                        children: snapshot.data!,
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    }
+                    return CircularProgressIndicator();
+                  },
+                )),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -263,21 +331,20 @@ class RecipesPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
             child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: FutureBuilder<List<Widget>>(
-  future: printRecipes(segundaSeccion),
-  builder: (context, snapshot) {
-    if (snapshot.hasData) {
-      return Row(
-        children: snapshot.data!,
-      );
-    } else if (snapshot.hasError) {
-      return Text('Error: ${snapshot.error}');
-    }
-    return CircularProgressIndicator();
-  },
-)
-            ),
+                scrollDirection: Axis.horizontal,
+                child: FutureBuilder<List<Widget>>(
+                  future: printRecipes(segundaSeccion),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Row(
+                        children: snapshot.data!,
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    }
+                    return CircularProgressIndicator();
+                  },
+                )),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -313,24 +380,122 @@ class RecipesPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
             child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: FutureBuilder<List<Widget>>(
-  future: printRecipes(terceraSeccion),
-  builder: (context, snapshot) {
-    if (snapshot.hasData) {
-      return Row(
-        children: snapshot.data!,
-      );
-    } else if (snapshot.hasError) {
-      return Text('Error: ${snapshot.error}');
-    }
-    return CircularProgressIndicator();
-  },
-)
-            ),
+                scrollDirection: Axis.horizontal,
+                child: FutureBuilder<List<Widget>>(
+                  future: printRecipes(terceraSeccion),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Row(
+                        children: snapshot.data!,
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    }
+                    return CircularProgressIndicator();
+                  },
+                )),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 20, 0, 0),
+                child: Text(
+                  cuartaSeccion = getRandomClasificationAndRemove(),
+                  style: GoogleFonts.acme(
+                    textStyle: const TextStyle(
+                      fontSize: 24,
+                      color: AppColors.brownTextColor,
+                      fontFamily: 'Acme',
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 25, 15, 0),
+                child: Text(
+                  'Ver más',
+                  style: GoogleFonts.acme(
+                    textStyle: const TextStyle(
+                      fontSize: 16,
+                      color: AppColors.brownTextColor,
+                      fontFamily: 'Acme',
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+            child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: FutureBuilder<List<Widget>>(
+                  future: printRecipes(cuartaSeccion),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Row(
+                        children: snapshot.data!,
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    }
+                    return CircularProgressIndicator();
+                  },
+                ),),
+          ),
+            Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 20, 0, 0),
+                child: Text(
+                  cuartaSeccion = getRandomClasificationAndRemove(),
+                  style: GoogleFonts.acme(
+                    textStyle: const TextStyle(
+                      fontSize: 24,
+                      color: AppColors.brownTextColor,
+                      fontFamily: 'Acme',
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 25, 15, 0),
+                child: Text(
+                  'Ver más',
+                  style: GoogleFonts.acme(
+                    textStyle: const TextStyle(
+                      fontSize: 16,
+                      color: AppColors.brownTextColor,
+                      fontFamily: 'Acme',
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+            child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: FutureBuilder<List<Widget>>(
+                  future: printRecipes(quintaSeccion),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Row(
+                        children: snapshot.data!,
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    }
+                    return CircularProgressIndicator();
+                  },
+                ),),
           ),
         ],
       ),
-    );
+    ),
+  );
   }
 }
