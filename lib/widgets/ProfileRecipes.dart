@@ -27,8 +27,6 @@ class ProfileRecipes extends StatefulWidget {
 }
 
 class _ProfileRecipesState extends State<ProfileRecipes> {
-  
-
   String title = "Default data information";
   String time = "0";
   String rate = "0.0";
@@ -45,12 +43,10 @@ class _ProfileRecipesState extends State<ProfileRecipes> {
   String userId = 'userId';
   bool isFavorite = false;
 
-
   @override
   void initState() {
     super.initState();
     fetchRecipeData();
-    
   }
 
   Future<void> fetchRecipeData() async {
@@ -63,8 +59,10 @@ class _ProfileRecipesState extends State<ProfileRecipes> {
     final recipeComments = await getRecipeComments(widget.idRecepieInDatabase);
     final id = await getDocumentIdByUsername(widget.userUsername);
     final ownerId = await getDocumentIdByUsername(recipeOwner[1]);
-    final liked = await checkIfRecipeLiked(ownerId, widget.idRecepieInDatabase, id);
-    final likesCount = await getAmountOfLikes(ownerId, widget.idRecepieInDatabase);
+    final liked =
+        await checkIfRecipeLiked(ownerId, widget.idRecepieInDatabase, id);
+    final likesCount =
+        await getAmountOfLikes(ownerId, widget.idRecepieInDatabase);
 
     if (mounted) {
       if (recipeData.isNotEmpty) {
@@ -124,7 +122,7 @@ class _ProfileRecipesState extends State<ProfileRecipes> {
       padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
       child: InkWell(
         onTap: () {
-         /*  Navigator.push(
+          /*  Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => RecipeDetailsScreen(
@@ -147,7 +145,7 @@ class _ProfileRecipesState extends State<ProfileRecipes> {
                   isFavorite: isFavorite),
             ),
           );*/
-        }, 
+        },
         child: Container(
           width: 180,
           height: 245,
@@ -188,72 +186,77 @@ class _ProfileRecipesState extends State<ProfileRecipes> {
               ),
 
               //PUNTUACION Y HORA | PUNTUACION Y HORA
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-                    child: Icon(Icons.star, color: Colors.white, size: 22),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(1, 2, 0, 0),
-                    child: Text(
-                      rate,
-                      style: GoogleFonts.acme(
-                        textStyle: TextStyle(
-                          color: Colors.white,
-                          fontSize: 17,
-                          fontFamily: 'Acme',
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+                      child: Icon(Icons.star, color: Colors.white, size: 22),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(1, 2, 0, 0),
+                      child: Text(
+                        rate,
+                        style: GoogleFonts.acme(
+                          textStyle: TextStyle(
+                            color: Colors.white,
+                            fontSize: 17,
+                            fontFamily: 'Acme',
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child:
-                        Icon(Icons.access_time, color: Colors.white, size: 20),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(2, 2, 0, 0),
-                    child: Text(
-                      '$time mins',
-                      style: GoogleFonts.acme(
-                        textStyle: TextStyle(
-                          color: Colors.white,
-                          fontSize: 17,
-                          fontFamily: 'Acme',
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Icon(Icons.access_time,
+                          color: Colors.white, size: 20),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(2, 2, 0, 0),
+                      child: Text(
+                        '$time mins',
+                        style: GoogleFonts.acme(
+                          textStyle: TextStyle(
+                            color: Colors.white,
+                            fontSize: 17,
+                            fontFamily: 'Acme',
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
 
               // NOMBRE DE RECETA | LIKE
-              Row(
-                children: [
-                  Expanded(
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(8, 0, 5, 5),
-                        child: Text(
-                          title,
-                          style: GoogleFonts.acme(
-                            textStyle: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontFamily: 'Acme',
+              Expanded(
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Align(
+                        alignment: Alignment
+                            .topLeft, // Align the text at the top and left
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(8, 5, 5, 5),
+                          child: Text(
+                            title,
+                            style: GoogleFonts.acme(
+                              textStyle: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontFamily: 'Acme',
+                              ),
                             ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                           ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ),
-                  ),
-                  
-                ],
+                  ],
+                ),
               ),
             ],
           ),

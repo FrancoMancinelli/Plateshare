@@ -188,111 +188,116 @@ class _RecipeContainerState extends State<RecipeContainer> {
               ),
 
               //PUNTUACION Y HORA | PUNTUACION Y HORA
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-                    child: Icon(Icons.star, color: Colors.white, size: 22),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(1, 2, 0, 0),
-                    child: Text(
-                      rate,
-                      style: GoogleFonts.acme(
-                        textStyle: TextStyle(
-                          color: Colors.white,
-                          fontSize: 17,
-                          fontFamily: 'Acme',
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+                      child: Icon(Icons.star, color: Colors.white, size: 22),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(1, 2, 0, 0),
+                      child: Text(
+                        rate,
+                        style: GoogleFonts.acme(
+                          textStyle: TextStyle(
+                            color: Colors.white,
+                            fontSize: 17,
+                            fontFamily: 'Acme',
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child:
-                        Icon(Icons.access_time, color: Colors.white, size: 20),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(2, 2, 0, 0),
-                    child: Text(
-                      '$time mins',
-                      style: GoogleFonts.acme(
-                        textStyle: TextStyle(
-                          color: Colors.white,
-                          fontSize: 17,
-                          fontFamily: 'Acme',
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child:
+                          Icon(Icons.access_time, color: Colors.white, size: 20),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(2, 2, 0, 0),
+                      child: Text(
+                        '$time mins',
+                        style: GoogleFonts.acme(
+                          textStyle: TextStyle(
+                            color: Colors.white,
+                            fontSize: 17,
+                            fontFamily: 'Acme',
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
 
               // NOMBRE DE RECETA | LIKE
-              Row(
-                children: [
-                  Expanded(
-                    child: Align(
-                      alignment: Alignment.centerLeft,
+              Expanded(
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(8, 0, 5, 5),
+                          child: Text(
+                            title,
+                            style: GoogleFonts.acme(
+                              textStyle: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontFamily: 'Acme',
+                              ),
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.bottomRight,
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(8, 0, 5, 5),
-                        child: Text(
-                          title,
-                          style: GoogleFonts.acme(
-                            textStyle: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontFamily: 'Acme',
+                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                        child: Container(
+                          height: 50,
+                          width: 55,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              bottomRight: Radius.circular(20),
                             ),
                           ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                      child: Container(
-                        height: 50,
-                        width: 55,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            bottomRight: Radius.circular(20),
-                          ),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.fromLTRB(5, 1, 0, 0),
-                          child: LikeButton(
-                            bubblesColor: BubblesColor(
-                                dotPrimaryColor:
-                                    Color.fromARGB(255, 89, 182, 151),
-                                dotSecondaryColor:
-                                    Color.fromARGB(255, 76, 253, 129)),
-                            circleColor: CircleColor(
-                                end: Color.fromARGB(255, 89, 182, 151),
-                                start: Color.fromARGB(255, 76, 253, 194)),
-                            likeBuilder: (isLiked) {
-                              return Icon(
-                                Icons.favorite,
-                                color: isFavorite
-                                    ? AppColors.primaryColor
-                                    : Colors.grey,
-                                size: 30,
-                              );
-                            },
-                            onTap: onLikeButtonTapped,
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(5, 1, 0, 0),
+                            child: LikeButton(
+                              bubblesColor: BubblesColor(
+                                  dotPrimaryColor:
+                                      Color.fromARGB(255, 89, 182, 151),
+                                  dotSecondaryColor:
+                                      Color.fromARGB(255, 76, 253, 129)),
+                              circleColor: CircleColor(
+                                  end: Color.fromARGB(255, 89, 182, 151),
+                                  start: Color.fromARGB(255, 76, 253, 194)),
+                              likeBuilder: (isLiked) {
+                                return Icon(
+                                  Icons.favorite,
+                                  color: isFavorite
+                                      ? AppColors.primaryColor
+                                      : Colors.grey,
+                                  size: 30,
+                                );
+                              },
+                              onTap: onLikeButtonTapped,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),
