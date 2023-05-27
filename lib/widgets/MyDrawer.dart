@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:plateshare/screens/InicioScreen.dart';
 import 'package:plateshare/screens/LoginScreen.dart';
 
 class MyDrawer extends StatelessWidget {
@@ -83,84 +84,9 @@ class MyDrawer extends StatelessWidget {
               ],
             ),
           ),
-          Column(
-            children: [
-              ListTile(
-                leading: const Icon(
-                  Icons.person_outlined,
-                  size: 25,
-                  color: Color(0xFF576661),
-                ),
-                title: Text(
-                  'Mi perfil',
-                  style: GoogleFonts.alata(
-                    textStyle: const TextStyle(
-                      fontSize: 16,
-                      color: Color(0xFF576661),
-                      fontFamily: 'Alata',
-                    ),
-                  ),
-                ),
-                onTap: () {},
-              ),
-              ListTile(
-                leading: const Icon(
-                  Icons.favorite_outline,
-                  size: 25,
-                  color: Color(0xFF576661),
-                ),
-                title: Text(
-                  'Mis favoritos',
-                  style: GoogleFonts.alata(
-                    textStyle: const TextStyle(
-                      fontSize: 16,
-                      color: Color(0xFF576661),
-                      fontFamily: 'Alata',
-                    ),
-                  ),
-                ),
-                onTap: () {},
-              ),
-              ListTile(
-                leading: const Icon(
-                  Icons.now_wallpaper_outlined,
-                  size: 25,
-                  color: Color(0xFF576661),
-                ),
-                title: Text(
-                  'Historial de Escaneos',
-                  style: GoogleFonts.alata(
-                    textStyle: const TextStyle(
-                      fontSize: 16,
-                      color: Color(0xFF576661),
-                      fontFamily: 'Alata',
-                    ),
-                  ),
-                ),
-                onTap: () {},
-              ),
-              ListTile(
-                leading: const Icon(
-                  Icons.notifications_outlined,
-                  size: 25,
-                  color: Color(0xFF576661),
-                ),
-                title: Text(
-                  'Notificaciones',
-                  style: GoogleFonts.alata(
-                    textStyle: const TextStyle(
-                      fontSize: 16,
-                      color: Color(0xFF576661),
-                      fontFamily: 'Alata',
-                    ),
-                  ),
-                ),
-                onTap: () {},
-              ),
-            ],
-          ),
+          
           SizedBox(
-            height: 400, // tamaño determinado del contenedor
+            height: screenSize.height - 200, // tamaño determinado del contenedor
             child: Column(
               children: [
                 Expanded(
