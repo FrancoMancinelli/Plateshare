@@ -244,56 +244,51 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
 
-              SingleChildScrollView(
-                child: Container(
-                  color: AppColors.greyAccentColor,
-                  width: screenSize.width,
-                  height: screenSize.height / 1.2,
+              Container(
+                color: AppColors.greyAccentColor,
+                width: screenSize.width,
+                height: screenSize.height /1.98,
+                child: SingleChildScrollView(
                   child: Column(
                     children: [
                       for (int i = 0; i < recipesIDs.length; i += 2)
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Column(
-                                children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Column(
+                              children: [
+                                ProfileRecipes(
+                                  idRecepieInDatabase: recipesIDs[i],
+                                  userImage: widget.profilePicData,
+                                  userName: widget.usernameData,
+                                  userUsername: widget.nameData,
+                                  screenWidth: screenSize.width,
+                                ),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                if (i + 1 < recipesIDs.length)
                                   ProfileRecipes(
-                                    idRecepieInDatabase: recipesIDs[i],
+                                    idRecepieInDatabase: recipesIDs[i + 1],
                                     userImage: widget.profilePicData,
                                     userName: widget.usernameData,
                                     userUsername: widget.nameData,
+                                    screenWidth: screenSize.width,
                                   ),
-                                ],
-                              ),
-                              SizedBox(width: 10),
-                              Column(
-                                children: [
-                                  if (i + 1 < recipesIDs.length)
-                                    ProfileRecipes(
-                                      idRecepieInDatabase: recipesIDs[i + 1],
-                                      userImage: widget.profilePicData,
-                                      userName: widget.usernameData,
-                                      userUsername: widget.nameData,
+                                if (i + 1 >= recipesIDs.length)
+                                  Container(
+                                    width: screenSize.width/2,
+                                    height: 245,
+                                    decoration: BoxDecoration(
+                                      color: AppColors.greyAccentColor,
+                                      borderRadius:
+                                          BorderRadius.circular(20),
                                     ),
-                                  if (i + 1 >= recipesIDs.length)
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.fromLTRB(5, 0, 5, 0),
-                                      child: Container(
-                                        width: 180,
-                                        height: 245,
-                                        decoration: BoxDecoration(
-                                          color: AppColors.greyAccentColor,
-                                          borderRadius: BorderRadius.circular(20),
-                                        ),
-                                      ),
-                                    ),
-                                ],
-                              ),
-                            ],
-                          ),
+                                  ),
+                              ],
+                            ),
+                          ],
                         ),
                     ],
                   ),

@@ -237,8 +237,6 @@ Future<List<String>> getUserInfoFromRecipe(String recipeId) async {
       final Map<String, dynamic> userData = userRecipeDoc.data() as Map<String, dynamic>;
       final String image = userData['profilepic'].toString();
       final String username = userData['username'].toString();
-      print(image);
-      print(username);
       return [image, username];
     }
   }
@@ -298,7 +296,6 @@ Future<List<Map<String, dynamic>>> getRecipeIngredients(String recipeId) async {
           .get();
 
       ingredients = ingredientSnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
-      print(ingredients);
       break; // Exit the loop once the recipe document is found
     }
   }
