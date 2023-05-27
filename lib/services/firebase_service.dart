@@ -489,9 +489,6 @@ Future<void> modifyLikeToRecipe(String recipeId, String value, int flag) async {
   }
 }
 
-
-
-
 Future<int> getAmountOfLikes(String recipeOwner, String recipeId) async {
   final DocumentSnapshot<Map<String, dynamic>> recipeSnapshot =
       await FirebaseFirestore.instance
@@ -511,6 +508,31 @@ Future<int> getAmountOfLikes(String recipeOwner, String recipeId) async {
     }
 
   return 0;
+}
+
+Future<List<String>> getRecipeDocumentIDs(String userID) async {
+  List<String> recipeIDs = [];
+  
+  try {
+    // Get the 'recipe' collection reference inside the user document
+    CollectionReference userRecipeCollection = FirebaseFirestore.instance
+        .collection('user')
+        .doc(userID)
+        .collection('recipe');
+    
+    // Get all the documents in the 'recipe' collection
+    QuerySnapshot snapshot = await userRecipeCollection.get();
+    
+    // Extract the document IDs and add them to the list
+    snapshot.docs.forEach((doc) {
+      recipeIDs.add(doc.id);
+    });
+  } catch (e) {
+    print('Error getting recipe document IDs: $e');
+  }
+  
+  print('[RECETAS ID]: $recipeIDs');
+  return recipeIDs;
 }
 
 
