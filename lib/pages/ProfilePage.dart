@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plateshare/screens/InicioScreen.dart';
+import 'package:plateshare/services/firebase_service.dart';
 import 'package:plateshare/util/AppColors.dart';
+import 'package:plateshare/widgets/ProfileRecipes.dart';
 import 'package:plateshare/widgets/RecipeContainer.dart';
 
 class ProfilePage extends StatefulWidget {
+  final String nameData;
+  final String usernameData;
+  final String profilePicData;
+
   ProfilePage({
     Key? key,
+    required this.usernameData,
+    required this.nameData,
+    required this.profilePicData,
   }) : super(key: key);
 
   @override
@@ -16,6 +25,11 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   Color menuButtonColor = AppColors.brownRecepieColor;
   Color favoriteButtonColor = AppColors.accentColor;
+  String userId = '';
+  List<String> recipesIDs = [
+    'G4y0PEF2DQiF4voOIuy6',
+    'bJJfriTrdFY5rFbFmMRB',
+  ];
 
   void handleMenuButtonTap() {
     setState(() {
@@ -28,6 +42,21 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(() {
       favoriteButtonColor = AppColors.brownRecepieColor;
       menuButtonColor = AppColors.accentColor;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getRecipesIDs();
+  }
+
+  Future<void> getRecipesIDs() async {
+    final userIdFromDB = await getDocumentIdByUsername(widget.usernameData);
+    final recipesIDsFromUserId = await getRecipeDocumentIDs(userIdFromDB);
+    setState(() {
+      userId = userIdFromDB;
+      recipesIDs = recipesIDsFromUserId;
     });
   }
 
@@ -113,8 +142,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       'https://firebasestorage.googleapis.com/v0/b/plateshare-tfg2023.appspot.com/o/default_profile_pic.png?alt=media&token=92c2e8f1-5871-4285-8040-8b8df60bae14'),
                 ),
               ),
-              
-              SizedBox(height: 10), // Add spacing between the image and the text
+
+              SizedBox(height: 10),
               Text(
                 'Fran Mancinelli',
                 style: GoogleFonts.acme(
@@ -125,7 +154,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
               ),
-              
+
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                 child: Column(
@@ -170,7 +199,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   height: 1,
                 ),
               ),
-              
+
               Align(
                 alignment: Alignment.center,
                 child: Row(
@@ -185,8 +214,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(25.0),
                           ),
-                          minimumSize:
-                              Size(170, 20), // Set the desired width and height
+                          minimumSize: Size(170, 20),
                         ),
                         child: Icon(Icons.restaurant_menu_rounded,
                             size: 24, color: AppColors.blackColor),
@@ -206,8 +234,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(25.0),
                           ),
-                          minimumSize:
-                              Size(170, 20), // Set the desired width and height
+                          minimumSize: Size(170, 20),
                         ),
                         child: Icon(Icons.favorite_border_outlined,
                             size: 24, color: AppColors.blackColor),
@@ -216,16 +243,63 @@ class _ProfilePageState extends State<ProfilePage> {
                   ],
                 ),
               ),
-              
+
               SingleChildScrollView(
                 child: Container(
                   color: AppColors.greyAccentColor,
                   width: screenSize.width,
-                  height: screenSize.height/1.5,
-              
+                  height: screenSize.height / 1.2,
+                  child: Column(
+                    children: [
+                      for (int i = 0; i < recipesIDs.length; i += 2)
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Column(
+                                children: [
+                                  ProfileRecipes(
+                                    idRecepieInDatabase: recipesIDs[i],
+                                    userImage: widget.profilePicData,
+                                    userName: widget.usernameData,
+                                    userUsername: widget.nameData,
+                                  ),
+                                ],
+                              ),
+                              SizedBox(width: 10),
+                              Column(
+                                children: [
+                                  if (i + 1 < recipesIDs.length)
+                                    ProfileRecipes(
+                                      idRecepieInDatabase: recipesIDs[i + 1],
+                                      userImage: widget.profilePicData,
+                                      userName: widget.usernameData,
+                                      userUsername: widget.nameData,
+                                    ),
+                                  if (i + 1 >= recipesIDs.length)
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                      child: Container(
+                                        width: 180,
+                                        height: 245,
+                                        decoration: BoxDecoration(
+                                          color: AppColors.greyAccentColor,
+                                          borderRadius: BorderRadius.circular(20),
+                                        ),
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                    ],
+                  ),
                 ),
               ),
-              
+
               //
             ],
           ),

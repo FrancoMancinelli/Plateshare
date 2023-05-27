@@ -101,7 +101,7 @@ class _InicioScreenState extends State<InicioScreen> {
       case 1: // Recetas | Home
         return RecipesPage(userImage: widget.profilePicData, userName: widget.nameData, userUsername: widget.usernameData,);
       case 2:
-        return ProfilePage();
+        return ProfilePage(usernameData: widget.usernameData, nameData: widget.nameData, profilePicData: widget.profilePicData,);
       default:
         return Container();
     }
