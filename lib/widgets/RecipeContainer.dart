@@ -304,10 +304,12 @@ class _RecipeContainerState extends State<RecipeContainer> {
   Future<bool> onLikeButtonTapped(bool isLiked) async {
     if (isFavorite == true) {
       isFavorite = false;
+      likes--;
       modifyLikeToRecipe(widget.idRecepieInDatabase, userId, 2);
       return isFavorite;
     } else {
       isFavorite = true;
+      likes++;
       modifyLikeToRecipe(widget.idRecepieInDatabase, userId, 1);
       return isFavorite;
     }
