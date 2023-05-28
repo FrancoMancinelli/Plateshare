@@ -404,6 +404,8 @@ Future<String?> getUserNameByDocumentId(String documentId) async {
   return username;
 }
 
+
+
 Future<void> addCommentToRecipe(String recipeId, String owner, String text) async {
   final QuerySnapshot userSnapshot = await FirebaseFirestore.instance
       .collection('user')
@@ -533,6 +535,29 @@ Future<List<String>> getRecipeDocumentIDs(String userID) async {
 }
 
 
+Future<List<dynamic>> getFollowers(String userId) async {
+  DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+      .collection('user')
+      .doc(userId)
+      .get();
+
+  Map<String, dynamic> userData = userSnapshot.data() as Map<String, dynamic>;
+  List<dynamic> followers = userData['followers'] ?? [];
+
+  return followers;
+}
+
+Future<List<dynamic>> getFollows(String userId) async {
+  DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+      .collection('user')
+      .doc(userId)
+      .get();
+
+  Map<String, dynamic> userData = userSnapshot.data() as Map<String, dynamic>;
+  List<dynamic> followers = userData['follows'] ?? [];
+
+  return followers;
+}
 
 
 
