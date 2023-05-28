@@ -1,21 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plateshare/screens/InicioScreen.dart';
+import 'package:plateshare/screens/RecipeFormScreenOne.dart';
 import 'package:plateshare/services/firebase_service.dart';
 import 'package:plateshare/util/AppColors.dart';
 import 'package:plateshare/widgets/ProfileRecipes.dart';
 import 'package:plateshare/widgets/RecipeContainer.dart';
 
 class ProfilePage extends StatefulWidget {
+  final String emailData;
   final String nameData;
   final String usernameData;
   final String profilePicData;
+
+  final String userId;
+  final int followers;
+  final int follows;
+  final int recipeCount;
+  final List<String> recipesIDs;
 
   ProfilePage({
     Key? key,
     required this.usernameData,
     required this.nameData,
     required this.profilePicData,
+    required this.emailData,
+    required this.userId,
+    required this.followers,
+    required this.follows,
+    required this.recipeCount,
+    required this.recipesIDs,
   }) : super(key: key);
 
   @override
@@ -25,13 +39,8 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   Color menuButtonColor = AppColors.brownRecepieColor;
   Color favoriteButtonColor = AppColors.accentColor;
-  String userId = '';
-  int followers = 0;
-  int follows = 0;
-  int recipeCount = 0;
-  List<String> recipesIDs = [];
-  List<Map<String, dynamic>> data = [];
 
+  List<Map<String, dynamic>> data = [];
 
   void handleMenuButtonTap() {
     setState(() {
@@ -50,33 +59,24 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    getRecipesIDs();
+    getProfileData();
   }
 
-  Future<void> getRecipesIDs() async {
-    final userIdFromDB = await getDocumentIdByUsername(widget.usernameData);
-    final recipesIDsFromUserId = await getRecipeDocumentIDs(userIdFromDB);
-    final followersFromDB = await getFollowers(userIdFromDB);
-    final followsFromDB = await getFollows(userIdFromDB);
+  Future<void> getProfileData() async {
     setState(() {
-      userId = userIdFromDB;
-      recipesIDs = recipesIDsFromUserId;
-      followers = followersFromDB.length;
-      follows = followsFromDB.length;
-      recipeCount = recipesIDsFromUserId.length;
-      data = generateDataList(recipeCount, followers, follows);
-
+      data = generateDataList(
+          widget.recipeCount, widget.followers, widget.follows);
     });
   }
 
-
-  List<Map<String, dynamic>> generateDataList(int recipeCount, int followers, int follows) {
-  return [
-    {'count': recipeCount.toString(), 'label': 'Recetas'},
-    {'count': followers.toString(), 'label': 'Seguidores'},
-    {'count': follows.toString(), 'label': 'Seguidos'},
-  ];
-}
+  List<Map<String, dynamic>> generateDataList(
+      int recipeCount, int followers, int follows) {
+    return [
+      {'count': recipeCount.toString(), 'label': 'Recetas'},
+      {'count': followers.toString(), 'label': 'Seguidores'},
+      {'count': follows.toString(), 'label': 'Seguidos'},
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -130,7 +130,16 @@ class _ProfilePageState extends State<ProfilePage> {
                               size: 30,
                             ),
                             onPressed: () {
-                              // Handle right icon button press
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => RecipeFormScreenOne(
+                                      emailData: widget.emailData,
+                                      nameData: widget.nameData,
+                                      profilePicData: widget.profilePicData,
+                                      usernameData: widget.usernameData),
+                                ),
+                              );
                             },
                           ),
                         ),
@@ -150,8 +159,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 child: CircleAvatar(
                   radius: 45,
-                  backgroundImage: NetworkImage(
-                      widget.profilePicData),
+                  backgroundImage: NetworkImage(widget.profilePicData),
                 ),
               ),
 
@@ -257,20 +265,81 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
 
               Container(
-                color: AppColors.greyAccentColor,
+                color: AppColors.accentColor,
                 width: screenSize.width,
-                height: screenSize.height /1.98,
+                height: screenSize.height / 1.98,
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      for (int i = 0; i < recipesIDs.length; i += 2)
+                      if (widget.recipesIDs.isEmpty)
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0,50,0,0),
+                          child: Column(
+                            children: [
+                              Image.network(
+                                'https://i.imgur.com/6eAm9Lq.png',
+                                width: 130, // Adjust the width as needed
+                                height: 130, // Adjust the height as needed
+                              ),
+                              Text('Aun no hay recetas', style: GoogleFonts.acme(
+                                textStyle: const TextStyle(
+                                  fontSize: 24,
+                                  color: AppColors.brownInfoRecipe,
+                                  fontFamily: 'Acme',
+                                ),
+                              ),
+                            ),
+                              Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              '¿Ya tienes tu primer receta? ',
+                              style: GoogleFonts.acme(
+                                textStyle: const TextStyle(
+                                  fontSize: 16,
+                                  color: AppColors.brownInfoRecipe,
+                                  fontFamily: 'Acme',
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => RecipeFormScreenOne(
+                                        emailData: widget.emailData,
+                                        nameData: widget.nameData,
+                                        profilePicData: widget.profilePicData,
+                                        usernameData: widget.usernameData),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                'Click aquí',
+                                style: GoogleFonts.acme(
+                                  textStyle: const TextStyle(
+                                    fontSize: 15,
+                                    color: AppColors.primaryColor,
+                                    fontFamily: 'Acme',
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                      ),
+                            ],
+                          ),
+                        ),
+                      for (int i = 0; i < widget.recipesIDs.length; i += 2)
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Column(
                               children: [
                                 ProfileRecipes(
-                                  idRecepieInDatabase: recipesIDs[i],
+                                  idRecepieInDatabase: widget.recipesIDs[i],
                                   userImage: widget.profilePicData,
                                   userName: widget.usernameData,
                                   userUsername: widget.nameData,
@@ -280,23 +349,20 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                             Column(
                               children: [
-                                if (i + 1 < recipesIDs.length)
+                                if (i + 1 < widget.recipesIDs.length)
                                   ProfileRecipes(
-                                    idRecepieInDatabase: recipesIDs[i + 1],
+                                    idRecepieInDatabase:
+                                        widget.recipesIDs[i + 1],
                                     userImage: widget.profilePicData,
                                     userName: widget.usernameData,
                                     userUsername: widget.nameData,
                                     screenWidth: screenSize.width,
                                   ),
-                                if (i + 1 >= recipesIDs.length)
+                                if (i + 1 >= widget.recipesIDs.length)
                                   Container(
-                                    width: screenSize.width/2,
+                                    width: screenSize.width / 2,
                                     height: 245,
-                                    decoration: BoxDecoration(
-                                      color: AppColors.greyAccentColor,
-                                      borderRadius:
-                                          BorderRadius.circular(20),
-                                    ),
+                                      color: AppColors.accentColor,
                                   ),
                               ],
                             ),

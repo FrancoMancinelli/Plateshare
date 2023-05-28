@@ -7,6 +7,7 @@ import 'package:plateshare/pages/ProfilePage.dart';
 import 'package:plateshare/pages/RecipesPage.dart';
 import 'package:plateshare/screens/AddRecipeScreen.dart';
 import 'package:plateshare/screens/RecipeFormScreenOne.dart';
+import 'package:plateshare/services/firebase_service.dart';
 import 'package:plateshare/widgets/MyAppBar.dart';
 import 'package:plateshare/widgets/MyDrawer.dart';
 
@@ -30,6 +31,7 @@ class InicioScreen extends StatefulWidget {
   @override
   _InicioScreenState createState() => _InicioScreenState();
 }
+
 var screenSize;
 
 class _InicioScreenState extends State<InicioScreen> {
@@ -47,6 +49,32 @@ class _InicioScreenState extends State<InicioScreen> {
     });
   }
 
+  String userId = '';
+  int followers = 0;
+  int follows = 0;
+  int recipeCount = 0;
+  List<String> recipesIDs = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getRecipesIDs();
+  }
+
+  Future<void> getRecipesIDs() async {
+    final userIdFromDB = await getDocumentIdByUsername(widget.usernameData);
+    final recipesIDsFromUserId = await getRecipeDocumentIDs(userIdFromDB);
+    final followersFromDB = await getFollowers(userIdFromDB);
+    final followsFromDB = await getFollows(userIdFromDB);
+    setState(() {
+      userId = userIdFromDB;
+      recipesIDs = recipesIDsFromUserId;
+      followers = followersFromDB.length;
+      follows = followsFromDB.length;
+      recipeCount = recipesIDsFromUserId.length;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     screenSize = MediaQuery.of(context).size;
@@ -55,29 +83,40 @@ class _InicioScreenState extends State<InicioScreen> {
       child: Scaffold(
         //El AppBar y Drawer solo se muestran si la pagina es la de recetas
         appBar: _selectedIndex == 1 ? MyAppBar() : null,
-        drawer: _selectedIndex == 1 ? MyDrawer(
+        drawer: _selectedIndex == 1
+            ? MyDrawer(
                 nameData: widget.nameData,
                 usernameData: widget.usernameData,
                 profilePicData: widget.profilePicData,
               )
             : null,
         body: _getPage(_selectedIndex),
-        floatingActionButton: _selectedIndex == 1 ? FloatingActionButton(
-        backgroundColor: AppColors.orangeColor,
-        child: Icon(Icons.add, size: 30,),
-        onPressed: () {
-          // Navigate to the screen where you want to add a recipe
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => RecipeFormScreenOne(emailData: widget.emailData, nameData: widget.nameData, profilePicData: widget.profilePicData, usernameData: widget.usernameData),
-            ),
-          );
-        },
-      ) : null,
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        floatingActionButton: _selectedIndex == 1
+            ? FloatingActionButton(
+                backgroundColor: AppColors.orangeColor,
+                child: Icon(
+                  Icons.add,
+                  size: 30,
+                ),
+                onPressed: () {
+                  // Navigate to the screen where you want to add a recipe
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => RecipeFormScreenOne(
+                          emailData: widget.emailData,
+                          nameData: widget.nameData,
+                          profilePicData: widget.profilePicData,
+                          usernameData: widget.usernameData),
+                    ),
+                  );
+                },
+              )
+            : null,
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         bottomNavigationBar: Theme(
-          data: Theme.of(context).copyWith(iconTheme: const IconThemeData(color: AppColors.whiteColor)),
+          data: Theme.of(context).copyWith(
+              iconTheme: const IconThemeData(color: AppColors.whiteColor)),
           child: CurvedNavigationBar(
             color: AppColors.primaryColor,
             backgroundColor: Color.fromARGB(255, 16, 141, 99),
@@ -87,7 +126,8 @@ class _InicioScreenState extends State<InicioScreen> {
             items: items,
             height: 60,
             index: _selectedIndex,
-            onTap: (_selectedIndex) => setState(() => this._selectedIndex = _selectedIndex),
+            onTap: (_selectedIndex) =>
+                setState(() => this._selectedIndex = _selectedIndex),
           ),
         ),
       ),
@@ -99,9 +139,23 @@ class _InicioScreenState extends State<InicioScreen> {
       case 0:
         return const NotificationsPage();
       case 1: // Recetas | Home
-        return RecipesPage(userImage: widget.profilePicData, userName: widget.nameData, userUsername: widget.usernameData,);
+        return RecipesPage(
+          userImage: widget.profilePicData,
+          userName: widget.nameData,
+          userUsername: widget.usernameData,
+        );
       case 2:
-        return ProfilePage(usernameData: widget.usernameData, nameData: widget.nameData, profilePicData: widget.profilePicData,);
+        return ProfilePage(
+          emailData: widget.emailData,
+          usernameData: widget.usernameData,
+          nameData: widget.nameData,
+          profilePicData: widget.profilePicData,
+          followers: followers,
+          follows: follows,
+          recipeCount: recipeCount,
+          recipesIDs: recipesIDs,
+          userId: userId,
+        );
       default:
         return Container();
     }
