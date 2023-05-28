@@ -43,7 +43,7 @@ class _ProfileRecipesState extends State<ProfileRecipes> {
   List<Ingredient> ingredients = [];
   List<Map<String, dynamic>> comentarios = [];
   String userId = 'userId';
-  bool isFavorite = false;
+  bool isFavorite = true;
 
   @override
   void initState() {
@@ -61,8 +61,7 @@ class _ProfileRecipesState extends State<ProfileRecipes> {
     final recipeComments = await getRecipeComments(widget.idRecepieInDatabase);
     final id = await getDocumentIdByUsername(widget.userUsername);
     final ownerId = await getDocumentIdByUsername(recipeOwner[1]);
-    final liked =
-        await checkIfRecipeLiked(ownerId, widget.idRecepieInDatabase, id);
+
     final likesCount =
         await getAmountOfLikes(ownerId, widget.idRecepieInDatabase);
 
@@ -82,7 +81,6 @@ class _ProfileRecipesState extends State<ProfileRecipes> {
           ingredients = formattedIngredients;
           comentarios = recipeComments;
           userId = id;
-          isFavorite = liked;
           likes = likesCount;
         });
       }
@@ -122,7 +120,7 @@ class _ProfileRecipesState extends State<ProfileRecipes> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        /*  Navigator.push(
+         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => RecipeDetailsScreen(
@@ -144,7 +142,7 @@ class _ProfileRecipesState extends State<ProfileRecipes> {
                 recipeComments: comentarios,
                 isFavorite: isFavorite),
           ),
-        );*/
+        );
       },
       child: Container(
         width: widget.screenWidth/2,
