@@ -232,7 +232,7 @@ class _ProfileRecipesState extends State<ProfileRecipes> {
               ),
             ),
 
-            // NOMBRE DE RECETA | LIKE
+            // NOMBRE DE RECETA
             Expanded(
               child: Row(
                 children: [

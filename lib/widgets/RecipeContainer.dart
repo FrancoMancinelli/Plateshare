@@ -311,12 +311,16 @@ class _RecipeContainerState extends State<RecipeContainer> {
       isFavorite = false;
       likes--;
       modifyLikeToRecipe(widget.idRecepieInDatabase, userId, 2);
+      removeFavorite(userId, widget.idRecepieInDatabase);
       return isFavorite;
     } else {
       isFavorite = true;
       likes++;
       modifyLikeToRecipe(widget.idRecepieInDatabase, userId, 1);
+      addFavorite(userId, widget.idRecepieInDatabase);
       return isFavorite;
     }
   }
 }
+
+

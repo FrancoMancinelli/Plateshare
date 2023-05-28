@@ -239,16 +239,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                                 color: isFavorite ? Colors.white : Colors.white,
                               ),
                               onPressed: () {
-                                /* setState(() {
-                                  isFavorite = !isFavorite;
-                                  if (isFavorite == true) {
-                                    modifyLikeToRecipe(widget.recipeID, widget.userId, 1);
-                                    amountLikes++;
-                                  } else {
-                                    modifyLikeToRecipe(widget.recipeID, widget.userId, 2);
-                                    amountLikes--;
-                                  }
-                                }); */
+
                               },
                             ),
                             Text(

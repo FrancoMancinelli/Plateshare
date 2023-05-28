@@ -4,8 +4,11 @@ import 'package:plateshare/screens/InicioScreen.dart';
 import 'package:plateshare/screens/RecipeFormScreenOne.dart';
 import 'package:plateshare/services/firebase_service.dart';
 import 'package:plateshare/util/AppColors.dart';
+import 'package:plateshare/widgets/MyRecipesContainer.dart';
 import 'package:plateshare/widgets/ProfileRecipes.dart';
 import 'package:plateshare/widgets/RecipeContainer.dart';
+
+import '../widgets/MyFavoritesContainer.dart';
 
 class ProfilePage extends StatefulWidget {
   final String emailData;
@@ -18,6 +21,7 @@ class ProfilePage extends StatefulWidget {
   final int follows;
   final int recipeCount;
   final List<String> recipesIDs;
+  final List<dynamic> likedRecipesIDs;
 
   ProfilePage({
     Key? key,
@@ -30,11 +34,14 @@ class ProfilePage extends StatefulWidget {
     required this.follows,
     required this.recipeCount,
     required this.recipesIDs,
+    required this.likedRecipesIDs,
   }) : super(key: key);
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
+
+var screenSize;
 
 class _ProfilePageState extends State<ProfilePage> {
   Color menuButtonColor = AppColors.brownRecepieColor;
@@ -42,10 +49,13 @@ class _ProfilePageState extends State<ProfilePage> {
 
   List<Map<String, dynamic>> data = [];
 
+  int flag = 1;
+
   void handleMenuButtonTap() {
     setState(() {
       menuButtonColor = AppColors.brownRecepieColor;
       favoriteButtonColor = AppColors.accentColor;
+      flag = 1;
     });
   }
 
@@ -53,6 +63,7 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(() {
       favoriteButtonColor = AppColors.brownRecepieColor;
       menuButtonColor = AppColors.accentColor;
+      flag = 2;
     });
   }
 
@@ -80,6 +91,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    screenSize = MediaQuery.of(context).size;
+
     return SafeArea(
       child: Container(
         width: screenSize.width,
@@ -264,114 +277,29 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
 
-              Container(
-                color: AppColors.accentColor,
-                width: screenSize.width,
-                height: screenSize.height / 1.98,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      if (widget.recipesIDs.isEmpty)
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0,50,0,0),
-                          child: Column(
-                            children: [
-                              Image.network(
-                                'https://i.imgur.com/6eAm9Lq.png',
-                                width: 130, // Adjust the width as needed
-                                height: 130, // Adjust the height as needed
-                              ),
-                              Text('Aun no hay recetas', style: GoogleFonts.acme(
-                                textStyle: const TextStyle(
-                                  fontSize: 24,
-                                  color: AppColors.brownInfoRecipe,
-                                  fontFamily: 'Acme',
-                                ),
-                              ),
-                            ),
-                              Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              '¿Ya tienes tu primer receta? ',
-                              style: GoogleFonts.acme(
-                                textStyle: const TextStyle(
-                                  fontSize: 16,
-                                  color: AppColors.brownInfoRecipe,
-                                  fontFamily: 'Acme',
-                                ),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => RecipeFormScreenOne(
-                                        emailData: widget.emailData,
-                                        nameData: widget.nameData,
-                                        profilePicData: widget.profilePicData,
-                                        usernameData: widget.usernameData),
-                                  ),
-                                );
-                              },
-                              child: Text(
-                                'Click aquí',
-                                style: GoogleFonts.acme(
-                                  textStyle: const TextStyle(
-                                    fontSize: 15,
-                                    color: AppColors.primaryColor,
-                                    fontFamily: 'Acme',
-                                    decoration: TextDecoration.underline,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                      ),
-                            ],
-                          ),
-                        ),
-                      for (int i = 0; i < widget.recipesIDs.length; i += 2)
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Column(
-                              children: [
-                                ProfileRecipes(
-                                  idRecepieInDatabase: widget.recipesIDs[i],
-                                  userImage: widget.profilePicData,
-                                  userName: widget.usernameData,
-                                  userUsername: widget.nameData,
-                                  screenWidth: screenSize.width,
-                                ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                if (i + 1 < widget.recipesIDs.length)
-                                  ProfileRecipes(
-                                    idRecepieInDatabase:
-                                        widget.recipesIDs[i + 1],
-                                    userImage: widget.profilePicData,
-                                    userName: widget.usernameData,
-                                    userUsername: widget.nameData,
-                                    screenWidth: screenSize.width,
-                                  ),
-                                if (i + 1 >= widget.recipesIDs.length)
-                                  Container(
-                                    width: screenSize.width / 2,
-                                    height: 245,
-                                      color: AppColors.accentColor,
-                                  ),
-                              ],
-                            ),
-                          ],
-                        ),
-                    ],
-                  ),
-                ),
-              ),
+              Column(
+                children: [
+                  if (flag == 1)
+                    MyRecipesContainer(
+                      emailData: widget.emailData,
+                      followers: widget.followers,
+                      follows: widget.follows,
+                      nameData: widget.nameData,
+                      profilePicData: widget.profilePicData,
+                      recipeCount: widget.recipeCount,
+                      recipesIDs: widget.recipesIDs,
+                      userId: widget.userId,
+                      usernameData: widget.usernameData,
+                    ),
+                  if (flag == 2)
+                    MyFavoritesContainer(
+                      nameData: widget.nameData,
+                      profilePicData: widget.profilePicData,
+                      likedRecipesIDs: widget.likedRecipesIDs,
+                      usernameData: widget.usernameData,
+                    ),
+                ],
+              )
 
               //
             ],

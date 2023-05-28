@@ -54,6 +54,8 @@ class _InicioScreenState extends State<InicioScreen> {
   int follows = 0;
   int recipeCount = 0;
   List<String> recipesIDs = [];
+  List<dynamic> likedRecipesIDs = [];
+
 
   @override
   void initState() {
@@ -66,12 +68,15 @@ class _InicioScreenState extends State<InicioScreen> {
     final recipesIDsFromUserId = await getRecipeDocumentIDs(userIdFromDB);
     final followersFromDB = await getFollowers(userIdFromDB);
     final followsFromDB = await getFollows(userIdFromDB);
+    //TODO
+    final likedRecipesIDsFromUserId = await getLikedRecipes(userIdFromDB);
     setState(() {
       userId = userIdFromDB;
       recipesIDs = recipesIDsFromUserId;
       followers = followersFromDB.length;
       follows = followsFromDB.length;
       recipeCount = recipesIDsFromUserId.length;
+      likedRecipesIDs = likedRecipesIDsFromUserId;
     });
   }
 
@@ -155,6 +160,7 @@ class _InicioScreenState extends State<InicioScreen> {
           recipeCount: recipeCount,
           recipesIDs: recipesIDs,
           userId: userId,
+          likedRecipesIDs: likedRecipesIDs,
         );
       default:
         return Container();

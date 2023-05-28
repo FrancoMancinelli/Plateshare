@@ -559,7 +559,54 @@ Future<List<dynamic>> getFollows(String userId) async {
   return followers;
 }
 
+Future<List<dynamic>> getLikedRecipes(String userId) async {
+  DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+      .collection('user')
+      .doc(userId)
+      .get();
 
+  Map<String, dynamic> userData = userSnapshot.data() as Map<String, dynamic>;
+  List<dynamic> favorites = userData['favorites'] ?? [];
+
+  return favorites;
+}
+
+
+Future<void> addFavorite(String userId, String favoriteId) async {
+  DocumentReference userRef = FirebaseFirestore.instance
+      .collection('user')
+      .doc(userId);
+
+  // Get the current favorites array
+  DocumentSnapshot userSnapshot = await userRef.get();
+  List<dynamic>? favorites = (userSnapshot.data() as Map<String, dynamic>)['favorites'] as List<dynamic>?;
+
+  // Add the new favorite to the array
+  favorites ??= [];
+  favorites.add(favoriteId);
+
+  // Update the 'favorites' field with the updated array
+  await userRef.update({'favorites': favorites});
+}
+
+
+Future<void> removeFavorite(String userId, String favoriteId) async {
+  DocumentReference userRef = FirebaseFirestore.instance
+      .collection('user')
+      .doc(userId);
+
+  // Get the current favorites array
+  DocumentSnapshot userSnapshot = await userRef.get();
+  List<dynamic>? favorites = (userSnapshot.data() as Map<String, dynamic>)['favorites'] as List<dynamic>?;
+
+  // Remove the specified favorite from the array
+  if (favorites != null) {
+    favorites.remove(favoriteId);
+  }
+
+  // Update the 'favorites' field with the updated array
+  await userRef.update({'favorites': favorites});
+}
 
 
 
