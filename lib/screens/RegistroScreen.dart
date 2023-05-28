@@ -17,8 +17,9 @@ class _RegistroScreenState extends State<RegistroScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _repeatPasswordController =
-      TextEditingController();
+  final TextEditingController _repeatPasswordController = TextEditingController();
+  bool _obscureText = true;
+  bool _obscureText2 = true;
 
   @override
   Widget build(BuildContext context) {
@@ -148,38 +149,68 @@ class _RegistroScreenState extends State<RegistroScreen> {
                     ),
                     const SizedBox(height: 20.0),
                     TextField(
-                      controller: _passwordController,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50.0),
-                        ),
-                        labelText: 'Contraseña',
-                        filled: true,
-                        fillColor: Colors.white,
-                        contentPadding:
-                            const EdgeInsets.fromLTRB(20, 20, 0, 20),
-                        prefixIcon:
-                            const Icon(Icons.lock_outline, color: Colors.black),
+                    controller: _passwordController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(50.0),
                       ),
-                      obscureText: true,
+                      labelText: 'Contraseña',
+                      filled: true,
+                      fillColor: Colors.white,
+                      contentPadding: const EdgeInsets.fromLTRB(20, 25, 0, 25),
+                      prefixIcon:
+                          const Icon(Icons.lock_outline, color: Colors.black),
+                      suffixIcon: Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+                        child: IconButton(
+                          icon: Icon(
+                            _obscureText
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: Colors.grey,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _obscureText = !_obscureText;
+                            });
+                          },
+                        ),
+                      ),
                     ),
+                    obscureText: _obscureText,
+                  ),
                     const SizedBox(height: 20.0),
                     TextField(
-                      controller: _repeatPasswordController,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50.0),
-                        ),
-                        labelText: 'Repite Contraseña',
-                        filled: true,
-                        fillColor: Colors.white,
-                        contentPadding:
-                            const EdgeInsets.fromLTRB(20, 20, 0, 20),
-                        prefixIcon:
-                            const Icon(Icons.lock_outline, color: Colors.black),
+                    controller: _repeatPasswordController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(50.0),
                       ),
-                      obscureText: true,
+                      labelText: 'Repite Contraseña',
+                      filled: true,
+                      fillColor: Colors.white,
+                      contentPadding: const EdgeInsets.fromLTRB(20, 25, 0, 25),
+                      prefixIcon:
+                          const Icon(Icons.lock_outline, color: Colors.black),
+                      suffixIcon: Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+                        child: IconButton(
+                          icon: Icon(
+                            _obscureText2
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: Colors.grey,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _obscureText2 = !_obscureText2;
+                            });
+                          },
+                        ),
+                      ),
                     ),
+                    obscureText: _obscureText2,
+                  ),
                     const SizedBox(height: 20.0),
                     SizedBox(
                       width: double.infinity,

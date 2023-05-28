@@ -5,7 +5,6 @@ import 'package:plateshare/models/User.dart';
 import 'package:plateshare/services/firebase_service.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-
 import 'InicioScreen.dart';
 import 'RecuperarScreen.dart';
 import 'RegistroScreen.dart';
@@ -20,6 +19,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _obscureText = true;
 
   @override
   Widget build(BuildContext context) {
@@ -106,8 +106,24 @@ class _LoginScreenState extends State<LoginScreen> {
                       contentPadding: const EdgeInsets.fromLTRB(20, 25, 0, 25),
                       prefixIcon:
                           const Icon(Icons.lock_outline, color: Colors.black),
+                      suffixIcon: Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+                        child: IconButton(
+                          icon: Icon(
+                            _obscureText
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: Colors.grey,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _obscureText = !_obscureText;
+                            });
+                          },
+                        ),
+                      ),
                     ),
-                    obscureText: true,
+                    obscureText: _obscureText,
                   ),
                   const SizedBox(height: 50.0),
                   SizedBox(
@@ -273,13 +289,17 @@ class _LoginScreenState extends State<LoginScreen> {
           String emailData = await getEmailByUsername(usernameInput);
           String nameData = await getNameByUsername(usernameInput);
           String profilePicData = await getProfilePicByUsername(usernameInput);
-          
+
           final BuildContext _context = context;
           Future.microtask(() {
             Navigator.pushReplacement(
               _context,
               MaterialPageRoute(
-                  builder: (context) => InicioScreen(emailData: emailData, nameData: nameData, usernameData: usernameInput, profilePicData: profilePicData)),
+                  builder: (context) => InicioScreen(
+                      emailData: emailData,
+                      nameData: nameData,
+                      usernameData: usernameInput,
+                      profilePicData: profilePicData)),
             );
           });
         } else {
