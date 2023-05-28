@@ -27,11 +27,14 @@ class _RegistroScreenState extends State<RegistroScreen> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          width: screenSize.width,
-          height: screenSize.height,
-          decoration: const BoxDecoration(
-            color: Color(0xFF056C49),
-          ),
+    width: screenSize.width,
+    height: screenSize.height,
+    decoration: BoxDecoration(
+      image: DecorationImage(
+        image: NetworkImage('https://i.imgur.com/zkE1HP9.png'),
+        fit: BoxFit.cover,
+      ),
+    ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -157,7 +160,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                       labelText: 'Contraseña',
                       filled: true,
                       fillColor: Colors.white,
-                      contentPadding: const EdgeInsets.fromLTRB(20, 25, 0, 25),
+                      contentPadding: const EdgeInsets.fromLTRB(20, 20, 0, 20),
                       prefixIcon:
                           const Icon(Icons.lock_outline, color: Colors.black),
                       suffixIcon: Padding(
@@ -189,7 +192,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                       labelText: 'Repite Contraseña',
                       filled: true,
                       fillColor: Colors.white,
-                      contentPadding: const EdgeInsets.fromLTRB(20, 25, 0, 25),
+                      contentPadding: const EdgeInsets.fromLTRB(20, 20, 0, 20),
                       prefixIcon:
                           const Icon(Icons.lock_outline, color: Colors.black),
                       suffixIcon: Padding(
