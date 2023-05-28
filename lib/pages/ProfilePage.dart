@@ -26,10 +26,12 @@ class _ProfilePageState extends State<ProfilePage> {
   Color menuButtonColor = AppColors.brownRecepieColor;
   Color favoriteButtonColor = AppColors.accentColor;
   String userId = '';
-  List<String> recipesIDs = [
-    'G4y0PEF2DQiF4voOIuy6',
-    'bJJfriTrdFY5rFbFmMRB',
-  ];
+  int followers = 0;
+  int follows = 0;
+  int recipeCount = 0;
+  List<String> recipesIDs = [];
+  List<Map<String, dynamic>> data = [];
+
 
   void handleMenuButtonTap() {
     setState(() {
@@ -54,17 +56,27 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<void> getRecipesIDs() async {
     final userIdFromDB = await getDocumentIdByUsername(widget.usernameData);
     final recipesIDsFromUserId = await getRecipeDocumentIDs(userIdFromDB);
+    final followersFromDB = await getFollowers(userIdFromDB);
+    final followsFromDB = await getFollows(userIdFromDB);
     setState(() {
       userId = userIdFromDB;
       recipesIDs = recipesIDsFromUserId;
+      followers = followersFromDB.length;
+      follows = followsFromDB.length;
+      recipeCount = recipesIDsFromUserId.length;
+      data = generateDataList(recipeCount, followers, follows);
+
     });
   }
 
-  List<Map<String, dynamic>> data = [
-    {'count': '0', 'label': 'Recetas'},
-    {'count': '21', 'label': 'Seguidores'},
-    {'count': '896', 'label': 'Seguidos'},
+
+  List<Map<String, dynamic>> generateDataList(int recipeCount, int followers, int follows) {
+  return [
+    {'count': recipeCount.toString(), 'label': 'Recetas'},
+    {'count': followers.toString(), 'label': 'Seguidores'},
+    {'count': follows.toString(), 'label': 'Seguidos'},
   ];
+}
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +114,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                         Text(
-                          '@username',
+                          '@${widget.usernameData}',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,
@@ -139,13 +151,13 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: CircleAvatar(
                   radius: 45,
                   backgroundImage: NetworkImage(
-                      'https://firebasestorage.googleapis.com/v0/b/plateshare-tfg2023.appspot.com/o/default_profile_pic.png?alt=media&token=92c2e8f1-5871-4285-8040-8b8df60bae14'),
+                      widget.profilePicData),
                 ),
               ),
 
               SizedBox(height: 10),
               Text(
-                'Fran Mancinelli',
+                '${widget.nameData}',
                 style: GoogleFonts.acme(
                   textStyle: const TextStyle(
                     fontSize: 24,
