@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:bcrypt/bcrypt.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:plateshare/models/User.dart';
 import 'package:plateshare/screens/InicioScreen.dart';
 import 'package:plateshare/screens/RecipeFormScreenTwo.dart';
@@ -18,6 +21,7 @@ class RecipeFormScreenThree extends StatefulWidget {
   final List<String> categoriasRecepie;
   final String racionesRecepie;
   final List<String> ingredientesRecepie;
+  final XFile? imageRecipe;
 
   const RecipeFormScreenThree({
     Key? key,
@@ -29,7 +33,7 @@ class RecipeFormScreenThree extends StatefulWidget {
     required this.tiempoRecepie,
     required this.categoriasRecepie,
     required this.racionesRecepie,
-    required this.ingredientesRecepie,
+    required this.ingredientesRecepie, required this.imageRecipe,
   }) : super(key: key);
 
   @override
@@ -92,6 +96,8 @@ class _RecipeFormScreenThreeState extends State<RecipeFormScreenThree> {
       texts.removeAt(index);
     });
   }
+
+  String imageUrl = '';
 
   @override
   Widget build(BuildContext context) {
@@ -434,6 +440,21 @@ class _RecipeFormScreenThreeState extends State<RecipeFormScreenThree> {
                                         const EdgeInsets.fromLTRB(0, 5, 20, 0),
                                     child: ElevatedButton(
                                       onPressed: () async {
+                                        
+                                          if(widget.imageRecipe != null) {
+                                            String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();                                  
+                                            Reference referenceRoot = FirebaseStorage.instance.ref();
+                                            Reference referenceDirImages = referenceRoot.child('imgaes');
+
+                                            Reference referenceImageToUpload = referenceDirImages.child(uniqueFileName);
+                                            try{
+                                              await referenceImageToUpload.putFile(File(widget.imageRecipe!.path));
+                                              imageUrl = await referenceImageToUpload.getDownloadURL();
+                                            
+                                            } catch (erorr){
+                                            }
+                                          }
+
                                         if (texts.length >= 1) {
                                           final recipeData = {
                                             'category': widget.categoriasRecepie,
@@ -443,12 +464,15 @@ class _RecipeFormScreenThreeState extends State<RecipeFormScreenThree> {
                                             'rations': widget.racionesRecepie,
                                             'time': widget.tiempoRecepie,
                                             'title': widget.tituloRecepie,
-                                            'image': "https://firebasestorage.googleapis.com/v0/b/plateshare-tfg2023.appspot.com/o/default_recipeimage.jpg?alt=media&token=8400f8d3-7704-4a54-8151-da4053cf9102",
+                                            'image': imageUrl,
                                           };
+
+                                          
 
                                           final ingredientList = widget.ingredientesRecepie;
                                           String? documentId = await getDocumentIdByUsername(widget.usernameData);
                                           addRecipeToUser(documentId, recipeData, ingredientList);
+                                          
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(

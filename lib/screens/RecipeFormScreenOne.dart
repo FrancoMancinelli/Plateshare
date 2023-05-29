@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:bcrypt/bcrypt.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:plateshare/models/User.dart';
 import 'package:plateshare/screens/InicioScreen.dart';
 import 'package:plateshare/screens/RecipeFormScreenTwo.dart';
@@ -96,14 +99,16 @@ class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
     }
   }
 
-  final TextEditingController _tituloController = TextEditingController();
-  double _sliderValue = 45.0;
-
   void _updateSliderValue(double newValue) {
     setState(() {
       _sliderValue = newValue;
     });
   }
+
+
+  final TextEditingController _tituloController = TextEditingController();
+  double _sliderValue = 45.0;
+  XFile? imageRecipe = XFile('');
 
   @override
   Widget build(BuildContext context) {
@@ -256,8 +261,10 @@ class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
                             child: Padding(
                               padding: const EdgeInsets.fromLTRB(50, 5, 50, 0),
                               child: GestureDetector(
-                                onTap: () {
-                                  print('Image tapped!');
+                                //https://www.google.com/search?q=how+to+load+a+image+in+firestore+using+flutter&rlz=1C1CHBF_esES1059&oq=how+to+load+a+image+in+firestore+using+&aqs=chrome.1.69i57j33i10i160l5.20310j0j7&sourceid=chrome&ie=UTF-8#kpvalbx=_8L1zZIydJO2rkdUP_ZqwwAI_34
+                                onTap: () async {
+                                  ImagePicker imagePicker = ImagePicker();
+                                  imageRecipe = await imagePicker.pickImage(source: ImageSource.gallery);
                                 },
                                 child: Image.network(
                                   'https://i.imgur.com/zjmuaBZ.png',
@@ -530,6 +537,7 @@ class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
                                                   tituloRecepie: _tituloController.value.text,
                                                   tiempoRecepie: _sliderValue.toInt(),
                                                   categoriasRecepie: getSelectedButtonValues(),
+                                                  imageRecipe: imageRecipe,
                                                 ),
                                               ),
                                             );

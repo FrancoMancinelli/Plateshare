@@ -195,7 +195,7 @@ class _RecipeContainerState extends State<RecipeContainer> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-                      child: Icon(Icons.star, color: Colors.white, size: 22),
+                      child: Icon(Icons.star_rounded, color: Colors.white, size: 22),
                     ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(1, 2, 0, 0),

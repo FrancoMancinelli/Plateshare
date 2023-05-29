@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:bcrypt/bcrypt.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:plateshare/models/User.dart';
 import 'package:plateshare/screens/InicioScreen.dart';
 import 'package:plateshare/screens/RecipeFormScreenThree.dart';
@@ -17,6 +20,7 @@ class RecipeFormScreenTwo extends StatefulWidget {
   final String tituloRecepie;
   final int tiempoRecepie;
   final List<String> categoriasRecepie;
+  final XFile? imageRecipe;
 
   const RecipeFormScreenTwo({
     Key? key,
@@ -26,7 +30,7 @@ class RecipeFormScreenTwo extends StatefulWidget {
     required this.profilePicData,
     required this.tituloRecepie,
     required this.tiempoRecepie,
-    required this.categoriasRecepie,
+    required this.categoriasRecepie, required this.imageRecipe,
   }) : super(key: key);
 
   @override
@@ -641,7 +645,7 @@ class _RecipeFormScreenTwoState extends State<RecipeFormScreenTwo> {
                                                   tiempoRecepie: widget.tiempoRecepie,
                                                   categoriasRecepie: widget.categoriasRecepie,
                                                   racionesRecepie: _racionesController.value.text,
-                                                  ingredientesRecepie: texts,
+                                                  ingredientesRecepie: texts,imageRecipe: widget.imageRecipe,
                                                 ),
                                               ),
                                             );
