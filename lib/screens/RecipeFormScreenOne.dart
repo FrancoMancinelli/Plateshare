@@ -223,36 +223,44 @@ class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
                           ],
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 5, 0, 0),
-                        child: Row(
-                          children: [
-                            RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: 'Imagen',
-                                    style: GoogleFonts.acme(
-                                      textStyle: const TextStyle(
-                                        color: AppColors.brownTextColor,
-                                        fontSize: 16,
-                                        fontFamily: 'Acme',
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(10, 5, 0, 0),
+                                child: Row(
+                                  children: [
+                                    RichText(
+                                      text: TextSpan(
+                                        children: [
+                                          TextSpan(
+                                            text: 'Imagen',
+                                            style: GoogleFonts.acme(
+                                              textStyle: const TextStyle(
+                                                color: AppColors.brownTextColor,
+                                                fontSize: 16,
+                                                fontFamily: 'Acme',
+                                              ),
+                                            ),
+                                          ),
+                                          const TextSpan(
+                                            text: '*',
+                                            style: TextStyle(
+                                              color: Color(
+                                                  0xFFFF6600), // Set your desired color for the '*'
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                  ),
-                                  const TextSpan(
-                                    text: '*',
-                                    style: TextStyle(
-                                      color: Color(
-                                          0xFFFF6600), // Set your desired color for the '*'
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                       Row(
@@ -276,7 +284,7 @@ class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
                         ],
                       ),
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 25, 0, 0),
+                        padding: const EdgeInsets.fromLTRB(10, 20, 0, 0),
                         child: Row(
                           children: [
                             RichText(
@@ -584,3 +592,6 @@ class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
     );
   }
 }
+
+
+//VERSION ORIGINAL

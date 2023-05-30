@@ -33,7 +33,8 @@ class RecipeFormScreenThree extends StatefulWidget {
     required this.tiempoRecepie,
     required this.categoriasRecepie,
     required this.racionesRecepie,
-    required this.ingredientesRecepie, required this.imageRecipe,
+    required this.ingredientesRecepie,
+    required this.imageRecipe,
   }) : super(key: key);
 
   @override
@@ -105,7 +106,6 @@ class _RecipeFormScreenThreeState extends State<RecipeFormScreenThree> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Container(
               color: AppColors.primaryColor,
@@ -278,27 +278,29 @@ class _RecipeFormScreenThreeState extends State<RecipeFormScreenThree> {
                         padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
                         child: Row(
                           children: [
-                            Container(
-                              width: screenSize.width / 1.15,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                color: AppColors.whiteColor,
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(
+                            Expanded(
+                              child: Container(
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  color: AppColors.whiteColor,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
                                     color: AppColors.recommendationColor,
-                                    width: 2.5),
-                              ),
-                              child: TextField(
-                                controller: textController1,
-                                style: const TextStyle(
-                                  color: AppColors.brownTextColor,
-                                  fontSize: 15,
-                                  fontFamily: 'Acme',
+                                    width: 2.5,
+                                  ),
                                 ),
-                                decoration: const InputDecoration(
-                                  border: InputBorder.none,
-                                  contentPadding:
-                                      EdgeInsets.symmetric(horizontal: 10),
+                                child: TextField(
+                                  controller: textController1,
+                                  style: const TextStyle(
+                                    color: AppColors.brownTextColor,
+                                    fontSize: 15,
+                                    fontFamily: 'Acme',
+                                  ),
+                                  decoration: const InputDecoration(
+                                    border: InputBorder.none,
+                                    contentPadding:
+                                        EdgeInsets.symmetric(horizontal: 10),
+                                  ),
                                 ),
                               ),
                             ),
@@ -323,7 +325,7 @@ class _RecipeFormScreenThreeState extends State<RecipeFormScreenThree> {
                       SingleChildScrollView(
                         scrollDirection: Axis.vertical,
                         child: Container(
-                          height: 508,
+                          height: 400,
                           child: ListView.builder(
                             shrinkWrap: true,
                             itemCount: texts.length,
@@ -440,24 +442,32 @@ class _RecipeFormScreenThreeState extends State<RecipeFormScreenThree> {
                                         const EdgeInsets.fromLTRB(0, 5, 20, 0),
                                     child: ElevatedButton(
                                       onPressed: () async {
-                                        
-                                          if(widget.imageRecipe != null) {
-                                            String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();                                  
-                                            Reference referenceRoot = FirebaseStorage.instance.ref();
-                                            Reference referenceDirImages = referenceRoot.child('imgaes');
-
-                                            Reference referenceImageToUpload = referenceDirImages.child(uniqueFileName);
-                                            try{
-                                              await referenceImageToUpload.putFile(File(widget.imageRecipe!.path));
-                                              imageUrl = await referenceImageToUpload.getDownloadURL();
-                                            
-                                            } catch (erorr){
-                                            }
-                                          }
-
+                                        if (widget.imageRecipe != null) {
+                                          String uniqueFileName = DateTime.now()
+                                              .millisecondsSinceEpoch
+                                              .toString();
+                                          Reference referenceRoot =
+                                              FirebaseStorage.instance.ref();
+                                          Reference referenceDirImages =
+                                              referenceRoot.child('imgaes');
+                  
+                                          Reference referenceImageToUpload =
+                                              referenceDirImages
+                                                  .child(uniqueFileName);
+                                          try {
+                                            await referenceImageToUpload
+                                                .putFile(File(
+                                                    widget.imageRecipe!.path));
+                                            imageUrl =
+                                                await referenceImageToUpload
+                                                    .getDownloadURL();
+                                          } catch (erorr) {}
+                                        }
+                  
                                         if (texts.length >= 1) {
                                           final recipeData = {
-                                            'category': widget.categoriasRecepie,
+                                            'category':
+                                                widget.categoriasRecepie,
                                             'likes': [],
                                             'steps': texts,
                                             'rate': 0.0,
@@ -466,13 +476,15 @@ class _RecipeFormScreenThreeState extends State<RecipeFormScreenThree> {
                                             'title': widget.tituloRecepie,
                                             'image': imageUrl,
                                           };
-
-                                          
-
-                                          final ingredientList = widget.ingredientesRecepie;
-                                          String? documentId = await getDocumentIdByUsername(widget.usernameData);
-                                          addRecipeToUser(documentId, recipeData, ingredientList);
-                                          
+                  
+                                          final ingredientList =
+                                              widget.ingredientesRecepie;
+                                          String? documentId =
+                                              await getDocumentIdByUsername(
+                                                  widget.usernameData);
+                                          addRecipeToUser(documentId,
+                                              recipeData, ingredientList);
+                  
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(

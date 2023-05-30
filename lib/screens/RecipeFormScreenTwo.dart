@@ -350,221 +350,223 @@ class _RecipeFormScreenTwoState extends State<RecipeFormScreenTwo> {
                           ],
                         ),
                       ),
-                      SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    width: 150,
-                                    height: 50,
-                                    decoration: BoxDecoration(
-                                      color: AppColors.whiteColor,
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(
-                                          color: AppColors.recommendationColor,
-                                          width: 2.5),
-                                    ),
-                                    child: TextField(
-                                      controller: textController1,
-                                      style: const TextStyle(
-                                        color: AppColors.brownTextColor,
-                                        fontSize: 15,
-                                        fontFamily: 'Acme',
-                                      ),
-                                      decoration: const InputDecoration(
-                                        border: InputBorder.none,
-                                        contentPadding: EdgeInsets.symmetric(
-                                            horizontal: 10),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 5),
-                                  Container(
-                                    width: 50,
-                                    height: 50,
-                                    decoration: BoxDecoration(
-                                      color: AppColors.whiteColor,
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(
-                                          color: AppColors.recommendationColor,
-                                          width: 2.5),
-                                    ),
-                                    child: TextField(
-                                      textAlign: TextAlign.center,
-                                      controller: textController2,
-                                      keyboardType: TextInputType.number,
-                                      inputFormatters: <TextInputFormatter>[
-                                        FilteringTextInputFormatter
-                                            .digitsOnly, // Restrict input to digits only
-                                      ],
-                                      style: const TextStyle(
-                                        color: AppColors.brownTextColor,
-                                        fontSize: 16,
-                                        fontFamily: 'Acme',
-                                      ),
-                                      decoration: const InputDecoration(
-                                        border: InputBorder.none,
-                                        contentPadding: EdgeInsets.symmetric(
-                                            horizontal: 10),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 5),
-                                  Expanded(
-                                    child: Container(
-                                      width: 100,
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: 120,
                                       height: 50,
                                       decoration: BoxDecoration(
                                         color: AppColors.whiteColor,
-                                        borderRadius: BorderRadius.circular(
-                                          10,
-                                        ),
+                                        borderRadius: BorderRadius.circular(10),
                                         border: Border.all(
-                                            color:
-                                                AppColors.recommendationColor,
+                                            color: AppColors.recommendationColor,
                                             width: 2.5),
                                       ),
-                                      child: DropdownButtonFormField<String>(
-                                        value: dropdownValue,
-                                        onChanged: (String? newValue) {
-                                          setState(() {
-                                            dropdownValue = newValue!;
-                                          });
-                                        },
+                                      child: TextField(
+                                        controller: textController1,
+                                        style: const TextStyle(
+                                          color: AppColors.brownTextColor,
+                                          fontSize: 15,
+                                          fontFamily: 'Acme',
+                                        ),
                                         decoration: const InputDecoration(
                                           border: InputBorder.none,
                                           contentPadding: EdgeInsets.symmetric(
                                               horizontal: 10),
                                         ),
-                                        items: [
-                                          'Litros',
-                                          'Gramos',
-                                          'Unidades',
-                                          'Mililitros',
-                                          'Cazos',
-                                          'Cucharadas',
-                                          'Cucharaditas',
-                                          'Filetes',
-                                          'Envases',
-                                          'Tiras',
-                                          'Hojas',
-                                          'Latas',
-                                          'Lonchas',
-                                          'Onzas',
-                                          'Paquetes',
-                                          'Piezas',
-                                          'Puñados',
-                                          'Pizca',
-                                          'Ramas',
-                                          'Rebanadas',
-                                          'Rodajas',
-                                          'Sobres',
-                                          'Tarinas',
-                                          'Tazas',
-                                          'Vasos',
-                                          'Raciones',
-                                          'Botes'
-                                        ].map<DropdownMenuItem<String>>(
-                                            (String value) {
-                                          return DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Text(
-                                              value,
-                                              style: const TextStyle(
-                                                color: AppColors.brownTextColor,
-                                                fontSize: 15,
-                                                fontFamily: 'Acme',
-                                              ),
-                                            ),
-                                          );
-                                        }).toList(),
                                       ),
                                     ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                          color: AppColors.orangeColor,
-                                          width: 2.5),
-                                    ),
-                                    child: InkWell(
-                                      onTap: addTexts,
-                                      child: const Icon(
-                                        Icons.add_rounded,
-                                        color: AppColors.orangeColor,
+                                    const SizedBox(width: 5),
+                                    Container(
+                                      width: 50,
+                                      height: 50,
+                                      decoration: BoxDecoration(
+                                        color: AppColors.whiteColor,
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(
+                                            color: AppColors.recommendationColor,
+                                            width: 2.5),
+                                      ),
+                                      child: TextField(
+                                        textAlign: TextAlign.center,
+                                        controller: textController2,
+                                        keyboardType: TextInputType.number,
+                                        inputFormatters: <TextInputFormatter>[
+                                          FilteringTextInputFormatter
+                                              .digitsOnly, // Restrict input to digits only
+                                        ],
+                                        style: const TextStyle(
+                                          color: AppColors.brownTextColor,
+                                          fontSize: 16,
+                                          fontFamily: 'Acme',
+                                        ),
+                                        decoration: const InputDecoration(
+                                          border: InputBorder.none,
+                                          contentPadding: EdgeInsets.symmetric(
+                                              horizontal: 10),
+                                        ),
                                       ),
                                     ),
-                                  )
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            Container(
-                              height: 411,
-                              child: ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: texts.length,
-                                itemBuilder: (context, index) {
-                                  return Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          child: Container(
-                                            decoration: BoxDecoration(
+                                    const SizedBox(width: 5),
+                                    Expanded(
+                                      child: Container(
+                                        width: 100,
+                                        height: 50,
+                                        decoration: BoxDecoration(
+                                          color: AppColors.whiteColor,
+                                          borderRadius: BorderRadius.circular(
+                                            10,
+                                          ),
+                                          border: Border.all(
                                               color:
-                                                  AppColors.brownRecepieColor,
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                            ),
-                                            padding: const EdgeInsets.all(10),
-                                            margin: const EdgeInsets.symmetric(
-                                                vertical: 5, horizontal: 10),
-                                            child: Text(
-                                              texts[index],
-                                              style: GoogleFonts.acme(
-                                                textStyle: const TextStyle(
-                                                  color: AppColors.whiteColor,
-                                                  fontSize: 18,
+                                                  AppColors.recommendationColor,
+                                              width: 2.5),
+                                        ),
+                                        child: DropdownButtonFormField<String>(
+                                          value: dropdownValue,
+                                          onChanged: (String? newValue) {
+                                            setState(() {
+                                              dropdownValue = newValue!;
+                                            });
+                                          },
+                                          decoration: const InputDecoration(
+                                            border: InputBorder.none,
+                                            contentPadding: EdgeInsets.symmetric(
+                                                horizontal: 10),
+                                          ),
+                                          items: [
+                                            'Litros',
+                                            'Gramos',
+                                            'Unidades',
+                                            'Mililitros',
+                                            'Cazos',
+                                            'Cucharadas',
+                                            'Cucharaditas',
+                                            'Filetes',
+                                            'Envases',
+                                            'Tiras',
+                                            'Hojas',
+                                            'Latas',
+                                            'Lonchas',
+                                            'Onzas',
+                                            'Paquetes',
+                                            'Piezas',
+                                            'Puñados',
+                                            'Pizca',
+                                            'Ramas',
+                                            'Rebanadas',
+                                            'Rodajas',
+                                            'Sobres',
+                                            'Tarinas',
+                                            'Tazas',
+                                            'Vasos',
+                                            'Raciones',
+                                            'Botes'
+                                          ].map<DropdownMenuItem<String>>(
+                                              (String value) {
+                                            return DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(
+                                                value,
+                                                style: const TextStyle(
+                                                  color: AppColors.brownTextColor,
+                                                  fontSize: 15,
                                                   fontFamily: 'Acme',
+                                                ),
+                                              ),
+                                            );
+                                          }).toList(),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                            color: AppColors.orangeColor,
+                                            width: 2.5),
+                                      ),
+                                      child: InkWell(
+                                        onTap: addTexts,
+                                        child: const Icon(
+                                          Icons.add_rounded,
+                                          color: AppColors.orangeColor,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              Container(
+                                height: 411,
+                                child: ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: texts.length,
+                                  itemBuilder: (context, index) {
+                                    return Padding(
+                                      padding:
+                                          const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color:
+                                                    AppColors.brownRecepieColor,
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                              padding: const EdgeInsets.all(10),
+                                              margin: const EdgeInsets.symmetric(
+                                                  vertical: 5, horizontal: 10),
+                                              child: Text(
+                                                texts[index],
+                                                style: GoogleFonts.acme(
+                                                  textStyle: const TextStyle(
+                                                    color: AppColors.whiteColor,
+                                                    fontSize: 18,
+                                                    fontFamily: 'Acme',
+                                                  ),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                        Container(
-                                          width: 30,
-                                          height: 30,
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            border: Border.all(
+                                          Container(
+                                            width: 30,
+                                            height: 30,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              border: Border.all(
+                                                  color: AppColors.orangeColor,
+                                                  width: 2.5),
+                                            ),
+                                            child: InkWell(
+                                              onTap: () {
+                                                deleteText(index);
+                                              },
+                                              child: const Icon(
+                                                Icons.close_rounded,
                                                 color: AppColors.orangeColor,
-                                                width: 2.5),
-                                          ),
-                                          child: InkWell(
-                                            onTap: () {
-                                              deleteText(index);
-                                            },
-                                            child: const Icon(
-                                              Icons.close_rounded,
-                                              color: AppColors.orangeColor,
-                                              size: 20,
+                                                size: 20,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                       Align(
