@@ -28,22 +28,14 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
           height: screenSize.height,
           decoration: BoxDecoration(
         image: DecorationImage(
-          image: NetworkImage('https://i.imgur.com/zkE1HP9.png'),
+          image: NetworkImage('https://i.imgur.com/pbBleS1.png'),
           fit: BoxFit.cover,
         ),
           ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Align(
-                alignment: const AlignmentDirectional(-0.2, 0),
-                child: Image.network(
-                  'https://imgur.com/ziSeq5r.png',
-                  width: 171,
-                  height: 107,
-                  fit: BoxFit.scaleDown,
-                ),
-              ),
+              
               SizedBox(
                 height: 15,
                 child: Align(
@@ -86,7 +78,7 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                   ),
                   Center(
                     child: Padding(
-                      padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
+                      padding: const EdgeInsets.fromLTRB(30, 25, 30, 0),
                       child: Text(
                         'Enviaremos un correo electrónico para confirmar el cambio de contraseña',
                         style: GoogleFonts.acme(
@@ -116,12 +108,12 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                         labelText: 'Usuario',
                         filled: true,
                         fillColor: Colors.white,
-                        contentPadding: const EdgeInsets.fromLTRB(20, 25, 0, 25),
+                        contentPadding: const EdgeInsets.fromLTRB(20, 20, 0, 20),
                         prefixIcon:
                             const Icon(Icons.person_outline, color: Colors.black),
                       ),
                     ),
-                    const SizedBox(height: 30.0),
+                    const SizedBox(height: 20.0),
                     TextField(
                       controller: _passwordController,
                       decoration: InputDecoration(
@@ -131,13 +123,13 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                         labelText: 'Contraseña',
                         filled: true,
                         fillColor: Colors.white,
-                        contentPadding: const EdgeInsets.fromLTRB(20, 25, 0, 25),
+                        contentPadding: const EdgeInsets.fromLTRB(20, 20, 0, 20),
                         prefixIcon:
                             const Icon(Icons.lock_outline, color: Colors.black),
                       ),
                       obscureText: true,
                     ),
-                    const SizedBox(height: 30.0),
+                    const SizedBox(height: 20.0),
                     TextField(
                       controller: _repeatPasswordController,
                       decoration: InputDecoration(
@@ -147,7 +139,7 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                         labelText: 'Repite Contraseña',
                         filled: true,
                         fillColor: Colors.white,
-                        contentPadding: const EdgeInsets.fromLTRB(20, 25, 0, 25),
+                        contentPadding: const EdgeInsets.fromLTRB(20, 20, 0, 20),
                         prefixIcon:
                             const Icon(Icons.lock_outline, color: Colors.black),
                       ),
@@ -159,7 +151,7 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                       child: ElevatedButton(
                         onPressed: validateFields,
                         style: ElevatedButton.styleFrom(
-                          minimumSize: const Size(double.infinity, 60.0),
+                          minimumSize: const Size(double.infinity, 50.0),
                           backgroundColor: const Color(0xFFFD9A00),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20.0),
@@ -189,7 +181,7 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                           );
                         },
                         style: ElevatedButton.styleFrom(
-                          minimumSize: const Size(double.infinity, 60.0),
+                          minimumSize: const Size(double.infinity, 50.0),
                           backgroundColor: const Color(0xFFF9EDDE),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20.0),
@@ -213,13 +205,7 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                   ],
                 ),
               ),
-              const SizedBox(height: 30.0),
-              Expanded(
-                child: Image.network(
-                  'https://i.imgur.com/VhMzz4T.png',
-                  fit: BoxFit.contain,
-                ),
-              ),
+              
             ],
           ),
         ),

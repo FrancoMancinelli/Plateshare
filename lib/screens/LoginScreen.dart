@@ -31,22 +31,14 @@ class _LoginScreenState extends State<LoginScreen> {
       height: screenSize.height,
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: NetworkImage('https://i.imgur.com/zkE1HP9.png'),
+          image: NetworkImage('https://i.imgur.com/pbBleS1.png'),
           fit: BoxFit.cover,
         ),
       ),
       child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Align(
-                alignment: const AlignmentDirectional(-0.2, 0),
-                child: Image.network(
-                  'https://imgur.com/ziSeq5r.png',
-                  width: 171,
-                  height: 107,
-                  fit: BoxFit.scaleDown,
-                ),
-              ),
+              
               Row(
                 children: [
                   Padding(
@@ -80,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(30, 40, 30, 0),
+                padding: const EdgeInsets.fromLTRB(30, 20, 30, 0),
                 child: Column(
                   children: [
                     TextField(
@@ -92,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         labelText: 'Username',
                         filled: true,
                         fillColor: Colors.white,
-                        contentPadding: const EdgeInsets.fromLTRB(20, 25, 0, 25),
+                        contentPadding: const EdgeInsets.fromLTRB(20, 20, 0, 20),
                         prefixIcon:
                             const Icon(Icons.person_outline, color: Colors.black),
                       ),
@@ -107,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         labelText: 'Contraseña',
                         filled: true,
                         fillColor: Colors.white,
-                        contentPadding: const EdgeInsets.fromLTRB(20, 25, 0, 25),
+                        contentPadding: const EdgeInsets.fromLTRB(20, 20, 0, 20),
                         prefixIcon:
                             const Icon(Icons.lock_outline, color: Colors.black),
                         suffixIcon: Padding(
@@ -129,13 +121,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       obscureText: _obscureText,
                     ),
-                    const SizedBox(height: 50.0),
+                    const SizedBox(height: 30.0),
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: validateAndAuthenticate,
                         style: ElevatedButton.styleFrom(
-                          minimumSize: const Size(double.infinity, 60.0),
+                          minimumSize: const Size(double.infinity, 50.0),
                           backgroundColor: const Color(0xFFFD9A00),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20.0),
@@ -262,13 +254,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
               ),
-              const SizedBox(height: 28.0),
-              Expanded(
-                child: Image.network(
-                  'https://i.imgur.com/VhMzz4T.png',
-                  fit: BoxFit.contain,
-                ),
-              ),
+              
+              
             ],
           ),
         ),
