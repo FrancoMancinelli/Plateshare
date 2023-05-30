@@ -96,6 +96,15 @@ class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
           ),
         );
         break;
+      case 3:
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+                'Selecciona primero una imagen para poder continuar'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        break;      
     }
   }
 
@@ -525,6 +534,8 @@ class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
                                         const EdgeInsets.fromLTRB(0, 5, 20, 0),
                                     child: ElevatedButton(
                                       onPressed: () {
+                                        //Check the user insert a image
+                                        if (imageRecipe != null && imageRecipe!.path.isNotEmpty) {
                                         // Check if _tituloController is not null or empty
                                         if (_tituloController.text.isNotEmpty) {
                                           // Check if at least one button in buttonStates is true
@@ -554,6 +565,9 @@ class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
                                           }
                                         } else {
                                           showRequired(1);
+                                        }
+                                        } else {
+                                          showRequired(3);
                                         }
                                       },
                                       style: ElevatedButton.styleFrom(
@@ -592,6 +606,3 @@ class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
     );
   }
 }
-
-
-//VERSION ORIGINAL
