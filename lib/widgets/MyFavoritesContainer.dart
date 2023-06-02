@@ -9,9 +9,11 @@ import 'package:plateshare/util/AppColors.dart';
 import 'package:plateshare/widgets/ProfileRecipes.dart';
 
 class MyFavoritesContainer extends StatefulWidget {
+  final String emailData;
   final String nameData;
   final String usernameData;
   final String profilePicData;
+  final String userId;
 
   final List<dynamic> likedRecipesIDs;
 
@@ -21,6 +23,8 @@ class MyFavoritesContainer extends StatefulWidget {
     required this.usernameData,
     required this.profilePicData,
     required this.likedRecipesIDs,
+    required this.userId,
+    required this.emailData,
   }) : super(key: key);
 
   @override
@@ -76,6 +80,7 @@ class _MyFavoritesContainerState extends State<MyFavoritesContainer> {
                         userName: widget.usernameData,
                         userUsername: widget.nameData,
                         screenWidth: screenSize.width,
+                        userId: widget.userId,
                       ),
                     ],
                   ),
@@ -88,6 +93,7 @@ class _MyFavoritesContainerState extends State<MyFavoritesContainer> {
                           userName: widget.usernameData,
                           userUsername: widget.nameData,
                           screenWidth: screenSize.width,
+                          userId: widget.userId,
                         ),
                       if (i + 1 >= widget.likedRecipesIDs.length)
                         Container(

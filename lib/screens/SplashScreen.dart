@@ -30,37 +30,17 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFF056C49),
       body: Container(
-        width: screenSize.width,
-        height: screenSize.height,
-        decoration: BoxDecoration(
-          color: const Color(0xFF056C49),
-          image: DecorationImage(
-            fit: BoxFit.fitWidth,
-            image: Image.network(
-              'https://i.imgur.com/YQBQh7N.png',
-            ).image,
-          ),
+      width: screenSize.width,
+      height: screenSize.height,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: NetworkImage('https://i.imgur.com/pbBleS1.png'),
+          fit: BoxFit.cover,
         ),
-        alignment: const AlignmentDirectional(0, 0),
-        child: Column(
+      ),
+      child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Expanded(
-                  child: Align(
-                    alignment: const AlignmentDirectional(-0.2, 0),
-                    child: Image.network(
-                      'https://imgur.com/ziSeq5r.png',
-                      width: 171,
-                      height: 107,
-                      fit: BoxFit.scaleDown,
-                    ),
-                  ),
-                ),
-              ],
-            ),
             Expanded(
               child: Row(
                 mainAxisSize: MainAxisSize.max,
@@ -79,16 +59,16 @@ class _SplashScreenState extends State<SplashScreen> {
                               width: 170,
                               height: 170,
                               decoration: BoxDecoration(
-                                color: const Color(0xFFCCDDD7),
+                                color: Color.fromARGB(255, 255, 255, 255),
                                 shape: BoxShape.circle,
                                 border: Border.all(
-                                  color: const Color(0xFF879F97),
+                                  color: Color.fromARGB(255, 135, 154, 159),
                                   width: 6,
                                 ),
                               ),
                               alignment: const AlignmentDirectional(0, 0),
                               child: Lottie.network(
-                                'https://assets3.lottiefiles.com/packages/lf20_TmewUx.json',
+                                'https://assets5.lottiefiles.com/packages/lf20_yBiWrEStmy.json',
                                 width: 200,
                                 height: 200,
                                 fit: BoxFit.cover,
@@ -103,7 +83,7 @@ class _SplashScreenState extends State<SplashScreen> {
                               textAlign: TextAlign.center,
                               style: GoogleFonts.acme(
                                 color: Colors.white,
-                                fontSize: 38,
+                                fontSize: 46,
                                 fontWeight: FontWeight.normal,
                               ),
                             ),
@@ -118,22 +98,7 @@ class _SplashScreenState extends State<SplashScreen> {
                               ),
                             ),
                           ),
-                          Align(
-                            alignment: const AlignmentDirectional(0, 0),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  width: 100,
-                                  height: 100,
-                                  decoration: const BoxDecoration(
-                                    color: Color(0xFF056C49),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                          
                         ],
                       ),
                     ),
@@ -141,22 +106,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 ],
               ),
             ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Expanded(
-                    child: Image.network(
-                      'https://i.imgur.com/VhMzz4T.png',
-                      width: 100,
-                      height: 100,
-                      fit: BoxFit.scaleDown,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            
           ],
         ),
       ),

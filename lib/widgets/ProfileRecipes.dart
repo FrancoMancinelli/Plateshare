@@ -14,6 +14,7 @@ class ProfileRecipes extends StatefulWidget {
   final String userName;
   final String userUsername;
   final double screenWidth;
+  final String userId;
 
   const ProfileRecipes({
     Key? key,
@@ -22,6 +23,7 @@ class ProfileRecipes extends StatefulWidget {
     required this.userName,
     required this.userUsername,
     required this.screenWidth,
+    required this.userId,
   }) : super(key: key);
 
   @override
@@ -42,7 +44,6 @@ class _ProfileRecipesState extends State<ProfileRecipes> {
   String ownerUsername = "username";
   List<Ingredient> ingredients = [];
   List<Map<String, dynamic>> comentarios = [];
-  String userId = 'userId';
   bool isFavorite = true;
 
   @override
@@ -55,11 +56,9 @@ class _ProfileRecipesState extends State<ProfileRecipes> {
     final recipeData = await getRecipeFields(widget.idRecepieInDatabase);
     final recipeSteps = await getRecipeSteps(widget.idRecepieInDatabase);
     final recipeOwner = await getUserInfoFromRecipe(widget.idRecepieInDatabase);
-    final recipeIngredients =
-        await getRecipeIngredients(widget.idRecepieInDatabase);
+    final recipeIngredients = await getRecipeIngredients(widget.idRecepieInDatabase);
     final formattedIngredients = formatIngredients(recipeIngredients);
     final recipeComments = await getRecipeComments(widget.idRecepieInDatabase);
-    final id = await getDocumentIdByUsername(widget.userUsername);
     final ownerId = await getDocumentIdByUsername(recipeOwner[1]);
 
     final likesCount =
@@ -80,7 +79,6 @@ class _ProfileRecipesState extends State<ProfileRecipes> {
           ownerUsername = recipeOwner[1];
           ingredients = formattedIngredients;
           comentarios = recipeComments;
-          userId = id;
           likes = likesCount;
         });
       }
@@ -135,7 +133,7 @@ class _ProfileRecipesState extends State<ProfileRecipes> {
                 ownerImage: ownerImage,
                 ownerUsername: ownerUsername,
                 recipeIngredients: ingredients,
-                userId: userId,
+                userId: widget.userId,
                 userImage: widget.userImage,
                 userName: widget.userName,
                 userUsername: widget.userUsername,
@@ -161,7 +159,7 @@ class _ProfileRecipesState extends State<ProfileRecipes> {
           children: [
             //IMAGEN IMAGEN IMAGEN IMAGEN
             Padding(
-              padding: EdgeInsets.only(top: 8),
+              padding: EdgeInsets.fromLTRB(5, 5, 5, 0),
               child: Container(
                 width: 182,
                 height: 140,
@@ -195,7 +193,7 @@ class _ProfileRecipesState extends State<ProfileRecipes> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-                    child: Icon(Icons.star, color: Colors.white, size: 22),
+                    child: Icon(Icons.star_rounded, color: Colors.white, size: 22),
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(1, 2, 0, 0),

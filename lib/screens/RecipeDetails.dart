@@ -48,7 +48,7 @@ class RecipeDetailsScreen extends StatefulWidget {
     required this.userUsername,
     required this.recipeComments,
     required this.recipeID,
-    required this.userId, 
+    required this.userId,
     required this.isFavorite,
   }) : super(key: key);
 
@@ -67,7 +67,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
   bool isFavorite = false;
   int amountLikes = 0;
 
-   @override
+  @override
   void initState() {
     super.initState();
     isFavorite = widget.isFavorite;
@@ -238,9 +238,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                                     : Icons.favorite_border,
                                 color: isFavorite ? Colors.white : Colors.white,
                               ),
-                              onPressed: () {
-
-                              },
+                              onPressed: () {},
                             ),
                             Text(
                               amountLikes.toString(),
@@ -506,9 +504,8 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                                                   'Dejar un comentario...',
                                               border: InputBorder.none,
                                               contentPadding:
-                                                  EdgeInsets.symmetric(
-                                                      horizontal: 5,
-                                                      vertical: 10),
+                                                  EdgeInsets.fromLTRB(
+                                                      8, 0, 0, 11),
                                               hintStyle: GoogleFonts.acme(
                                                 textStyle: TextStyle(
                                                   fontSize: 15,
@@ -528,12 +525,15 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                                         color: AppColors.whiteColor,
                                       ),
                                       onPressed: () {
-                                        addCommentToRecipe(
-                                            widget.recipeID,
-                                            widget.userId,
-                                            _commentController.text);
-                                        _commentController.clear();
-                                        showBottomMessage(3);
+                                        if (_commentController.text.isNotEmpty) {
+                                          addCommentToRecipe(
+                                              widget.recipeID,
+                                              widget.userId,
+                                              _commentController.text);
+                                          _commentController.clear();
+                                          showBottomMessage(3);
+                                          setState(() {});
+                                        }
                                       },
                                     ),
                                   ],

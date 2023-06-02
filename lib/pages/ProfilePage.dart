@@ -71,6 +71,8 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     super.initState();
     getProfileData();
+          print('[DEBUG:::USERID:::PROFILEPAGE] ${widget.userId}');
+
   }
 
   Future<void> getProfileData() async {
@@ -247,7 +249,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(25.0),
                           ),
-                          minimumSize: Size(170, 20),
+                          minimumSize: Size(150, 20),
                         ),
                         child: Icon(Icons.restaurant_menu_rounded,
                             size: 24, color: AppColors.blackColor),
@@ -267,7 +269,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(25.0),
                           ),
-                          minimumSize: Size(170, 20),
+                          minimumSize: Size(150, 20),
                         ),
                         child: Icon(Icons.favorite_border_outlined,
                             size: 24, color: AppColors.blackColor),
@@ -282,21 +284,20 @@ class _ProfilePageState extends State<ProfilePage> {
                   if (flag == 1)
                     MyRecipesContainer(
                       emailData: widget.emailData,
-                      followers: widget.followers,
-                      follows: widget.follows,
                       nameData: widget.nameData,
                       profilePicData: widget.profilePicData,
-                      recipeCount: widget.recipeCount,
                       recipesIDs: widget.recipesIDs,
                       userId: widget.userId,
                       usernameData: widget.usernameData,
                     ),
                   if (flag == 2)
                     MyFavoritesContainer(
+                      emailData: widget.emailData,
                       nameData: widget.nameData,
                       profilePicData: widget.profilePicData,
                       likedRecipesIDs: widget.likedRecipesIDs,
                       usernameData: widget.usernameData,
+                      userId: widget.userId,
                     ),
                 ],
               )

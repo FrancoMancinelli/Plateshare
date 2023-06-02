@@ -15,17 +15,11 @@ class MyRecipesContainer extends StatefulWidget {
   final String profilePicData;
 
   final String userId;
-  final int followers;
-  final int follows;
-  final int recipeCount;
   final List<String> recipesIDs;
 
   const MyRecipesContainer({
     Key? key,
     required this.userId,
-    required this.followers,
-    required this.follows,
-    required this.recipeCount,
     required this.recipesIDs,
     required this.emailData,
     required this.nameData,
@@ -126,6 +120,7 @@ class _MyRecipesContainerState extends State<MyRecipesContainer> {
                         userName: widget.usernameData,
                         userUsername: widget.nameData,
                         screenWidth: screenSize.width,
+                        userId: widget.userId,
                       ),
                     ],
                   ),
@@ -138,6 +133,7 @@ class _MyRecipesContainerState extends State<MyRecipesContainer> {
                           userName: widget.usernameData,
                           userUsername: widget.nameData,
                           screenWidth: screenSize.width,
+                          userId: widget.userId,
                         ),
                       if (i + 1 >= widget.recipesIDs.length)
                         Container(

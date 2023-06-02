@@ -150,6 +150,7 @@ class _InicioScreenState extends State<InicioScreen> {
           userUsername: widget.usernameData,
         );
       case 2:
+      print('[DEBUG:::USERID] $userId');
         return ProfilePage(
           emailData: widget.emailData,
           usernameData: widget.usernameData,
