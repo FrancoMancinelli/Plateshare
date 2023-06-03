@@ -601,6 +601,58 @@ Future<void> removeFavorite(String userId, String favoriteId) async {
   await userRef.update({'favorites': favorites});
 }
 
+Future<void> addNewNotification(
+    String userId, String notificationData, int type, String userNotifierImage) async {
+  final CollectionReference userCollectionRef =
+      FirebaseFirestore.instance.collection('user');
+
+  final DocumentReference userDocRef = userCollectionRef.doc(userId);
+
+  final CollectionReference notificationCollectionRef =
+      userDocRef.collection('notification');
+
+  final DateTime currentDate = DateTime.now();
+
+  await notificationCollectionRef.add({
+    'image': userNotifierImage,
+    'data': notificationData,
+    'type': type,
+    'date': Timestamp.fromDate(currentDate),
+  });
+}
+
+Future<List<Map<String, dynamic>>> getAllNotifications(String userId) async {
+  final CollectionReference userCollectionRef =
+      FirebaseFirestore.instance.collection('user');
+
+  final DocumentReference userDocRef = userCollectionRef.doc(userId);
+
+  final CollectionReference notificationCollectionRef =
+      userDocRef.collection('notification');
+
+  final bool notificationCollectionExists =
+      await notificationCollectionRef.limit(1).get().then((snapshot) => snapshot.size > 0);
+
+  if (!notificationCollectionExists) {
+    // The notification collection does not exist or is empty
+    return [];
+  }
+
+  final QuerySnapshot notificationSnapshot =
+      await notificationCollectionRef.get();
+
+  final List<Map<String, dynamic>> notifications = [];
+
+  for (final DocumentSnapshot notificationDoc in notificationSnapshot.docs) {
+    final Map<String, dynamic>? data = notificationDoc.data() as Map<String, dynamic>?;
+    if (data != null) {
+      notifications.add(data);
+    }
+  }
+
+  return notifications;
+}
+
 
 
 
