@@ -630,28 +630,28 @@ Future<List<Map<String, dynamic>>> getAllNotifications(String userId) async {
   final CollectionReference notificationCollectionRef =
       userDocRef.collection('notification');
 
-  final bool notificationCollectionExists =
-      await notificationCollectionRef.limit(1).get().then((snapshot) => snapshot.size > 0);
+  final bool notificationCollectionExists = await notificationCollectionRef.limit(1).get().then((snapshot) => snapshot.size > 0);
 
   if (!notificationCollectionExists) {
     // The notification collection does not exist or is empty
     return [];
   }
 
-  final QuerySnapshot notificationSnapshot =
-      await notificationCollectionRef.get();
+  final QuerySnapshot notificationSnapshot = await notificationCollectionRef.get();
 
   final List<Map<String, dynamic>> notifications = [];
 
   for (final DocumentSnapshot notificationDoc in notificationSnapshot.docs) {
     final Map<String, dynamic>? data = notificationDoc.data() as Map<String, dynamic>?;
     if (data != null) {
+      data['id'] = notificationDoc.id; // Include the document ID in the map
       notifications.add(data);
     }
   }
 
   return notifications;
 }
+
 
 Future<void> deleteAllNotifications(String userId) async {
   try {
@@ -663,6 +663,7 @@ Future<void> deleteAllNotifications(String userId) async {
     if (collectionSnapshot.docs.isNotEmpty) {
       final batch = FirebaseFirestore.instance.batch();
 
+      // Iterate over each document and add delete operation to the batch
       for (final doc in collectionSnapshot.docs) {
         batch.delete(doc.reference);
       }
@@ -673,6 +674,18 @@ Future<void> deleteAllNotifications(String userId) async {
     // Handle the error as per your requirements
   }
 }
+
+Future<void> deleteNotification(String userId, String notificationId) async {
+  try {
+    final userRef = FirebaseFirestore.instance.collection('user').doc(userId);
+    final notificationRef = userRef.collection('notification').doc(notificationId);
+
+    await notificationRef.delete();
+  } catch (error) {
+    // Handle the error as per your requirements
+  }
+}
+
 
 
 
