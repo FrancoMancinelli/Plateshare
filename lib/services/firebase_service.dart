@@ -653,6 +653,28 @@ Future<List<Map<String, dynamic>>> getAllNotifications(String userId) async {
   return notifications;
 }
 
+Future<void> deleteAllNotifications(String userId) async {
+  try {
+    final userRef = FirebaseFirestore.instance.collection('user').doc(userId);
+    final notificationRef = userRef.collection('notification');
+
+    final collectionSnapshot = await notificationRef.get();
+
+    if (collectionSnapshot.docs.isNotEmpty) {
+      final batch = FirebaseFirestore.instance.batch();
+
+      for (final doc in collectionSnapshot.docs) {
+        batch.delete(doc.reference);
+      }
+
+      await batch.commit();
+    } 
+  } catch (error) {
+    // Handle the error as per your requirements
+  }
+}
+
+
 
 
 
