@@ -82,8 +82,19 @@ class _NotificationsPageState extends State<NotificationsPage> {
                   width: screenSize.width,
                   color: AppColors.primaryColor,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 5),
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.arrow_back_ios,
+                            color: AppColors.primaryColor,
+                            size: 20,
+                          ),
+                          onPressed: () {},
+                        ),
+                      ),
                       Text(
                         'Notificaciones',
                         style: GoogleFonts.acme(
@@ -94,11 +105,49 @@ class _NotificationsPageState extends State<NotificationsPage> {
                           ),
                         ),
                       ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 5),
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.close,
+                            color: Colors.white,
+                            size: 30,
+                          ),
+                          onPressed: () {
+                            deleteAllNotifications(widget.userId);
+                          },
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ],
             ),
+            if (listaNotificaciones.isEmpty)
+              Expanded(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.network(
+                        'https://i.imgur.com/bgmgwp5.png',
+                        width: 260, // Adjust the width as needed
+                        height: 260, // Adjust the height as needed
+                      ),
+                      Text(
+                        'No tienes notificaciones nuevas',
+                        style: GoogleFonts.acme(
+                          textStyle: const TextStyle(
+                            fontSize: 26,
+                            color: AppColors.brownInfoRecipe,
+                            fontFamily: 'Acme',
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
