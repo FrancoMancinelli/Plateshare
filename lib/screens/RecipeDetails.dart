@@ -524,7 +524,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                                         Icons.send_rounded,
                                         color: AppColors.whiteColor,
                                       ),
-                                      onPressed: () {
+                                      onPressed: () async {
                                         if (_commentController.text.isNotEmpty) {
                                           addCommentToRecipe(
                                               widget.recipeID,
@@ -533,6 +533,9 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                                           _commentController.clear();
                                           showBottomMessage(3);
                                           setState(() {});
+                                          String userImage = await getProfilePicByUsername(widget.userUsername);
+                                          String ownerId = await getDocumentIdByUsername(widget.ownerUsername);
+                                          addNewNotification(ownerId, '${widget.userName} ha comentado en tu receta: ${widget.recipeTitle}', 1, userImage);
                                         }
                                       },
                                     ),
