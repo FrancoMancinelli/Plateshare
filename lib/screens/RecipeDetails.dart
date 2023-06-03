@@ -459,7 +459,6 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                                   if(totalRatings.isNotEmpty) {
                                   double sum = totalRatings.reduce((value, element) => value + element);
                                   double newRate = sum/totalRatings.length;
-                                  print('DEBUG SUMA::$sum  ---- DEBUG NEW RATE::$newRate');
                                   updateRecipeRating(ownerId, widget.recipeID, newRate);
                                   }      
                                   showBottomMessage(1);
