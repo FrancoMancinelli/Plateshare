@@ -56,7 +56,6 @@ class _InicioScreenState extends State<InicioScreen> {
   List<String> recipesIDs = [];
   List<dynamic> likedRecipesIDs = [];
 
-
   @override
   void initState() {
     super.initState();
@@ -142,7 +141,13 @@ class _InicioScreenState extends State<InicioScreen> {
   Widget _getPage(int index) {
     switch (index) {
       case 0:
-        return const NotificationsPage();
+        return NotificationsPage(
+          emailData: widget.emailData,
+          nameData: widget.nameData,
+          profilePicData: widget.profilePicData,
+          userId: userId,
+          usernameData: widget.usernameData,
+        );
       case 1: // Recetas | Home
         return RecipesPage(
           userImage: widget.profilePicData,
@@ -150,7 +155,6 @@ class _InicioScreenState extends State<InicioScreen> {
           userUsername: widget.usernameData,
         );
       case 2:
-      print('[DEBUG:::USERID] $userId');
         return ProfilePage(
           emailData: widget.emailData,
           usernameData: widget.usernameData,

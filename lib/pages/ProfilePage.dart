@@ -71,8 +71,6 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     super.initState();
     getProfileData();
-          print('[DEBUG:::USERID:::PROFILEPAGE] ${widget.userId}');
-
   }
 
   Future<void> getProfileData() async {

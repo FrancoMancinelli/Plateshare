@@ -35,19 +35,19 @@ class RecipesPage extends StatelessWidget {
     'Festivas'
   ];
 
-  Future<List<String>> idRecetasSaludables = getRecepiesFromCategory('Saludable');
-  Future<List<String>> idRecetasEconomicas = getRecepiesFromCategory('Económica');
+  Future<List<String>> idRecetasSaludables = getRecipesFromCategory('Saludable');
+  Future<List<String>> idRecetasEconomicas = getRecipesFromCategory('Económica');
   Future<List<String>> idRecetasEn15Min = getRecepiesLessThan15Min();
-  Future<List<String>> idRecetasPostres = getRecepiesFromCategory('Postre');
-  Future<List<String>> idRecetasVeganas = getRecepiesFromCategory('Vegano');
-  Future<List<String>> idRecetasVegetarianas = getRecepiesFromCategory('Vegetariano');
-  Future<List<String>> idRecetasGlutenFree = getRecepiesFromCategory('Gluten free');
-  Future<List<String>> idRecetasSinLactosa = getRecepiesFromCategory('Sin lactosa');
-  Future<List<String>> idRecetasCalientes = getRecepiesFromCategory('Caliente');
-  Future<List<String>> idRecetasFrios = getRecepiesFromCategory('Fríos');
-  Future<List<String>> idRecetasTradicional = getRecepiesFromCategory('Tradicional');
+  Future<List<String>> idRecetasPostres = getRecipesFromCategory('Postre');
+  Future<List<String>> idRecetasVeganas = getRecipesFromCategory('Vegano');
+  Future<List<String>> idRecetasVegetarianas = getRecipesFromCategory('Vegetariano');
+  Future<List<String>> idRecetasGlutenFree = getRecipesFromCategory('Gluten free');
+  Future<List<String>> idRecetasSinLactosa = getRecipesFromCategory('Sin lactosa');
+  Future<List<String>> idRecetasCalientes = getRecipesFromCategory('Caliente');
+  Future<List<String>> idRecetasFrios = getRecipesFromCategory('Fríos');
+  Future<List<String>> idRecetasTradicional = getRecipesFromCategory('Tradicional');
   Future<List<String>> idRecetas3Ingredientes = getRecipiesWith3Ingredients();
-  Future<List<String>> idRecetasFestivas = getRecepiesFromCategory('Festiva');
+  Future<List<String>> idRecetasFestivas = getRecipesFromCategory('Festiva');
 
   String primeraSeccion = "";
   String segundaSeccion = "";

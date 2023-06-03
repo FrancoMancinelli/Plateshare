@@ -370,23 +370,6 @@ class _RegistroScreenState extends State<RegistroScreen> {
         }
       } else {
         showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Contraseña invalida'),
-              content: const Text('Las contraseñas no coinciden'),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: const Text('OK'),
-                ),
-              ],
-            );
-          },
-        );
-      }
-    } else {
-      showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
@@ -401,6 +384,24 @@ class _RegistroScreenState extends State<RegistroScreen> {
           );
         },
       );
+      }
+    } else {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Contraseña invalida'),
+              content: const Text('Las contraseñas no coinciden'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      
     }
     } else {
       showDialog(

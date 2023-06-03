@@ -32,14 +32,11 @@ Future<void> addNewUser(String email, String name, String username,
     'username': username,
     'password': password,
     'salt': salt,
-    'followers': 0,
-    'follows': 0,
-    'favorites': '',
+    'followers': [],
+    'follows': [],
+    'favorites': [],
+    'profilepic': 'https://firebasestorage.googleapis.com/v0/b/plateshare-tfg2023.appspot.com/o/default_profile_pic.png?alt=media&token=92c2e8f1-5871-4285-8040-8b8df60bae14'
   });
-
-  // Añado una sub-collection
-  final recetasRef = userDocRef.collection('recipe');
-  await recetasRef.add({});
 }
 
 Future<void> updateUserPasswordByUsername(
@@ -142,35 +139,32 @@ Future<void> addRecipeToUser(String username, Map<String, dynamic> recipeData,
       await ingredientsRef.add(ingredientData);
     }
   }
-
-  final commentsRef = recipeRef.collection('comment');
-  final commentsData = {
-    'owner': 'Gm8fyjV8jbQiUDajIE0V',
-    'text': '¡Gracias por compartir tu receta con nosotros!',
-  };
-  await commentsRef.add(commentsData);
 }
 
-Future<List<String>> getRecepiesFromCategory(String categoriaAFiltrar) async {
-  final QuerySnapshot usersSnapshot = await FirebaseFirestore.instance
-      .collection('user')
-      .get();
+Future<List<String>> getRecipesFromCategory(String categoryToFilter) async {
+  final QuerySnapshot usersSnapshot = await FirebaseFirestore.instance.collection('user').get();
 
-  final List<String> calienteRecipies = [];
+  final List<String> categoryRecipes = [];
 
   for (final DocumentSnapshot userDoc in usersSnapshot.docs) {
-    final QuerySnapshot recepiesSnapshot =
-        await userDoc.reference.collection('recipe').get();
+    final CollectionReference recipeCollectionRef = userDoc.reference.collection('recipe');
 
-    for (final DocumentSnapshot recepieDoc in recepiesSnapshot.docs) {
-      final List<dynamic> categorias = recepieDoc.get('category');
-      if (categorias != null && categorias.contains(categoriaAFiltrar)) {
-        calienteRecipies.add(recepieDoc.id);
+    final QuerySnapshot recipesSnapshot = await recipeCollectionRef.get();
+
+    // Check if the 'recipe' collection exists and has any documents
+    if (recipesSnapshot.docs.isNotEmpty) {
+      for (final DocumentSnapshot recipeDoc in recipesSnapshot.docs) {
+        final List<dynamic> categories = recipeDoc.get('category');
+        if (categories != null && categories.contains(categoryToFilter)) {
+          categoryRecipes.add(recipeDoc.id);
+        }
       }
     }
   }
-  return calienteRecipies;
+
+  return categoryRecipes;
 }
+
 
 Future<List<String>> getRecepiesLessThan15Min() async {
   final QuerySnapshot usersSnapshot = await FirebaseFirestore.instance
@@ -530,7 +524,6 @@ Future<List<String>> getRecipeDocumentIDs(String userID) async {
     print('Error getting recipe document IDs: $e');
   }
   
-  print('[RECETAS ID]: $recipeIDs');
   return recipeIDs;
 }
 
