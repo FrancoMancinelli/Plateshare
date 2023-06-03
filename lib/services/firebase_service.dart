@@ -35,7 +35,8 @@ Future<void> addNewUser(String email, String name, String username,
     'followers': [],
     'follows': [],
     'favorites': [],
-    'profilepic': 'https://firebasestorage.googleapis.com/v0/b/plateshare-tfg2023.appspot.com/o/default_profile_pic.png?alt=media&token=92c2e8f1-5871-4285-8040-8b8df60bae14'
+    'profilepic':
+        'https://firebasestorage.googleapis.com/v0/b/plateshare-tfg2023.appspot.com/o/default_profile_pic.png?alt=media&token=92c2e8f1-5871-4285-8040-8b8df60bae14'
   });
 }
 
@@ -142,12 +143,14 @@ Future<void> addRecipeToUser(String username, Map<String, dynamic> recipeData,
 }
 
 Future<List<String>> getRecipesFromCategory(String categoryToFilter) async {
-  final QuerySnapshot usersSnapshot = await FirebaseFirestore.instance.collection('user').get();
+  final QuerySnapshot usersSnapshot =
+      await FirebaseFirestore.instance.collection('user').get();
 
   final List<String> categoryRecipes = [];
 
   for (final DocumentSnapshot userDoc in usersSnapshot.docs) {
-    final CollectionReference recipeCollectionRef = userDoc.reference.collection('recipe');
+    final CollectionReference recipeCollectionRef =
+        userDoc.reference.collection('recipe');
 
     final QuerySnapshot recipesSnapshot = await recipeCollectionRef.get();
 
@@ -165,11 +168,9 @@ Future<List<String>> getRecipesFromCategory(String categoryToFilter) async {
   return categoryRecipes;
 }
 
-
 Future<List<String>> getRecepiesLessThan15Min() async {
-  final QuerySnapshot usersSnapshot = await FirebaseFirestore.instance
-      .collection('user')
-      .get();
+  final QuerySnapshot usersSnapshot =
+      await FirebaseFirestore.instance.collection('user').get();
 
   final List<String> recipiesWithShortTime = [];
 
@@ -189,9 +190,8 @@ Future<List<String>> getRecepiesLessThan15Min() async {
 }
 
 Future<List<String>> getRecipiesWith3Ingredients() async {
-  final QuerySnapshot usersSnapshot = await FirebaseFirestore.instance
-      .collection('user')
-      .get();
+  final QuerySnapshot usersSnapshot =
+      await FirebaseFirestore.instance.collection('user').get();
 
   final List<String> recipiesWithThreeIngredients = [];
 
@@ -200,9 +200,8 @@ Future<List<String>> getRecipiesWith3Ingredients() async {
         await userDoc.reference.collection('recipe').get();
 
     for (final DocumentSnapshot recepieDoc in recepiesSnapshot.docs) {
-      final QuerySnapshot ingredientesSnapshot = await recepieDoc.reference
-          .collection('ingredient')
-          .get();
+      final QuerySnapshot ingredientesSnapshot =
+          await recepieDoc.reference.collection('ingredient').get();
 
       if (ingredientesSnapshot.size == 3) {
         recipiesWithThreeIngredients.add(recepieDoc.id);
@@ -214,9 +213,8 @@ Future<List<String>> getRecipiesWith3Ingredients() async {
 }
 
 Future<List<String>> getUserInfoFromRecipe(String recipeId) async {
-  final QuerySnapshot userSnapshot = await FirebaseFirestore.instance
-      .collection('user')
-      .get();
+  final QuerySnapshot userSnapshot =
+      await FirebaseFirestore.instance.collection('user').get();
 
   for (final DocumentSnapshot userDoc in userSnapshot.docs) {
     final QuerySnapshot recipeSnapshot = await userDoc.reference
@@ -226,9 +224,11 @@ Future<List<String>> getUserInfoFromRecipe(String recipeId) async {
 
     if (recipeSnapshot.docs.isNotEmpty) {
       final DocumentSnapshot recipeDoc = recipeSnapshot.docs.first;
-      final DocumentSnapshot userRecipeDoc = await recipeDoc.reference.parent.parent!.get();
+      final DocumentSnapshot userRecipeDoc =
+          await recipeDoc.reference.parent.parent!.get();
 
-      final Map<String, dynamic> userData = userRecipeDoc.data() as Map<String, dynamic>;
+      final Map<String, dynamic> userData =
+          userRecipeDoc.data() as Map<String, dynamic>;
       final String image = userData['profilepic'].toString();
       final String username = userData['username'].toString();
       return [image, username];
@@ -238,19 +238,15 @@ Future<List<String>> getUserInfoFromRecipe(String recipeId) async {
   return []; // Return an empty list if the recipe document is not found
 }
 
-
 Future<List<String>> getRecipeFields(String recipeId) async {
-  final QuerySnapshot userSnapshot = await FirebaseFirestore.instance
-      .collection('user')
-      .get();
+  final QuerySnapshot userSnapshot =
+      await FirebaseFirestore.instance.collection('user').get();
 
   final List<String> fields = [];
 
   for (final DocumentSnapshot userDoc in userSnapshot.docs) {
-    final DocumentSnapshot recipeSnapshot = await userDoc.reference
-        .collection('recipe')
-        .doc(recipeId)
-        .get();
+    final DocumentSnapshot recipeSnapshot =
+        await userDoc.reference.collection('recipe').doc(recipeId).get();
 
     if (recipeSnapshot.exists) {
       final Map<String, dynamic> recipeData =
@@ -272,24 +268,22 @@ Future<List<String>> getRecipeFields(String recipeId) async {
 }
 
 Future<List<Map<String, dynamic>>> getRecipeIngredients(String recipeId) async {
-  final QuerySnapshot userSnapshot = await FirebaseFirestore.instance
-      .collection('user')
-      .get();
+  final QuerySnapshot userSnapshot =
+      await FirebaseFirestore.instance.collection('user').get();
 
   List<Map<String, dynamic>> ingredients = [];
 
   for (final DocumentSnapshot userDoc in userSnapshot.docs) {
-    final DocumentSnapshot recipeSnapshot = await userDoc.reference
-        .collection('recipe')
-        .doc(recipeId)
-        .get();
+    final DocumentSnapshot recipeSnapshot =
+        await userDoc.reference.collection('recipe').doc(recipeId).get();
 
     if (recipeSnapshot.exists) {
-      final QuerySnapshot ingredientSnapshot = await recipeSnapshot.reference
-          .collection('ingredient')
-          .get();
+      final QuerySnapshot ingredientSnapshot =
+          await recipeSnapshot.reference.collection('ingredient').get();
 
-      ingredients = ingredientSnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+      ingredients = ingredientSnapshot.docs
+          .map((doc) => doc.data() as Map<String, dynamic>)
+          .toList();
       break; // Exit the loop once the recipe document is found
     }
   }
@@ -298,24 +292,22 @@ Future<List<Map<String, dynamic>>> getRecipeIngredients(String recipeId) async {
 }
 
 Future<List<Map<String, dynamic>>> getRecipeComments(String recipeId) async {
-  final QuerySnapshot userSnapshot = await FirebaseFirestore.instance
-      .collection('user')
-      .get();
+  final QuerySnapshot userSnapshot =
+      await FirebaseFirestore.instance.collection('user').get();
 
   List<Map<String, dynamic>> comentarios = [];
 
   for (final DocumentSnapshot userDoc in userSnapshot.docs) {
-    final DocumentSnapshot recipeSnapshot = await userDoc.reference
-        .collection('recipe')
-        .doc(recipeId)
-        .get();
+    final DocumentSnapshot recipeSnapshot =
+        await userDoc.reference.collection('recipe').doc(recipeId).get();
 
     if (recipeSnapshot.exists) {
-      final QuerySnapshot ingredientSnapshot = await recipeSnapshot.reference
-          .collection('comment')
-          .get();
+      final QuerySnapshot ingredientSnapshot =
+          await recipeSnapshot.reference.collection('comment').get();
 
-      comentarios = ingredientSnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+      comentarios = ingredientSnapshot.docs
+          .map((doc) => doc.data() as Map<String, dynamic>)
+          .toList();
       break; // Exit the loop once the recipe document is found
     }
   }
@@ -323,26 +315,22 @@ Future<List<Map<String, dynamic>>> getRecipeComments(String recipeId) async {
   return comentarios;
 }
 
-
 Future<List<String>> getRecipeSteps(String recipeId) async {
-  final QuerySnapshot userSnapshot = await FirebaseFirestore.instance
-      .collection('user')
-      .get();
+  final QuerySnapshot userSnapshot =
+      await FirebaseFirestore.instance.collection('user').get();
 
   List<String> steps = [];
 
   for (final DocumentSnapshot userDoc in userSnapshot.docs) {
-    final DocumentSnapshot recipeSnapshot = await userDoc.reference
-        .collection('recipe')
-        .doc(recipeId)
-        .get();
+    final DocumentSnapshot recipeSnapshot =
+        await userDoc.reference.collection('recipe').doc(recipeId).get();
 
     if (recipeSnapshot.exists) {
       final Map<String, dynamic> recipeData =
           recipeSnapshot.data() as Map<String, dynamic>;
 
       final List<dynamic> stepsData = recipeData['steps'];
-    steps = stepsData.cast<String>().toList();
+      steps = stepsData.cast<String>().toList();
       break; // Exit the loop once the recipe document is found
     }
   }
@@ -353,11 +341,8 @@ Future<List<String>> getRecipeSteps(String recipeId) async {
 Future<String?> getUserUsernameByDocumentId(String documentId) async {
   String? username;
 
-  DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
-      .instance
-      .collection('user')
-      .doc(documentId)
-      .get();
+  DocumentSnapshot<Map<String, dynamic>> snapshot =
+      await FirebaseFirestore.instance.collection('user').doc(documentId).get();
 
   if (snapshot.exists) {
     username = snapshot.data()?['username'] as String?;
@@ -369,11 +354,8 @@ Future<String?> getUserUsernameByDocumentId(String documentId) async {
 Future<String?> getUserImageByDocumentId(String documentId) async {
   String? username;
 
-  DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
-      .instance
-      .collection('user')
-      .doc(documentId)
-      .get();
+  DocumentSnapshot<Map<String, dynamic>> snapshot =
+      await FirebaseFirestore.instance.collection('user').doc(documentId).get();
 
   if (snapshot.exists) {
     username = snapshot.data()?['profilepic'] as String?;
@@ -385,11 +367,8 @@ Future<String?> getUserImageByDocumentId(String documentId) async {
 Future<String?> getUserNameByDocumentId(String documentId) async {
   String? username;
 
-  DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
-      .instance
-      .collection('user')
-      .doc(documentId)
-      .get();
+  DocumentSnapshot<Map<String, dynamic>> snapshot =
+      await FirebaseFirestore.instance.collection('user').doc(documentId).get();
 
   if (snapshot.exists) {
     username = snapshot.data()?['name'] as String?;
@@ -398,18 +377,14 @@ Future<String?> getUserNameByDocumentId(String documentId) async {
   return username;
 }
 
-
-
-Future<void> addCommentToRecipe(String recipeId, String owner, String text) async {
-  final QuerySnapshot userSnapshot = await FirebaseFirestore.instance
-      .collection('user')
-      .get();
+Future<void> addCommentToRecipe(
+    String recipeId, String owner, String text) async {
+  final QuerySnapshot userSnapshot =
+      await FirebaseFirestore.instance.collection('user').get();
 
   for (final DocumentSnapshot userDoc in userSnapshot.docs) {
-    final DocumentSnapshot recipeSnapshot = await userDoc.reference
-        .collection('recipe')
-        .doc(recipeId)
-        .get();
+    final DocumentSnapshot recipeSnapshot =
+        await userDoc.reference.collection('recipe').doc(recipeId).get();
 
     if (recipeSnapshot.exists) {
       await recipeSnapshot.reference.collection('comment').add({
@@ -420,7 +395,6 @@ Future<void> addCommentToRecipe(String recipeId, String owner, String text) asyn
     }
   }
 }
-
 
 Future<bool> checkIfRecipeLiked(
     String recipeOwner, String recipeId, String value) async {
@@ -447,18 +421,13 @@ Future<bool> checkIfRecipeLiked(
   return false;
 }
 
-
 Future<void> modifyLikeToRecipe(String recipeId, String value, int flag) async {
-  final QuerySnapshot userSnapshot = await FirebaseFirestore.instance
-      .collection('user')
-      .get();
+  final QuerySnapshot userSnapshot =
+      await FirebaseFirestore.instance.collection('user').get();
 
   for (final DocumentSnapshot userDoc in userSnapshot.docs) {
     final DocumentSnapshot<Map<String, dynamic>> recipeSnapshot =
-        await userDoc.reference
-            .collection('recipe')
-            .doc(recipeId)
-            .get();
+        await userDoc.reference.collection('recipe').doc(recipeId).get();
 
     if (recipeSnapshot.exists) {
       final Map<String, dynamic>? recipeData = recipeSnapshot.data();
@@ -496,26 +465,26 @@ Future<int> getAmountOfLikes(String recipeOwner, String recipeId) async {
 
   if (likes != null) {
     if (likes is List<dynamic>) {
-        return likes.length;
-      }
+      return likes.length;
     }
+  }
 
   return 0;
 }
 
 Future<List<String>> getRecipeDocumentIDs(String userID) async {
   List<String> recipeIDs = [];
-  
+
   try {
     // Get the 'recipe' collection reference inside the user document
     CollectionReference userRecipeCollection = FirebaseFirestore.instance
         .collection('user')
         .doc(userID)
         .collection('recipe');
-    
+
     // Get all the documents in the 'recipe' collection
     QuerySnapshot snapshot = await userRecipeCollection.get();
-    
+
     // Extract the document IDs and add them to the list
     snapshot.docs.forEach((doc) {
       recipeIDs.add(doc.id);
@@ -523,16 +492,13 @@ Future<List<String>> getRecipeDocumentIDs(String userID) async {
   } catch (e) {
     print('Error getting recipe document IDs: $e');
   }
-  
+
   return recipeIDs;
 }
 
-
 Future<List<dynamic>> getFollowers(String userId) async {
-  DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
-      .collection('user')
-      .doc(userId)
-      .get();
+  DocumentSnapshot userSnapshot =
+      await FirebaseFirestore.instance.collection('user').doc(userId).get();
 
   Map<String, dynamic> userData = userSnapshot.data() as Map<String, dynamic>;
   List<dynamic> followers = userData['followers'] ?? [];
@@ -541,10 +507,8 @@ Future<List<dynamic>> getFollowers(String userId) async {
 }
 
 Future<List<dynamic>> getFollows(String userId) async {
-  DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
-      .collection('user')
-      .doc(userId)
-      .get();
+  DocumentSnapshot userSnapshot =
+      await FirebaseFirestore.instance.collection('user').doc(userId).get();
 
   Map<String, dynamic> userData = userSnapshot.data() as Map<String, dynamic>;
   List<dynamic> followers = userData['follows'] ?? [];
@@ -553,10 +517,8 @@ Future<List<dynamic>> getFollows(String userId) async {
 }
 
 Future<List<dynamic>> getLikedRecipes(String userId) async {
-  DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
-      .collection('user')
-      .doc(userId)
-      .get();
+  DocumentSnapshot userSnapshot =
+      await FirebaseFirestore.instance.collection('user').doc(userId).get();
 
   Map<String, dynamic> userData = userSnapshot.data() as Map<String, dynamic>;
   List<dynamic> favorites = userData['favorites'] ?? [];
@@ -564,15 +526,14 @@ Future<List<dynamic>> getLikedRecipes(String userId) async {
   return favorites;
 }
 
-
 Future<void> addFavorite(String userId, String favoriteId) async {
-  DocumentReference userRef = FirebaseFirestore.instance
-      .collection('user')
-      .doc(userId);
+  DocumentReference userRef =
+      FirebaseFirestore.instance.collection('user').doc(userId);
 
   // Get the current favorites array
   DocumentSnapshot userSnapshot = await userRef.get();
-  List<dynamic>? favorites = (userSnapshot.data() as Map<String, dynamic>)['favorites'] as List<dynamic>?;
+  List<dynamic>? favorites = (userSnapshot.data()
+      as Map<String, dynamic>)['favorites'] as List<dynamic>?;
 
   // Add the new favorite to the array
   favorites ??= [];
@@ -582,15 +543,14 @@ Future<void> addFavorite(String userId, String favoriteId) async {
   await userRef.update({'favorites': favorites});
 }
 
-
 Future<void> removeFavorite(String userId, String favoriteId) async {
-  DocumentReference userRef = FirebaseFirestore.instance
-      .collection('user')
-      .doc(userId);
+  DocumentReference userRef =
+      FirebaseFirestore.instance.collection('user').doc(userId);
 
   // Get the current favorites array
   DocumentSnapshot userSnapshot = await userRef.get();
-  List<dynamic>? favorites = (userSnapshot.data() as Map<String, dynamic>)['favorites'] as List<dynamic>?;
+  List<dynamic>? favorites = (userSnapshot.data()
+      as Map<String, dynamic>)['favorites'] as List<dynamic>?;
 
   // Remove the specified favorite from the array
   if (favorites != null) {
@@ -601,8 +561,8 @@ Future<void> removeFavorite(String userId, String favoriteId) async {
   await userRef.update({'favorites': favorites});
 }
 
-Future<void> addNewNotification(
-    String userId, String notificationData, int type, String userNotifierImage) async {
+Future<void> addNewNotification(String userId, String notificationData,
+    int type, String userNotifierImage) async {
   final CollectionReference userCollectionRef =
       FirebaseFirestore.instance.collection('user');
 
@@ -630,19 +590,24 @@ Future<List<Map<String, dynamic>>> getAllNotifications(String userId) async {
   final CollectionReference notificationCollectionRef =
       userDocRef.collection('notification');
 
-  final bool notificationCollectionExists = await notificationCollectionRef.limit(1).get().then((snapshot) => snapshot.size > 0);
+  final bool notificationCollectionExists = await notificationCollectionRef
+      .limit(1)
+      .get()
+      .then((snapshot) => snapshot.size > 0);
 
   if (!notificationCollectionExists) {
     // The notification collection does not exist or is empty
     return [];
   }
 
-  final QuerySnapshot notificationSnapshot = await notificationCollectionRef.get();
+  final QuerySnapshot notificationSnapshot =
+      await notificationCollectionRef.get();
 
   final List<Map<String, dynamic>> notifications = [];
 
   for (final DocumentSnapshot notificationDoc in notificationSnapshot.docs) {
-    final Map<String, dynamic>? data = notificationDoc.data() as Map<String, dynamic>?;
+    final Map<String, dynamic>? data =
+        notificationDoc.data() as Map<String, dynamic>?;
     if (data != null) {
       data['id'] = notificationDoc.id; // Include the document ID in the map
       notifications.add(data);
@@ -651,7 +616,6 @@ Future<List<Map<String, dynamic>>> getAllNotifications(String userId) async {
 
   return notifications;
 }
-
 
 Future<void> deleteAllNotifications(String userId) async {
   try {
@@ -669,7 +633,7 @@ Future<void> deleteAllNotifications(String userId) async {
       }
 
       await batch.commit();
-    } 
+    }
   } catch (error) {
     // Handle the error as per your requirements
   }
@@ -678,9 +642,57 @@ Future<void> deleteAllNotifications(String userId) async {
 Future<void> deleteNotification(String userId, String notificationId) async {
   try {
     final userRef = FirebaseFirestore.instance.collection('user').doc(userId);
-    final notificationRef = userRef.collection('notification').doc(notificationId);
+    final notificationRef =
+        userRef.collection('notification').doc(notificationId);
 
     await notificationRef.delete();
+  } catch (error) {
+    // Handle the error as per your requirements
+  }
+}
+
+Future<void> addOrUpdateRatingToRecipe(
+  String ownerId,
+  String recipeId,
+  double rate,
+  String userId,
+) async {
+  try {
+    final userRef = FirebaseFirestore.instance.collection('user').doc(ownerId);
+    final recipeRef = userRef.collection('recipe').doc(recipeId);
+
+    final DocumentSnapshot recipeSnapshot = await recipeRef.get();
+
+    if (recipeSnapshot.exists) {
+      final List<Map<String, dynamic>> ratings =
+          List<Map<String, dynamic>>.from((recipeSnapshot.data() as Map<String, dynamic>)['ratings'] ?? []);
+
+      int existingRatingIndex = -1;
+
+      for (int i = 0; i < ratings.length; i++) {
+        if (ratings[i]['userid'] == userId) {
+          existingRatingIndex = i;
+          break;
+        }
+      }
+
+      final newRating = {
+        'userid': userId,
+        'points': rate,
+      };
+
+      if (existingRatingIndex != -1) {
+        // User has already rated, update the existing rating
+        ratings[existingRatingIndex]['points'] = rate;
+      } else {
+        // User has not rated, add the new rating
+        ratings.add(newRating);
+      }
+
+      await recipeRef.update({
+        'ratings': ratings,
+      });
+    }
   } catch (error) {
     // Handle the error as per your requirements
   }
@@ -689,14 +701,73 @@ Future<void> deleteNotification(String userId, String notificationId) async {
 
 
 
+Future<void> removeUserRatingFromRecipe(String ownerId, String recipeId, String userId) async {
+  try {
+    final userRef = FirebaseFirestore.instance.collection('user').doc(ownerId);
+    final recipeRef = userRef.collection('recipe').doc(recipeId);
+
+    final DocumentSnapshot recipeSnapshot = await recipeRef.get();
+
+    if (recipeSnapshot.exists) {
+      final List<Map<String, dynamic>> ratings =
+          List<Map<String, dynamic>>.from(recipeSnapshot['ratings'] ?? []);
+
+      ratings.removeWhere((rating) => rating['userid'] == userId);
+
+      // Convert the updated ratings list back to a list of dynamic
+      final updatedRatings = ratings.map((rating) => Map<String, dynamic>.from(rating)).toList();
+
+      await recipeRef.update({
+        'ratings': updatedRatings,
+      });
+    }
+  } catch (error) {
+    // Handle the error as per your requirements
+  }
+}
+
+Future<List<double>> getAllRatings(String userId, String recipeId) async {
+  try {
+    final recipeRef = FirebaseFirestore.instance
+        .collection('user')
+        .doc(userId)
+        .collection('recipe')
+        .doc(recipeId);
+
+    final DocumentSnapshot recipeSnapshot = await recipeRef.get();
+
+    if (recipeSnapshot.exists) {
+      final List<dynamic> ratings = recipeSnapshot['ratings'] ?? [];
+
+      final List<double> allRatings = ratings
+          .map<double>((rating) => rating['points'] as double)
+          .toList();
+
+      return allRatings;
+    }
+
+    return []; // Return an empty list if the recipe does not exist or has no ratings
+  } catch (error) {
+    // Handle the error as per your requirements
+    return []; // Return an empty list in case of an error
+  }
+}
 
 
 
 
+Future<void> updateRecipeRating(String ownerId, String recipeId, double newRate) async {
+  try {
+    final userRef = FirebaseFirestore.instance.collection('user').doc(ownerId);
+    final recipeRef = userRef.collection('recipe').doc(recipeId);
 
-
-
-
+    await recipeRef.update({
+      'rate': newRate,
+    });
+  } catch (error) {
+    // Handle the error as per your requirements
+  }
+}
 
 
 

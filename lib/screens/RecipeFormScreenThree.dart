@@ -470,11 +470,12 @@ class _RecipeFormScreenThreeState extends State<RecipeFormScreenThree> {
                                                 widget.categoriasRecepie,
                                             'likes': [],
                                             'steps': texts,
-                                            'rate': 0.0,
+                                            'rate': 5.0,
                                             'rations': widget.racionesRecepie,
                                             'time': widget.tiempoRecepie,
                                             'title': widget.tituloRecepie,
                                             'image': imageUrl,
+                                            'ratings': [],
                                           };
                   
                                           final ingredientList =

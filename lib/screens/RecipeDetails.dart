@@ -450,10 +450,27 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                                 Icons.star_rounded,
                                 color: AppColors.primaryColor,
                               ),
-                              onRatingUpdate: (rating) {
+                              onRatingUpdate: (rating) async {
+                                String ownerId = await getDocumentIdByUsername(widget.ownerUsername);
+                                List<double> totalRatings = [];
                                 if (rating != 0) {
+                                  await addOrUpdateRatingToRecipe(ownerId, widget.recipeID, rating, widget.userId);
+                                  totalRatings = await getAllRatings(ownerId, widget.recipeID);
+                                  if(totalRatings.isNotEmpty) {
+                                  double sum = totalRatings.reduce((value, element) => value + element);
+                                  double newRate = sum/totalRatings.length;
+                                  print('DEBUG SUMA::$sum  ---- DEBUG NEW RATE::$newRate');
+                                  updateRecipeRating(ownerId, widget.recipeID, newRate);
+                                  }      
                                   showBottomMessage(1);
                                 } else {
+                                  removeUserRatingFromRecipe(ownerId, widget.recipeID, widget.userId);
+                                  totalRatings = await getAllRatings(ownerId, widget.userId);
+                                 if(totalRatings.isNotEmpty) {
+                                  double sum = totalRatings.reduce((value, element) => value + element);
+                                  double newRate = sum/totalRatings.length;
+                                  updateRecipeRating(ownerId, widget.recipeID, newRate);
+                                  }    
                                   showBottomMessage(2);
                                 }
                               },
@@ -525,7 +542,8 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                                         color: AppColors.whiteColor,
                                       ),
                                       onPressed: () async {
-                                        if (_commentController.text.isNotEmpty) {
+                                        if (_commentController
+                                            .text.isNotEmpty) {
                                           addCommentToRecipe(
                                               widget.recipeID,
                                               widget.userId,
@@ -533,9 +551,17 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                                           _commentController.clear();
                                           showBottomMessage(3);
                                           setState(() {});
-                                          String userImage = await getProfilePicByUsername(widget.userUsername);
-                                          String ownerId = await getDocumentIdByUsername(widget.ownerUsername);
-                                          addNewNotification(ownerId, '${widget.userName} ha comentado en tu receta: ${widget.recipeTitle}', 1, userImage);
+                                          String userImage =
+                                              await getProfilePicByUsername(
+                                                  widget.userUsername);
+                                          String ownerId =
+                                              await getDocumentIdByUsername(
+                                                  widget.ownerUsername);
+                                          addNewNotification(
+                                              ownerId,
+                                              '${widget.userName} ha comentado en tu receta: ${widget.recipeTitle}',
+                                              1,
+                                              userImage);
                                         }
                                       },
                                     ),
