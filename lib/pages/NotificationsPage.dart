@@ -152,6 +152,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
               child: SingleChildScrollView(
                 child: Column(
                   children: listaNotificaciones.map((notification) {
+                    final notificationId = notification['id'] as String?;
                     final imageUrl = notification['image'] as String?;
                     final text1 = notification['data'] as String?;
                     final text2 =
@@ -183,94 +184,116 @@ class _NotificationsPageState extends State<NotificationsPage> {
                       timeDifference = '$differenceInDays dias';
                     }
 
-                    return Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: AppColors.whiteColor,
-                          border: Border.all(
-                            color: AppColors.greyAccentColor,
-                            width: 1.5,
-                          ),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(20.0),
-                          ),
+                    return Dismissible(
+                      key: UniqueKey(),
+                      direction: DismissDirection.endToStart,
+                      background: Container(
+                        color: Colors.red,
+                        alignment: Alignment.centerRight,
+                        padding: EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Icon(
+                          Icons.delete,
+                          color: Colors.white,
                         ),
-                        padding: EdgeInsets.all(8),
-                        child: Row(
-                          children: [
-                            imageUrl != null
-                                ? Container(
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
+                      ),
+                      onDismissed: (direction) {
+                        // Remove the item from the list
+                        setState(() {
+                          listaNotificaciones.remove(notification);
+                        });
+
+                        // Call your method here
+                        deleteNotification(widget.userId, notificationId!);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: AppColors.whiteColor,
+                            border: Border.all(
+                              color: AppColors.greyAccentColor,
+                              width: 1.5,
+                            ),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(20.0),
+                            ),
+                          ),
+                          padding: EdgeInsets.all(8),
+                          child: Row(
+                            children: [
+                              imageUrl != null
+                                  ? Container(
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                          color: Colors.black,
+                                          width: 1.0,
+                                        ),
                                       ),
-                                    ),
-                                    child: imageUrl != null
-                                        ? CircleAvatar(
-                                            radius: 25,
-                                            backgroundImage:
-                                                NetworkImage(imageUrl),
-                                          )
-                                        : Placeholder(
-                                            fallbackHeight: 50,
-                                            fallbackWidth: 50,
+                                      child: imageUrl != null
+                                          ? CircleAvatar(
+                                              radius: 25,
+                                              backgroundImage:
+                                                  NetworkImage(imageUrl),
+                                            )
+                                          : Placeholder(
+                                              fallbackHeight: 50,
+                                              fallbackWidth: 50,
+                                            ),
+                                    )
+                                  : SizedBox(width: 10),
+                              Flexible(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.fromLTRB(8, 0, 5, 0),
+                                      child: Text(
+                                        text1 ?? '',
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
+                                        style: GoogleFonts.acme(
+                                          textStyle: const TextStyle(
+                                            fontSize: 17,
+                                            color: AppColors.blackColor,
+                                            fontFamily: 'Acme',
                                           ),
-                                  )
-                                : SizedBox(width: 10),
-                            Flexible(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(8, 0, 5, 0),
-                                    child: Text(
-                                      text1 ?? '',
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 2,
-                                      style: GoogleFonts.acme(
-                                        textStyle: const TextStyle(
-                                          fontSize: 17,
-                                          color: AppColors.blackColor,
-                                          fontFamily: 'Acme',
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                            SizedBox(width: 10),
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Text(timeDifference),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            0, 5, 5, 0),
-                                        child: Icon(
-                                          notification['type'] == 1
-                                              ? Icons.comment_outlined
-                                              : Icons.favorite,
+                              SizedBox(width: 10),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(timeDifference),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              0, 5, 5, 0),
+                                          child: Icon(
+                                            notification['type'] == 1
+                                                ? Icons.comment_outlined
+                                                : Icons.favorite,
+                                          ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     );
