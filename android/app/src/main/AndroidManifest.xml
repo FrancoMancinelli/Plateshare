@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.plateshare">
    <application
-        android:label="plateshare"
-        android:name="${applicationName}"
+        android:label="Plateshare"
+        android:name="Plateshare"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
