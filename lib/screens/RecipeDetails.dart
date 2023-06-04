@@ -50,7 +50,8 @@ class RecipeDetailsScreen extends StatefulWidget {
     required this.recipeComments,
     required this.recipeID,
     required this.userId,
-    required this.isFavorite, required this.userEmail,
+    required this.isFavorite,
+    required this.userEmail,
   }) : super(key: key);
 
   @override
@@ -241,7 +242,15 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                           deleteCollections(ownerId, widget.recipeID);
                           deleteRecipe(ownerId, widget.recipeID);
                           Navigator.pop(context);
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => InicioScreen(emailData: widget.userEmail, nameData: widget.userName, profilePicData: widget.userImage, usernameData: widget.userUsername,)));
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => InicioScreen(
+                                        emailData: widget.userEmail,
+                                        nameData: widget.userName,
+                                        profilePicData: widget.userImage,
+                                        usernameData: widget.userUsername,
+                                      )));
                         }
                       },
                     ),
@@ -272,17 +281,16 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                             children: [
                               Container(
                                 decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
                                   border: Border.all(
                                     color: Colors.black,
                                     width: 1.5,
                                   ),
-                                  shape: BoxShape.circle,
                                 ),
-                                child: Image.network(
-                                  widget.ownerImage,
-                                  width: 35,
-                                  height: 35,
-                                  fit: BoxFit.cover,
+                                child: CircleAvatar(
+                                  radius: 17.5,
+                                  backgroundImage:
+                                      NetworkImage(widget.ownerImage),
                                 ),
                               ),
                               SizedBox(width: 5),
@@ -577,16 +585,16 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                                           10, 5, 0, 5),
                                       child: Container(
                                         decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
                                           border: Border.all(
                                             color: Colors.black,
-                                            width: 2.0,
+                                            width: 1.5,
                                           ),
-                                          shape: BoxShape.circle,
                                         ),
-                                        child: Image.network(
-                                          widget.userImage,
-                                          width: 40,
-                                          height: 40,
+                                        child: CircleAvatar(
+                                          radius: 17.5,
+                                          backgroundImage:
+                                              NetworkImage(widget.userImage),
                                         ),
                                       ),
                                     ),

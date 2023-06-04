@@ -21,7 +21,8 @@ class RecipeComment extends StatefulWidget {
 }
 
 class _RecipeCommentState extends State<RecipeComment> {
-  String ownerImage = 'https://firebasestorage.googleapis.com/v0/b/plateshare-tfg2023.appspot.com/o/default_recipeimage.jpg?alt=media&token=8400f8d3-7704-4a54-8151-da4053cf9102';
+  String ownerImage =
+      'https://firebasestorage.googleapis.com/v0/b/plateshare-tfg2023.appspot.com/o/default_recipeimage.jpg?alt=media&token=8400f8d3-7704-4a54-8151-da4053cf9102';
   String ownerName = 'A';
   String ownerUsername = 'A';
 
@@ -32,20 +33,16 @@ class _RecipeCommentState extends State<RecipeComment> {
   }
 
   Future<void> fetchCommentData() async {
-  final image = await getUserImageByDocumentId(widget.commentOwnerID);
-  final name = await getUserNameByDocumentId(widget.commentOwnerID);
-  final username = await getUserUsernameByDocumentId(widget.commentOwnerID);
+    final image = await getUserImageByDocumentId(widget.commentOwnerID);
+    final name = await getUserNameByDocumentId(widget.commentOwnerID);
+    final username = await getUserUsernameByDocumentId(widget.commentOwnerID);
 
-
-  
     setState(() {
       ownerImage = image as String;
       ownerName = name as String;
       ownerUsername = username as String;
-    }
-      );
-  
-}
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,16 +62,15 @@ class _RecipeCommentState extends State<RecipeComment> {
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
                     decoration: BoxDecoration(
+                      shape: BoxShape.circle,
                       border: Border.all(
                         color: Colors.black,
-                        width: 2.0,
+                        width: 1.5,
                       ),
-                      shape: BoxShape.circle,
                     ),
-                    child: Image.network(
-                      ownerImage,
-                      width: 40,
-                      height: 40,
+                    child: CircleAvatar(
+                      radius: 17.5,
+                      backgroundImage: NetworkImage(ownerImage),
                     ),
                   ),
                 ),
