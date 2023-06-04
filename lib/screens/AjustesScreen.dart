@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plateshare/screens/InicioScreen.dart';
+import 'package:plateshare/services/firebase_service.dart';
 
 import '../util/AppColors.dart';
 
@@ -17,7 +18,8 @@ class AjustesScreen extends StatefulWidget {
     required this.emailData,
     required this.nameData,
     required this.usernameData,
-    required this.profilePicData, required this.fechaData,
+    required this.profilePicData,
+    required this.fechaData,
   }) : super(key: key);
 
   @override
@@ -26,29 +28,76 @@ class AjustesScreen extends StatefulWidget {
 
 var screenSizeAjustesScreen;
 
-
-
 class _AjustesScreenState extends State<AjustesScreen> {
+  TextEditingController _nombreController = TextEditingController();
+  TextEditingController _userController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  TextEditingController _fechaController = TextEditingController();
+  TextEditingController _idiomaController = TextEditingController();
+  TextEditingController _versionController = TextEditingController();
+  String currentUsername = '';
+  String currentName = '';
 
-TextEditingController _nombreController = TextEditingController();
-TextEditingController _userController = TextEditingController();
-TextEditingController _emailController = TextEditingController();
-TextEditingController _passwordController = TextEditingController();
-TextEditingController _fechaController = TextEditingController();
-TextEditingController _idiomaController = TextEditingController();
-TextEditingController _versionController = TextEditingController();
+  void showRequired(int index) {
+    switch (index) {
+      case 1:
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('El nombre ha sido actualizado con éxito'),
+            backgroundColor: Colors.green,
+          ),
+        );
+        break;
+      case 2:
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('El usuario ha sido actualizado con éxito'),
+            backgroundColor: Colors.green,
+          ),
+        );
+        break;
 
+      case 3:
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+                'El usuario indicado ya esta en uso, por favor elige otro'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        break;
+      case 4:
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Rellena todos los campos para actualizar'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        break;
+        case 5:
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('El nombre de usuario solo puede contener letras, números, y los siguientes caracters: ( _ - . ) y no puede contener espacios ni terminar con un punto'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        break;
+    }
+  }
 
-    @override
+  @override
   void initState() {
     super.initState();
     _nombreController.text = widget.nameData;
     _userController.text = widget.usernameData;
     _emailController.text = widget.emailData;
-_passwordController.text = '***********';
-_fechaController.text = widget.fechaData;
-_idiomaController.text = 'Español';
-_versionController.text = 'V0.1.4';
+    _passwordController.text = '***********';
+    _fechaController.text = widget.fechaData;
+    _idiomaController.text = 'Español';
+    _versionController.text = 'V0.1.4';
+    currentUsername = widget.usernameData;
+    currentName = widget.nameData;
   }
 
   @override
@@ -105,7 +154,7 @@ _versionController.text = 'V0.1.4';
                             emailData: widget.emailData,
                             nameData: widget.nameData,
                             profilePicData: widget.profilePicData,
-                            usernameData: widget.usernameData,
+                            usernameData: currentUsername,
                           ),
                         ),
                       );
@@ -310,8 +359,41 @@ _versionController.text = 'V0.1.4';
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          onPressed: () {
-                            // Add your onPressed logic here
+                          onPressed: () async {
+                            String newNameText = _nombreController.text;
+                            String newUserText =
+                                _userController.text.toLowerCase();
+                            bool available = false;
+
+                            if (newNameText.isNotEmpty &&
+                                newUserText.isNotEmpty) {
+                              String userId = await getDocumentIdByUsername(
+                                  currentUsername);
+
+                              if (newNameText != currentName) {
+                                updateUserName(userId, newNameText);
+                                currentName = newNameText;
+                                showRequired(1);
+                              }
+
+                              if (newUserText != currentUsername) {
+                                if (isValidUsername(newUserText)) {
+                                  available =
+                                      !await checkIfUsernameExists(newUserText);
+                                  if (available == true) {
+                                    updateUserUsername(userId, newUserText);
+                                    currentUsername = newUserText;
+                                    showRequired(2);
+                                  } else {
+                                    showRequired(3);
+                                  }
+                                } else {
+                                  showRequired(5);
+                                }
+                              } else {
+                                showRequired(4);
+                              }
+                            }
                           },
                           child: Padding(
                             padding: const EdgeInsets.all(10.0),
@@ -411,4 +493,22 @@ _versionController.text = 'V0.1.4';
       ),
     );
   }
+
+bool isValidUsername(String username) {
+  // Verificar si no hay espacios en blanco
+  if (username.contains(' ')) {
+    return false;
+  }
+
+  // Verificar si solo contiene los caracteres permitidos
+  final validChars = RegExp(r'^[a-zA-Z0-9_\-]+(\.[a-zA-Z0-9_\-]+)*$');
+  if (!validChars.hasMatch(username)) {
+    return false;
+  }
+
+  return true;
+}
+
+
+
 }

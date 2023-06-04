@@ -17,7 +17,8 @@ class _RegistroScreenState extends State<RegistroScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _repeatPasswordController = TextEditingController();
+  final TextEditingController _repeatPasswordController =
+      TextEditingController();
   bool _obscureText = true;
   bool _obscureText2 = true;
 
@@ -27,18 +28,17 @@ class _RegistroScreenState extends State<RegistroScreen> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-    width: screenSize.width,
-    height: screenSize.height,
-    decoration: BoxDecoration(
-      image: DecorationImage(
-        image: NetworkImage('https://i.imgur.com/pbBleS1.png'),
-        fit: BoxFit.cover,
-      ),
-    ),
+          width: screenSize.width,
+          height: screenSize.height,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: NetworkImage('https://i.imgur.com/pbBleS1.png'),
+              fit: BoxFit.cover,
+            ),
+          ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              
               SizedBox(
                 height: 15,
                 child: Align(
@@ -144,68 +144,70 @@ class _RegistroScreenState extends State<RegistroScreen> {
                     ),
                     const SizedBox(height: 15.0),
                     TextField(
-                    controller: _passwordController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(50.0),
-                      ),
-                      labelText: 'Contraseña',
-                      filled: true,
-                      fillColor: Colors.white,
-                      contentPadding: const EdgeInsets.fromLTRB(20, 20, 0, 20),
-                      prefixIcon:
-                          const Icon(Icons.lock_outline, color: Colors.black),
-                      suffixIcon: Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
-                        child: IconButton(
-                          icon: Icon(
-                            _obscureText
-                                ? Icons.visibility
-                                : Icons.visibility_off,
-                            color: Colors.grey,
+                      controller: _passwordController,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50.0),
+                        ),
+                        labelText: 'Contraseña',
+                        filled: true,
+                        fillColor: Colors.white,
+                        contentPadding:
+                            const EdgeInsets.fromLTRB(20, 20, 0, 20),
+                        prefixIcon:
+                            const Icon(Icons.lock_outline, color: Colors.black),
+                        suffixIcon: Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+                          child: IconButton(
+                            icon: Icon(
+                              _obscureText
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Colors.grey,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscureText = !_obscureText;
+                              });
+                            },
                           ),
-                          onPressed: () {
-                            setState(() {
-                              _obscureText = !_obscureText;
-                            });
-                          },
                         ),
                       ),
+                      obscureText: _obscureText,
                     ),
-                    obscureText: _obscureText,
-                  ),
                     const SizedBox(height: 15.0),
                     TextField(
-                    controller: _repeatPasswordController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(50.0),
-                      ),
-                      labelText: 'Repite Contraseña',
-                      filled: true,
-                      fillColor: Colors.white,
-                      contentPadding: const EdgeInsets.fromLTRB(20, 20, 0, 20),
-                      prefixIcon:
-                          const Icon(Icons.lock_outline, color: Colors.black),
-                      suffixIcon: Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
-                        child: IconButton(
-                          icon: Icon(
-                            _obscureText2
-                                ? Icons.visibility
-                                : Icons.visibility_off,
-                            color: Colors.grey,
+                      controller: _repeatPasswordController,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50.0),
+                        ),
+                        labelText: 'Repite Contraseña',
+                        filled: true,
+                        fillColor: Colors.white,
+                        contentPadding:
+                            const EdgeInsets.fromLTRB(20, 20, 0, 20),
+                        prefixIcon:
+                            const Icon(Icons.lock_outline, color: Colors.black),
+                        suffixIcon: Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+                          child: IconButton(
+                            icon: Icon(
+                              _obscureText2
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Colors.grey,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscureText2 = !_obscureText2;
+                              });
+                            },
                           ),
-                          onPressed: () {
-                            setState(() {
-                              _obscureText2 = !_obscureText2;
-                            });
-                          },
                         ),
                       ),
+                      obscureText: _obscureText2,
                     ),
-                    obscureText: _obscureText2,
-                  ),
                     const SizedBox(height: 20.0),
                     SizedBox(
                       width: double.infinity,
@@ -271,7 +273,6 @@ class _RegistroScreenState extends State<RegistroScreen> {
                   ],
                 ),
               ),
-             
             ],
           ),
         ),
@@ -295,33 +296,73 @@ class _RegistroScreenState extends State<RegistroScreen> {
       //Compruebo que las contraseñas coincidan
       if (passwordInput == repeatPasswordInput) {
         //Compruebo que la contraseña tenga al menos 8 cracteres
-        if(passwordInput.length >= 8) {
-        //Compruebo que el username no este en uso
-        Future<bool> userExist = checkIfUsernameExists(usernameInput);
-        if (!await userExist) {
-          //Compruebo que el correo sea valido
-          if (Validator.isEmail(emailInput)) {
-            //Compruebo que el correo no este en uso
-            Future<bool> emailExist = checkIfEmailExists(emailInput);
-            if (!await emailExist) {
-              //Si es todo valido hasheo la contraseña y añado al usuario. Luego vuelvo al Login
-              String salt = BCrypt.gensalt();
-              String hashedPassword = BCrypt.hashpw(passwordInput, salt);
-              addNewUser(emailInput, nameInput, usernameInput, hashedPassword, salt);
-              Future.microtask(() {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const LoginScreen()),
+        if (passwordInput.length >= 8) {
+          //Compruebo que el username sea valido
+          if (isValidUsername(usernameInput)) {
+            //Compruebo que el username no este en uso
+            Future<bool> userExist = checkIfUsernameExists(usernameInput);
+            if (!await userExist) {
+              //Compruebo que el correo sea valido
+              if (Validator.isEmail(emailInput)) {
+                //Compruebo que el correo no este en uso
+                Future<bool> emailExist = checkIfEmailExists(emailInput);
+                if (!await emailExist) {
+                  //Si es todo valido hasheo la contraseña y añado al usuario. Luego vuelvo al Login
+                  String salt = BCrypt.gensalt();
+                  String hashedPassword = BCrypt.hashpw(passwordInput, salt);
+                  addNewUser(emailInput, nameInput, usernameInput,
+                      hashedPassword, salt);
+                  Future.microtask(() {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const LoginScreen()),
+                    );
+                  });
+                } else {
+                  // ignore: use_build_context_synchronously
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('Correo invalido'),
+                        content: const Text('El correo ya esta en uso'),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                }
+              } else {
+                // ignore: use_build_context_synchronously
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('Correo invalido'),
+                      content: const Text('Introduce un correo valido'),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: const Text('OK'),
+                        ),
+                      ],
+                    );
+                  },
                 );
-              });
+              }
             } else {
               // ignore: use_build_context_synchronously
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: const Text('Correo invalido'),
-                    content: const Text('El correo ya esta en uso'),
+                    title: const Text('Usuario invalido'),
+                    content: const Text('El nombre de usuario ya esta en uso'),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.of(context).pop(),
@@ -333,31 +374,31 @@ class _RegistroScreenState extends State<RegistroScreen> {
               );
             }
           } else {
-            // ignore: use_build_context_synchronously
             showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Text('Correo invalido'),
-                  content: const Text('Introduce un correo valido'),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: const Text('OK'),
-                    ),
-                  ],
-                );
-              },
-            );
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Username invalido'),
+                content: const Text(
+                    'El nombre de usuario solo puede contener letras, números, y los siguientes caracters: ( _ - . ) y no puede contener espacios ni terminar con un punto'),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('OK'),
+                  ),
+                ],
+              );
+            },
+          );
           }
         } else {
-          // ignore: use_build_context_synchronously
           showDialog(
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: const Text('Usuario invalido'),
-                content: const Text('El nombre de usuario ya esta en uso'),
+                title: const Text('Contraseña insegura'),
+                content: const Text(
+                    'La contraseña debe tener al menos 8 caracteres'),
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(),
@@ -370,23 +411,6 @@ class _RegistroScreenState extends State<RegistroScreen> {
         }
       } else {
         showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Contraseña insegura'),
-            content: const Text('La contraseña debe tener al menos 8 caracteres'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
-      }
-    } else {
-      showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
@@ -401,8 +425,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
             );
           },
         );
-      
-    }
+      }
     } else {
       showDialog(
         context: context,
@@ -430,3 +453,20 @@ class Validator {
     return regex.hasMatch(value);
   }
 }
+
+bool isValidUsername(String username) {
+  // Verificar si no hay espacios en blanco
+  if (username.contains(' ')) {
+    return false;
+  }
+
+  // Verificar si solo contiene los caracteres permitidos
+  final validChars = RegExp(r'^[a-zA-Z0-9_\-]+(\.[a-zA-Z0-9_\-]+)*$');
+  if (!validChars.hasMatch(username)) {
+    return false;
+  }
+
+  return true;
+}
+
+
