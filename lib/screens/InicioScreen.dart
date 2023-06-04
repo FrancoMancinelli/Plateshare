@@ -63,11 +63,12 @@ class _InicioScreenState extends State<InicioScreen> {
   }
 
   Future<void> getRecipesIDs() async {
+    print('DEBUUUGG:::USERNAME${widget.usernameData}');
     final userIdFromDB = await getDocumentIdByUsername(widget.usernameData);
+    print('DEBUUGGG:::USERID:$userIdFromDB');
     final recipesIDsFromUserId = await getRecipeDocumentIDs(userIdFromDB);
     final followersFromDB = await getFollowers(userIdFromDB);
     final followsFromDB = await getFollows(userIdFromDB);
-    //TODO
     final likedRecipesIDsFromUserId = await getLikedRecipes(userIdFromDB);
     setState(() {
       userId = userIdFromDB;

@@ -66,12 +66,26 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
   final TextEditingController _commentController = TextEditingController();
   bool isFavorite = false;
   int amountLikes = 0;
+  bool isTheUserTheOwner = false;
 
   @override
   void initState() {
     super.initState();
     isFavorite = widget.isFavorite;
     amountLikes = widget.recipeLikes;
+    checkOwner();
+  }
+
+  Future<void> checkOwner() async {
+    final ownerId = await getDocumentIdByUsername(widget.ownerUsername);
+
+    setState(() {
+      if (ownerId == widget.userId) {
+        isTheUserTheOwner = true;
+      } else {
+        isTheUserTheOwner = false;
+      }
+    });
   }
 
   void handleFirstButtonPressed() {
@@ -170,6 +184,71 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                 ),
               ],
             ),
+            actions: [
+              Visibility(
+                visible: isTheUserTheOwner,
+                child: Stack(
+                  children: [
+                    Positioned(
+                      top: 8,
+                      right: 8.5,
+                      child: Container(
+                        width: 30,
+                        height: 30,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppColors.blackColor.withOpacity(0.5),
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      icon: Icon(
+                        Icons.delete_forever,
+                        color: Colors.white,
+                      ),
+                      onPressed: () async {
+                        bool confirmDelete = await showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('Confirmar eliminación'),
+                              content: Text(
+                                  '¿Estas seguro que quieres eliminar esta receta para siempre? Se eliminará toda información relacionada a esta receta y los datos no podrán ser recuperados'),
+                              actions: [
+                                TextButton(
+                                  child: Text('Cancelar'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop(
+                                        false); // Return false to indicate cancellation
+                                  },
+                                ),
+                                TextButton(
+                                  child: Text('Eliminar'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop(
+                                        true); // Return true to indicate confirmation
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+
+                        if (confirmDelete == true) {
+                          String ownerId = await getDocumentIdByUsername(
+                              widget.ownerUsername);
+                          deleteCollections(ownerId, widget.recipeID);
+                          deleteRecipe(ownerId, widget.recipeID);
+                          Navigator.pop(context);
+                          print('DEBUG:::RECIPE-DETAILS:::${widget.userUsername}');
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => InicioScreen(emailData: '', nameData: widget.userName, profilePicData: widget.userImage, usernameData: widget.userUsername,)));
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ],
             flexibleSpace: FlexibleSpaceBar(
               background: Image.network(
                 widget.recipeImage,
@@ -451,25 +530,34 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                                 color: AppColors.primaryColor,
                               ),
                               onRatingUpdate: (rating) async {
-                                String ownerId = await getDocumentIdByUsername(widget.ownerUsername);
+                                String ownerId = await getDocumentIdByUsername(
+                                    widget.ownerUsername);
                                 List<double> totalRatings = [];
                                 if (rating != 0) {
-                                  await addOrUpdateRatingToRecipe(ownerId, widget.recipeID, rating, widget.userId);
-                                  totalRatings = await getAllRatings(ownerId, widget.recipeID);
-                                  if(totalRatings.isNotEmpty) {
-                                  double sum = totalRatings.reduce((value, element) => value + element);
-                                  double newRate = sum/totalRatings.length;
-                                  updateRecipeRating(ownerId, widget.recipeID, newRate);
-                                  }      
+                                  await addOrUpdateRatingToRecipe(ownerId,
+                                      widget.recipeID, rating, widget.userId);
+                                  totalRatings = await getAllRatings(
+                                      ownerId, widget.recipeID);
+                                  if (totalRatings.isNotEmpty) {
+                                    double sum = totalRatings.reduce(
+                                        (value, element) => value + element);
+                                    double newRate = sum / totalRatings.length;
+                                    updateRecipeRating(
+                                        ownerId, widget.recipeID, newRate);
+                                  }
                                   showBottomMessage(1);
                                 } else {
-                                  removeUserRatingFromRecipe(ownerId, widget.recipeID, widget.userId);
-                                  totalRatings = await getAllRatings(ownerId, widget.userId);
-                                 if(totalRatings.isNotEmpty) {
-                                  double sum = totalRatings.reduce((value, element) => value + element);
-                                  double newRate = sum/totalRatings.length;
-                                  updateRecipeRating(ownerId, widget.recipeID, newRate);
-                                  }    
+                                  removeUserRatingFromRecipe(
+                                      ownerId, widget.recipeID, widget.userId);
+                                  totalRatings = await getAllRatings(
+                                      ownerId, widget.userId);
+                                  if (totalRatings.isNotEmpty) {
+                                    double sum = totalRatings.reduce(
+                                        (value, element) => value + element);
+                                    double newRate = sum / totalRatings.length;
+                                    updateRecipeRating(
+                                        ownerId, widget.recipeID, newRate);
+                                  }
                                   showBottomMessage(2);
                                 }
                               },
