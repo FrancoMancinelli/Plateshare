@@ -769,6 +769,44 @@ Future<void> updateRecipeRating(String ownerId, String recipeId, double newRate)
   }
 }
 
+Future<void> deleteRecipe(String userId, String recipeId) async {
+  try {
+    final userRef = FirebaseFirestore.instance.collection('user').doc(userId);
+    final recipeRef = userRef.collection('recipe').doc(recipeId);
+
+    await recipeRef.delete();
+
+    print('Recipe deleted successfully');
+  } catch (error) {
+    print('Error deleting recipe: $error');
+    // Handle the error as per your requirements
+  }
+}
+
+Future<void> deleteCollections(String userId, String recipeId) async {
+  
+    final userRef = FirebaseFirestore.instance.collection('user').doc(userId);
+    final recipeRef = userRef.collection('recipe').doc(recipeId);
+
+    // Delete the 'ingredient' collection
+    final ingredientCollectionRef = recipeRef.collection('ingredient');
+    final ingredientDocs = await ingredientCollectionRef.get();
+    for (final doc in ingredientDocs.docs) {
+      await doc.reference.delete();
+    }
+try {
+    // Delete the 'comment' collection
+    final commentCollectionRef = recipeRef.collection('comment');
+    final commentDocs = await commentCollectionRef.get();
+    for (final doc in commentDocs.docs) {
+      await doc.reference.delete();
+    }
+  } catch (error) {
+    // Handle the error as per your requirements
+  }
+}
+
+
 
 
 
