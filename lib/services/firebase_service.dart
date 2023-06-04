@@ -868,5 +868,18 @@ Future<void> updateUserUsername(String userId, String newName) async {
   }
 }
 
+Future<void> updateProfilePic(String userId, String newProfilePic) async {
+  final userRef = FirebaseFirestore.instance.collection('user').doc(userId);
+
+  try {
+    await userRef.update({
+      'profilepic': newProfilePic,
+    });
+    print('Profile picture updated successfully.');
+  } catch (e) {
+    print('Error updating profile picture: $e');
+  }
+}
+
 
 

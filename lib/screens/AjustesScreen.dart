@@ -1,6 +1,10 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:plateshare/screens/InicioScreen.dart';
 import 'package:plateshare/services/firebase_service.dart';
 
@@ -38,6 +42,9 @@ class _AjustesScreenState extends State<AjustesScreen> {
   TextEditingController _versionController = TextEditingController();
   String currentUsername = '';
   String currentName = '';
+  String currentImage = '';
+  String imageUrl = '';
+  XFile? imageRecipe = XFile('');
 
   void showRequired(int index) {
     switch (index) {
@@ -75,11 +82,20 @@ class _AjustesScreenState extends State<AjustesScreen> {
           ),
         );
         break;
-        case 5:
+      case 5:
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('El nombre de usuario solo puede contener letras, números, y los siguientes caracters: ( _ - . ) y no puede contener espacios ni terminar con un punto'),
+            content: Text(
+                'El nombre de usuario solo puede contener letras, números, y los siguientes caracters: ( _ - . ) y no puede contener espacios ni terminar con un punto'),
             backgroundColor: Colors.red,
+          ),
+        );
+        break;
+      case 6:
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Imagen actualizada con éxito'),
+            backgroundColor: Colors.green,
           ),
         );
         break;
@@ -98,6 +114,7 @@ class _AjustesScreenState extends State<AjustesScreen> {
     _versionController.text = 'V0.1.4';
     currentUsername = widget.usernameData;
     currentName = widget.nameData;
+    currentImage = widget.profilePicData;
   }
 
   @override
@@ -152,8 +169,8 @@ class _AjustesScreenState extends State<AjustesScreen> {
                         MaterialPageRoute(
                           builder: (context) => InicioScreen(
                             emailData: widget.emailData,
-                            nameData: widget.nameData,
-                            profilePicData: widget.profilePicData,
+                            nameData: currentName,
+                            profilePicData: currentImage,
                             usernameData: currentUsername,
                           ),
                         ),
@@ -202,8 +219,7 @@ class _AjustesScreenState extends State<AjustesScreen> {
                               ),
                               child: CircleAvatar(
                                 radius: 40,
-                                backgroundImage:
-                                    NetworkImage(widget.profilePicData),
+                                backgroundImage: NetworkImage(currentImage),
                               ),
                             ),
                             Padding(
@@ -214,12 +230,51 @@ class _AjustesScreenState extends State<AjustesScreen> {
                                   color: AppColors.brownInfoRecipe,
                                   size: 25,
                                 ),
-                                onPressed: () {},
+                                onPressed: () async {
+                                  String userId = await getDocumentIdByUsername(
+                                      currentUsername);
+                                  ImagePicker imagePicker = ImagePicker();
+                                  imageRecipe = await imagePicker.pickImage(
+                                    source: ImageSource.gallery,
+                                  );
+
+                                  if (imageRecipe != null) {
+                                    String uniqueFileName = DateTime.now()
+                                        .millisecondsSinceEpoch
+                                        .toString();
+                                    Reference referenceRoot =
+                                        FirebaseStorage.instance.ref();
+                                    Reference referenceDirImages =
+                                        referenceRoot.child('profiles');
+                                    Reference referenceImageToUpload =
+                                        referenceDirImages
+                                            .child(uniqueFileName);
+
+                                    try {
+                                      await referenceImageToUpload
+                                          .putFile(File(imageRecipe!.path));
+                                      imageUrl = await referenceImageToUpload
+                                          .getDownloadURL();
+                                      currentImage = imageUrl;
+
+                                      setState(() {
+                                        // Update the UI with the new profile picture
+                                        currentImage = imageUrl;
+                                      });
+
+                                      updateProfilePic(userId, currentImage);
+                                      showRequired(6);
+                                    } catch (error) {
+                                      print('Error uploading image: $error');
+                                    }
+                                  }
+                                },
                               ),
                             ),
                           ],
                         ),
                       ),
+
                       Padding(
                         padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                         child: Column(
@@ -494,21 +549,18 @@ class _AjustesScreenState extends State<AjustesScreen> {
     );
   }
 
-bool isValidUsername(String username) {
-  // Verificar si no hay espacios en blanco
-  if (username.contains(' ')) {
-    return false;
+  bool isValidUsername(String username) {
+    // Verificar si no hay espacios en blanco
+    if (username.contains(' ')) {
+      return false;
+    }
+
+    // Verificar si solo contiene los caracteres permitidos
+    final validChars = RegExp(r'^[a-zA-Z0-9_\-]+(\.[a-zA-Z0-9_\-]+)*$');
+    if (!validChars.hasMatch(username)) {
+      return false;
+    }
+
+    return true;
   }
-
-  // Verificar si solo contiene los caracteres permitidos
-  final validChars = RegExp(r'^[a-zA-Z0-9_\-]+(\.[a-zA-Z0-9_\-]+)*$');
-  if (!validChars.hasMatch(username)) {
-    return false;
-  }
-
-  return true;
-}
-
-
-
 }
