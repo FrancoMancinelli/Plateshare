@@ -117,8 +117,8 @@ class _MyRecipesContainerState extends State<MyRecipesContainer> {
                       ProfileRecipes(
                         idRecepieInDatabase: widget.recipesIDs[i],
                         userImage: widget.profilePicData,
-                        userName: widget.usernameData,
-                        userUsername: widget.nameData,
+                        userName: widget.nameData,
+                        userUsername: widget.usernameData,
                         screenWidth: screenSize.width,
                         userId: widget.userId,
                       ),
@@ -130,8 +130,8 @@ class _MyRecipesContainerState extends State<MyRecipesContainer> {
                         ProfileRecipes(
                           idRecepieInDatabase: widget.recipesIDs[i + 1],
                           userImage: widget.profilePicData,
-                          userName: widget.usernameData,
-                          userUsername: widget.nameData,
+                          userName: widget.nameData,
+                          userUsername: widget.usernameData,
                           screenWidth: screenSize.width,
                           userId: widget.userId,
                         ),

@@ -77,8 +77,8 @@ class _MyFavoritesContainerState extends State<MyFavoritesContainer> {
                       ProfileRecipes(
                         idRecepieInDatabase: widget.likedRecipesIDs[i],
                         userImage: widget.profilePicData,
-                        userName: widget.usernameData,
-                        userUsername: widget.nameData,
+                        userName: widget.nameData,
+                        userUsername: widget.usernameData,
                         screenWidth: screenSize.width,
                         userId: widget.userId,
                       ),
@@ -90,8 +90,8 @@ class _MyFavoritesContainerState extends State<MyFavoritesContainer> {
                         ProfileRecipes(
                           idRecepieInDatabase: widget.likedRecipesIDs[i + 1],
                           userImage: widget.profilePicData,
-                          userName: widget.usernameData,
-                          userUsername: widget.nameData,
+                          userName: widget.nameData,
+                          userUsername: widget.usernameData,
                           screenWidth: screenSize.width,
                           userId: widget.userId,
                         ),
