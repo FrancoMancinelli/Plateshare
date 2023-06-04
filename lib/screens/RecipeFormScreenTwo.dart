@@ -30,7 +30,8 @@ class RecipeFormScreenTwo extends StatefulWidget {
     required this.profilePicData,
     required this.tituloRecepie,
     required this.tiempoRecepie,
-    required this.categoriasRecepie, required this.imageRecipe,
+    required this.categoriasRecepie,
+    required this.imageRecipe,
   }) : super(key: key);
 
   @override
@@ -51,12 +52,16 @@ class _RecipeFormScreenTwoState extends State<RecipeFormScreenTwo> {
     String text2 = textController2.text;
 
     if (text1.isNotEmpty && text2.isNotEmpty) {
-      setState(() {
-        texts.add('$text1 - $text2 $dropdownValue');
-      });
+      if (double.parse(text2) > 0 && double.parse(text2) <= 1000) {
+        setState(() {
+          texts.add('$text1 - $text2 $dropdownValue');
+        });
 
-      textController1.clear();
-      textController2.clear();
+        textController1.clear();
+        textController2.clear();
+      } else {
+        showRequired(5);
+      }
     } else {
       showRequired(3);
     }
@@ -86,6 +91,23 @@ class _RecipeFormScreenTwoState extends State<RecipeFormScreenTwo> {
           const SnackBar(
             content: Text(
                 'Rellena el nombre del ingrediente y la cantidad para poder añadirlo a la lista'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        break;
+      case 4:
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Las raciones deben ser entre 1 y 100'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        break;
+              case 5:
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+                'La cantidad del ingrediente debe ser un valor entre 1 y 1000'),
             backgroundColor: Colors.red,
           ),
         );
@@ -355,7 +377,8 @@ class _RecipeFormScreenTwoState extends State<RecipeFormScreenTwo> {
                           child: Column(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
+                                padding:
+                                    const EdgeInsets.fromLTRB(10, 5, 10, 0),
                                 child: Row(
                                   children: [
                                     Container(
@@ -365,7 +388,8 @@ class _RecipeFormScreenTwoState extends State<RecipeFormScreenTwo> {
                                         color: AppColors.whiteColor,
                                         borderRadius: BorderRadius.circular(10),
                                         border: Border.all(
-                                            color: AppColors.recommendationColor,
+                                            color:
+                                                AppColors.recommendationColor,
                                             width: 2.5),
                                       ),
                                       child: TextField(
@@ -390,7 +414,8 @@ class _RecipeFormScreenTwoState extends State<RecipeFormScreenTwo> {
                                         color: AppColors.whiteColor,
                                         borderRadius: BorderRadius.circular(10),
                                         border: Border.all(
-                                            color: AppColors.recommendationColor,
+                                            color:
+                                                AppColors.recommendationColor,
                                             width: 2.5),
                                       ),
                                       child: TextField(
@@ -437,8 +462,9 @@ class _RecipeFormScreenTwoState extends State<RecipeFormScreenTwo> {
                                           },
                                           decoration: const InputDecoration(
                                             border: InputBorder.none,
-                                            contentPadding: EdgeInsets.symmetric(
-                                                horizontal: 10),
+                                            contentPadding:
+                                                EdgeInsets.symmetric(
+                                                    horizontal: 10),
                                           ),
                                           items: [
                                             'Litros',
@@ -475,7 +501,8 @@ class _RecipeFormScreenTwoState extends State<RecipeFormScreenTwo> {
                                               child: Text(
                                                 value,
                                                 style: const TextStyle(
-                                                  color: AppColors.brownTextColor,
+                                                  color:
+                                                      AppColors.brownTextColor,
                                                   fontSize: 15,
                                                   fontFamily: 'Acme',
                                                 ),
@@ -512,8 +539,8 @@ class _RecipeFormScreenTwoState extends State<RecipeFormScreenTwo> {
                                   itemCount: texts.length,
                                   itemBuilder: (context, index) {
                                     return Padding(
-                                      padding:
-                                          const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                      padding: const EdgeInsets.fromLTRB(
+                                          0, 0, 10, 0),
                                       child: Row(
                                         children: [
                                           Expanded(
@@ -525,8 +552,10 @@ class _RecipeFormScreenTwoState extends State<RecipeFormScreenTwo> {
                                                     BorderRadius.circular(10),
                                               ),
                                               padding: const EdgeInsets.all(10),
-                                              margin: const EdgeInsets.symmetric(
-                                                  vertical: 5, horizontal: 10),
+                                              margin:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 5,
+                                                      horizontal: 10),
                                               child: Text(
                                                 texts[index],
                                                 style: GoogleFonts.acme(
@@ -628,31 +657,41 @@ class _RecipeFormScreenTwoState extends State<RecipeFormScreenTwo> {
                                         const EdgeInsets.fromLTRB(0, 5, 20, 0),
                                     child: ElevatedButton(
                                       onPressed: () {
-                                        print(widget.tituloRecepie);
-                                        print(widget.tiempoRecepie);
-                                        print(widget.categoriasRecepie);
                                         if (_racionesController
                                             .text.isNotEmpty) {
-                                          if (texts.length >= 2) {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    RecipeFormScreenThree(
-                                                  emailData: widget.emailData,
-                                                  nameData: widget.nameData,
-                                                  profilePicData: widget.profilePicData,
-                                                  usernameData: widget.usernameData,
-                                                  tituloRecepie: widget.tituloRecepie,
-                                                  tiempoRecepie: widget.tiempoRecepie,
-                                                  categoriasRecepie: widget.categoriasRecepie,
-                                                  racionesRecepie: _racionesController.value.text,
-                                                  ingredientesRecepie: texts,imageRecipe: widget.imageRecipe,
+                                          if (int.parse(_racionesController.text) > 0 && int.parse(_racionesController.text) <= 100) {
+                                            if (texts.length >= 2) {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      RecipeFormScreenThree(
+                                                    emailData: widget.emailData,
+                                                    nameData: widget.nameData,
+                                                    profilePicData:
+                                                        widget.profilePicData,
+                                                    usernameData:
+                                                        widget.usernameData,
+                                                    tituloRecepie:
+                                                        widget.tituloRecepie,
+                                                    tiempoRecepie:
+                                                        widget.tiempoRecepie,
+                                                    categoriasRecepie: widget
+                                                        .categoriasRecepie,
+                                                    racionesRecepie:
+                                                        _racionesController
+                                                            .value.text,
+                                                    ingredientesRecepie: texts,
+                                                    imageRecipe:
+                                                        widget.imageRecipe,
+                                                  ),
                                                 ),
-                                              ),
-                                            );
+                                              );
+                                            } else {
+                                              showRequired(2);
+                                            }
                                           } else {
-                                            showRequired(2);
+                                            showRequired(4);
                                           }
                                         } else {
                                           showRequired(1);
