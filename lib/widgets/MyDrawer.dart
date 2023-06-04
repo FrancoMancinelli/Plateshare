@@ -9,13 +9,14 @@ class MyDrawer extends StatelessWidget {
   final String nameData;
   final String usernameData;
   final String emailData;
+  final String fechaData;
 
   const MyDrawer({
     Key? key,
     required this.profilePicData,
     required this.nameData,
     required this.usernameData,
-    required this.emailData,
+    required this.emailData, required this.fechaData,
   }) : super(key: key);
 
   @override
@@ -127,7 +128,8 @@ class MyDrawer extends StatelessWidget {
                           emailData: emailData,
                           nameData: nameData,
                           profilePicData: profilePicData,
-                          usernameData: usernameData),
+                          usernameData: usernameData,
+                          fechaData: fechaData),
                     ),
                   );},
                     ),

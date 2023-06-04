@@ -55,6 +55,7 @@ class _InicioScreenState extends State<InicioScreen> {
   int recipeCount = 0;
   List<String> recipesIDs = [];
   List<dynamic> likedRecipesIDs = [];
+  String fechaData = '';
 
   @override
   void initState() {
@@ -68,6 +69,7 @@ class _InicioScreenState extends State<InicioScreen> {
     final followersFromDB = await getFollowers(userIdFromDB);
     final followsFromDB = await getFollows(userIdFromDB);
     final likedRecipesIDsFromUserId = await getLikedRecipes(userIdFromDB);
+    final fechaCreacion = await getCreationDate(userIdFromDB);
     setState(() {
       userId = userIdFromDB;
       recipesIDs = recipesIDsFromUserId;
@@ -75,6 +77,7 @@ class _InicioScreenState extends State<InicioScreen> {
       follows = followsFromDB.length;
       recipeCount = recipesIDsFromUserId.length;
       likedRecipesIDs = likedRecipesIDsFromUserId;
+      fechaData = fechaCreacion;
     });
   }
 
@@ -92,6 +95,7 @@ class _InicioScreenState extends State<InicioScreen> {
                 usernameData: widget.usernameData,
                 profilePicData: widget.profilePicData,
                 emailData: widget.emailData,
+                fechaData: fechaData,
               )
             : null,
         body: _getPage(_selectedIndex),

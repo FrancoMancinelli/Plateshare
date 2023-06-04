@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 FirebaseFirestore db = FirebaseFirestore.instance;
 
@@ -23,9 +24,11 @@ Future<bool> checkIfEmailExists(String email) async {
   return snapshot.docs.isNotEmpty;
 }
 
+
 Future<void> addNewUser(String email, String name, String username,
     String password, String salt) async {
   final userRef = db.collection('user');
+  final currentDate = DateFormat('dd/MM/yyyy').format(DateTime.now());
   final userDocRef = await userRef.add({
     'email': email,
     'name': name,
@@ -36,9 +39,12 @@ Future<void> addNewUser(String email, String name, String username,
     'follows': [],
     'favorites': [],
     'profilepic':
-        'https://firebasestorage.googleapis.com/v0/b/plateshare-tfg2023.appspot.com/o/default_profile_pic.png?alt=media&token=92c2e8f1-5871-4285-8040-8b8df60bae14'
+        'https://firebasestorage.googleapis.com/v0/b/plateshare-tfg2023.appspot.com/o/default_profile_pic.png?alt=media&token=92c2e8f1-5871-4285-8040-8b8df60bae14',
+    'creationdate': currentDate,
   });
 }
+
+
 
 Future<void> updateUserPasswordByUsername(
     String username, String newPassword) async {
@@ -815,6 +821,29 @@ try {
   } catch (error) {
     // Handle the error as per your requirements
   }
+}
+
+Future<String> getCreationDate(String userId) async {
+  try {
+    final DocumentSnapshot<Map<String, dynamic>> snapshot =
+        await FirebaseFirestore.instance
+            .collection('user')
+            .doc(userId)
+            .get();
+
+    if (snapshot.exists) {
+      final data = snapshot.data();
+      if (data != null && data.containsKey('creationdate')) {
+        final String creationDate = data['creationdate'];
+        return creationDate;
+      }
+    }
+  } catch (error) {
+    // Handle any errors that occur during the process
+    print('Error retrieving creation date: $error');
+  }
+
+  return ''; // Return null if the creation date is not found or an error occurs
 }
 
 
