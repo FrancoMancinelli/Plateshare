@@ -846,7 +846,27 @@ Future<String> getCreationDate(String userId) async {
   return ''; // Return null if the creation date is not found or an error occurs
 }
 
+Future<void> updateUserName(String userId, String newName) async {
+  final userRef = FirebaseFirestore.instance.collection('user').doc(userId);
 
+  try {
+    await userRef.update({'name': newName});
+    print('User name updated successfully');
+  } catch (error) {
+    print('Error updating user name: $error');
+  }
+}
+
+Future<void> updateUserUsername(String userId, String newName) async {
+  final userRef = FirebaseFirestore.instance.collection('user').doc(userId);
+
+  try {
+    await userRef.update({'username': newName});
+    print('Username updated successfully');
+  } catch (error) {
+    print('Error updating username: $error');
+  }
+}
 
 
 
