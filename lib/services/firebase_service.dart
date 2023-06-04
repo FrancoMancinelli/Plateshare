@@ -523,7 +523,18 @@ Future<List<dynamic>> getLikedRecipes(String userId) async {
   Map<String, dynamic> userData = userSnapshot.data() as Map<String, dynamic>;
   List<dynamic> favorites = userData['favorites'] ?? [];
 
-  return favorites;
+  List<dynamic> existingRecipes = [];
+
+  for (var recipeId in favorites) {
+    DocumentSnapshot recipeSnapshot =
+        await FirebaseFirestore.instance.collection('user').doc(userId).collection('recipe').doc(recipeId).get();
+
+    if (recipeSnapshot.exists) {
+      existingRecipes.add(recipeId);
+    }
+  }
+
+  return existingRecipes;
 }
 
 Future<void> addFavorite(String userId, String favoriteId) async {
