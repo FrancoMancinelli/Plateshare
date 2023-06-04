@@ -13,13 +13,14 @@ class RecipeContainer extends StatefulWidget {
   final String userImage;
   final String userName;
   final String userUsername;
+  final String userEmail;
 
   const RecipeContainer({
     Key? key,
     required this.idRecepieInDatabase,
     required this.userImage,
     required this.userName,
-    required this.userUsername,
+    required this.userUsername, required this.userEmail,
   }) : super(key: key);
 
   @override
@@ -144,7 +145,7 @@ class _RecipeContainerState extends State<RecipeContainer> {
                   userName: widget.userName,
                   userUsername: widget.userUsername,
                   recipeComments: comentarios,
-                  isFavorite: isFavorite),
+                  isFavorite: isFavorite, userEmail: widget.userEmail,),
             ),
           );
         },

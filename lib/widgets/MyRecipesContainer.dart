@@ -121,6 +121,7 @@ class _MyRecipesContainerState extends State<MyRecipesContainer> {
                         userUsername: widget.usernameData,
                         screenWidth: screenSize.width,
                         userId: widget.userId,
+                        userEmail: widget.emailData,
                       ),
                     ],
                   ),
@@ -134,6 +135,7 @@ class _MyRecipesContainerState extends State<MyRecipesContainer> {
                           userUsername: widget.usernameData,
                           screenWidth: screenSize.width,
                           userId: widget.userId,
+                          userEmail: widget.emailData,
                         ),
                       if (i + 1 >= widget.recipesIDs.length)
                         Container(

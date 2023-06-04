@@ -11,12 +11,14 @@ class RecipesPage extends StatelessWidget {
   final String userImage;
   final String userName;
   final String userUsername;
+  final String userEmail;
 
   RecipesPage({
     Key? key,
     required this.userImage,
     required this.userName,
     required this.userUsername,
+    required this.userEmail,
   }) : super(key: key);
 
   List<String> listClasificaciones = [
@@ -35,26 +37,31 @@ class RecipesPage extends StatelessWidget {
     'Festivas'
   ];
 
-  Future<List<String>> idRecetasSaludables = getRecipesFromCategory('Saludable');
-  Future<List<String>> idRecetasEconomicas = getRecipesFromCategory('Económica');
+  Future<List<String>> idRecetasSaludables =
+      getRecipesFromCategory('Saludable');
+  Future<List<String>> idRecetasEconomicas =
+      getRecipesFromCategory('Económica');
   Future<List<String>> idRecetasEn15Min = getRecepiesLessThan15Min();
   Future<List<String>> idRecetasPostres = getRecipesFromCategory('Postre');
   Future<List<String>> idRecetasVeganas = getRecipesFromCategory('Vegano');
-  Future<List<String>> idRecetasVegetarianas = getRecipesFromCategory('Vegetariano');
-  Future<List<String>> idRecetasGlutenFree = getRecipesFromCategory('Gluten free');
-  Future<List<String>> idRecetasSinLactosa = getRecipesFromCategory('Sin lactosa');
+  Future<List<String>> idRecetasVegetarianas =
+      getRecipesFromCategory('Vegetariano');
+  Future<List<String>> idRecetasGlutenFree =
+      getRecipesFromCategory('Gluten free');
+  Future<List<String>> idRecetasSinLactosa =
+      getRecipesFromCategory('Sin lactosa');
   Future<List<String>> idRecetasCalientes = getRecipesFromCategory('Caliente');
   Future<List<String>> idRecetasFrios = getRecipesFromCategory('Fríos');
-  Future<List<String>> idRecetasTradicional = getRecipesFromCategory('Tradicional');
+  Future<List<String>> idRecetasTradicional =
+      getRecipesFromCategory('Tradicional');
   Future<List<String>> idRecetas3Ingredientes = getRecipiesWith3Ingredients();
   Future<List<String>> idRecetasFestivas = getRecipesFromCategory('Festiva');
 
   String primeraSeccion = "";
   String segundaSeccion = "";
   String terceraSeccion = "";
-    String cuartaSeccion = "";
-    String quintaSeccion = "";
-
+  String cuartaSeccion = "";
+  String quintaSeccion = "";
 
   Future<List<Widget>> printRecipes(String categoria) async {
     List<Widget> containers = [];
@@ -69,6 +76,7 @@ class RecipesPage extends StatelessWidget {
             userImage: userImage,
             userName: userName,
             userUsername: userUsername,
+            userEmail: userEmail,
           ));
         }
         break;
@@ -81,6 +89,7 @@ class RecipesPage extends StatelessWidget {
             userImage: userImage,
             userName: userName,
             userUsername: userUsername,
+            userEmail: userEmail,
           ));
         }
         break;
@@ -93,6 +102,7 @@ class RecipesPage extends StatelessWidget {
             userImage: userImage,
             userName: userName,
             userUsername: userUsername,
+            userEmail: userEmail,
           ));
         }
         break;
@@ -105,6 +115,7 @@ class RecipesPage extends StatelessWidget {
             userImage: userImage,
             userName: userName,
             userUsername: userUsername,
+            userEmail: userEmail,
           ));
         }
         break;
@@ -117,6 +128,7 @@ class RecipesPage extends StatelessWidget {
             userImage: userImage,
             userName: userName,
             userUsername: userUsername,
+            userEmail: userEmail,
           ));
         }
         break;
@@ -129,6 +141,7 @@ class RecipesPage extends StatelessWidget {
             userImage: userImage,
             userName: userName,
             userUsername: userUsername,
+            userEmail: userEmail,
           ));
         }
         break;
@@ -141,6 +154,7 @@ class RecipesPage extends StatelessWidget {
             userImage: userImage,
             userName: userName,
             userUsername: userUsername,
+            userEmail: userEmail,
           ));
         }
         break;
@@ -153,6 +167,7 @@ class RecipesPage extends StatelessWidget {
             userImage: userImage,
             userName: userName,
             userUsername: userUsername,
+            userEmail: userEmail,
           ));
         }
         break;
@@ -165,6 +180,7 @@ class RecipesPage extends StatelessWidget {
             userImage: userImage,
             userName: userName,
             userUsername: userUsername,
+            userEmail: userEmail,
           ));
         }
         break;
@@ -177,6 +193,7 @@ class RecipesPage extends StatelessWidget {
             userImage: userImage,
             userName: userName,
             userUsername: userUsername,
+            userEmail: userEmail,
           ));
         }
         break;
@@ -189,6 +206,7 @@ class RecipesPage extends StatelessWidget {
             userImage: userImage,
             userName: userName,
             userUsername: userUsername,
+            userEmail: userEmail,
           ));
         }
         break;
@@ -201,6 +219,7 @@ class RecipesPage extends StatelessWidget {
             userImage: userImage,
             userName: userName,
             userUsername: userUsername,
+            userEmail: userEmail,
           ));
         }
         break;
@@ -213,6 +232,7 @@ class RecipesPage extends StatelessWidget {
             userImage: userImage,
             userName: userName,
             userUsername: userUsername,
+            userEmail: userEmail,
           ));
         }
         break;
@@ -236,199 +256,199 @@ class RecipesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  var screenSize = MediaQuery.of(context).size;
+    var screenSize = MediaQuery.of(context).size;
 
-  return Container(
-    width: screenSize.width,
-    height: screenSize.height,
-    decoration: const BoxDecoration(
-      color: AppColors.accentColor,
-    ),
-    child: SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(10, 5, 0, 0),
-                child: Text(
-                  primeraSeccion = getRandomClasificationAndRemove(),
-                  style: GoogleFonts.acme(
-                    textStyle: const TextStyle(
-                      fontSize: 24,
-                      color: AppColors.brownTextColor,
-                      fontFamily: 'Acme',
+    return Container(
+      width: screenSize.width,
+      height: screenSize.height,
+      decoration: const BoxDecoration(
+        color: AppColors.accentColor,
+      ),
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 5, 0, 0),
+                  child: Text(
+                    primeraSeccion = getRandomClasificationAndRemove(),
+                    style: GoogleFonts.acme(
+                      textStyle: const TextStyle(
+                        fontSize: 24,
+                        color: AppColors.brownTextColor,
+                        fontFamily: 'Acme',
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 10, 15, 0),
-                child: Text(
-                  'Ver más',
-                  style: GoogleFonts.acme(
-                    textStyle: const TextStyle(
-                      fontSize: 16,
-                      color: AppColors.brownTextColor,
-                      fontFamily: 'Acme',
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 10, 15, 0),
+                  child: Text(
+                    'Ver más',
+                    style: GoogleFonts.acme(
+                      textStyle: const TextStyle(
+                        fontSize: 16,
+                        color: AppColors.brownTextColor,
+                        fontFamily: 'Acme',
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-            child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: FutureBuilder<List<Widget>>(
-                  future: printRecipes(primeraSeccion),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return Row(
-                        children: snapshot.data!,
-                      );
-                    } else if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    }
-                    return CircularProgressIndicator();
-                  },
-                )),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(10, 20, 0, 0),
-                child: Text(
-                  segundaSeccion = getRandomClasificationAndRemove(),
-                  style: GoogleFonts.acme(
-                    textStyle: const TextStyle(
-                      fontSize: 24,
-                      color: AppColors.brownTextColor,
-                      fontFamily: 'Acme',
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+              child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: FutureBuilder<List<Widget>>(
+                    future: printRecipes(primeraSeccion),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Row(
+                          children: snapshot.data!,
+                        );
+                      } else if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
+                      return CircularProgressIndicator();
+                    },
+                  )),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 20, 0, 0),
+                  child: Text(
+                    segundaSeccion = getRandomClasificationAndRemove(),
+                    style: GoogleFonts.acme(
+                      textStyle: const TextStyle(
+                        fontSize: 24,
+                        color: AppColors.brownTextColor,
+                        fontFamily: 'Acme',
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 25, 15, 0),
-                child: Text(
-                  'Ver más',
-                  style: GoogleFonts.acme(
-                    textStyle: const TextStyle(
-                      fontSize: 16,
-                      color: AppColors.brownTextColor,
-                      fontFamily: 'Acme',
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 25, 15, 0),
+                  child: Text(
+                    'Ver más',
+                    style: GoogleFonts.acme(
+                      textStyle: const TextStyle(
+                        fontSize: 16,
+                        color: AppColors.brownTextColor,
+                        fontFamily: 'Acme',
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-            child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: FutureBuilder<List<Widget>>(
-                  future: printRecipes(segundaSeccion),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return Row(
-                        children: snapshot.data!,
-                      );
-                    } else if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    }
-                    return CircularProgressIndicator();
-                  },
-                )),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(10, 20, 0, 0),
-                child: Text(
-                  terceraSeccion = getRandomClasificationAndRemove(),
-                  style: GoogleFonts.acme(
-                    textStyle: const TextStyle(
-                      fontSize: 24,
-                      color: AppColors.brownTextColor,
-                      fontFamily: 'Acme',
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+              child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: FutureBuilder<List<Widget>>(
+                    future: printRecipes(segundaSeccion),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Row(
+                          children: snapshot.data!,
+                        );
+                      } else if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
+                      return CircularProgressIndicator();
+                    },
+                  )),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 20, 0, 0),
+                  child: Text(
+                    terceraSeccion = getRandomClasificationAndRemove(),
+                    style: GoogleFonts.acme(
+                      textStyle: const TextStyle(
+                        fontSize: 24,
+                        color: AppColors.brownTextColor,
+                        fontFamily: 'Acme',
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 25, 15, 0),
-                child: Text(
-                  'Ver más',
-                  style: GoogleFonts.acme(
-                    textStyle: const TextStyle(
-                      fontSize: 16,
-                      color: AppColors.brownTextColor,
-                      fontFamily: 'Acme',
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 25, 15, 0),
+                  child: Text(
+                    'Ver más',
+                    style: GoogleFonts.acme(
+                      textStyle: const TextStyle(
+                        fontSize: 16,
+                        color: AppColors.brownTextColor,
+                        fontFamily: 'Acme',
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-            child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: FutureBuilder<List<Widget>>(
-                  future: printRecipes(terceraSeccion),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return Row(
-                        children: snapshot.data!,
-                      );
-                    } else if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    }
-                    return CircularProgressIndicator();
-                  },
-                )),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(10, 20, 0, 0),
-                child: Text(
-                  cuartaSeccion = getRandomClasificationAndRemove(),
-                  style: GoogleFonts.acme(
-                    textStyle: const TextStyle(
-                      fontSize: 24,
-                      color: AppColors.brownTextColor,
-                      fontFamily: 'Acme',
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+              child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: FutureBuilder<List<Widget>>(
+                    future: printRecipes(terceraSeccion),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Row(
+                          children: snapshot.data!,
+                        );
+                      } else if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
+                      return CircularProgressIndicator();
+                    },
+                  )),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 20, 0, 0),
+                  child: Text(
+                    cuartaSeccion = getRandomClasificationAndRemove(),
+                    style: GoogleFonts.acme(
+                      textStyle: const TextStyle(
+                        fontSize: 24,
+                        color: AppColors.brownTextColor,
+                        fontFamily: 'Acme',
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 25, 15, 0),
-                child: Text(
-                  'Ver más',
-                  style: GoogleFonts.acme(
-                    textStyle: const TextStyle(
-                      fontSize: 16,
-                      color: AppColors.brownTextColor,
-                      fontFamily: 'Acme',
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 25, 15, 0),
+                  child: Text(
+                    'Ver más',
+                    style: GoogleFonts.acme(
+                      textStyle: const TextStyle(
+                        fontSize: 16,
+                        color: AppColors.brownTextColor,
+                        fontFamily: 'Acme',
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-            child: SingleChildScrollView(
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+              child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: FutureBuilder<List<Widget>>(
                   future: printRecipes(cuartaSeccion),
@@ -442,42 +462,43 @@ class RecipesPage extends StatelessWidget {
                     }
                     return CircularProgressIndicator();
                   },
-                ),),
-          ),
+                ),
+              ),
+            ),
             Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(10, 20, 0, 0),
-                child: Text(
-                  cuartaSeccion = getRandomClasificationAndRemove(),
-                  style: GoogleFonts.acme(
-                    textStyle: const TextStyle(
-                      fontSize: 24,
-                      color: AppColors.brownTextColor,
-                      fontFamily: 'Acme',
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 20, 0, 0),
+                  child: Text(
+                    cuartaSeccion = getRandomClasificationAndRemove(),
+                    style: GoogleFonts.acme(
+                      textStyle: const TextStyle(
+                        fontSize: 24,
+                        color: AppColors.brownTextColor,
+                        fontFamily: 'Acme',
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 25, 15, 0),
-                child: Text(
-                  'Ver más',
-                  style: GoogleFonts.acme(
-                    textStyle: const TextStyle(
-                      fontSize: 16,
-                      color: AppColors.brownTextColor,
-                      fontFamily: 'Acme',
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 25, 15, 0),
+                  child: Text(
+                    'Ver más',
+                    style: GoogleFonts.acme(
+                      textStyle: const TextStyle(
+                        fontSize: 16,
+                        color: AppColors.brownTextColor,
+                        fontFamily: 'Acme',
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-            child: SingleChildScrollView(
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+              child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: FutureBuilder<List<Widget>>(
                   future: printRecipes(quintaSeccion),
@@ -491,11 +512,12 @@ class RecipesPage extends StatelessWidget {
                     }
                     return CircularProgressIndicator();
                   },
-                ),),
-          ),
-        ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
-    ),
-  );
+    );
   }
 }

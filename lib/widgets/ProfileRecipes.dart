@@ -15,6 +15,7 @@ class ProfileRecipes extends StatefulWidget {
   final String userUsername;
   final double screenWidth;
   final String userId;
+  final String userEmail;
 
   const ProfileRecipes({
     Key? key,
@@ -23,7 +24,7 @@ class ProfileRecipes extends StatefulWidget {
     required this.userName,
     required this.userUsername,
     required this.screenWidth,
-    required this.userId,
+    required this.userId, required this.userEmail,
   }) : super(key: key);
 
   @override
@@ -138,7 +139,7 @@ class _ProfileRecipesState extends State<ProfileRecipes> {
                 userName: widget.userName,
                 userUsername: widget.userUsername,
                 recipeComments: comentarios,
-                isFavorite: isFavorite),
+                isFavorite: isFavorite, userEmail: widget.userEmail,),
           ),
         );
       },

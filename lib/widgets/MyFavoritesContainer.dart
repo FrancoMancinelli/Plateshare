@@ -81,6 +81,7 @@ class _MyFavoritesContainerState extends State<MyFavoritesContainer> {
                         userUsername: widget.usernameData,
                         screenWidth: screenSize.width,
                         userId: widget.userId,
+                        userEmail: widget.emailData,
                       ),
                     ],
                   ),
@@ -94,6 +95,7 @@ class _MyFavoritesContainerState extends State<MyFavoritesContainer> {
                           userUsername: widget.usernameData,
                           screenWidth: screenSize.width,
                           userId: widget.userId,
+                          userEmail: widget.emailData,
                         ),
                       if (i + 1 >= widget.likedRecipesIDs.length)
                         Container(

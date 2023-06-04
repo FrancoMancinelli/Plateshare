@@ -28,6 +28,7 @@ class RecipeDetailsScreen extends StatefulWidget {
   final String userImage;
   final String userName;
   final String userUsername;
+  final String userEmail;
 
   final bool isFavorite;
 
@@ -49,7 +50,7 @@ class RecipeDetailsScreen extends StatefulWidget {
     required this.recipeComments,
     required this.recipeID,
     required this.userId,
-    required this.isFavorite,
+    required this.isFavorite, required this.userEmail,
   }) : super(key: key);
 
   @override
@@ -240,8 +241,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                           deleteCollections(ownerId, widget.recipeID);
                           deleteRecipe(ownerId, widget.recipeID);
                           Navigator.pop(context);
-                          print('DEBUG:::RECIPE-DETAILS:::${widget.userUsername}');
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => InicioScreen(emailData: '', nameData: widget.userName, profilePicData: widget.userImage, usernameData: widget.userUsername,)));
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => InicioScreen(emailData: widget.userEmail, nameData: widget.userName, profilePicData: widget.userImage, usernameData: widget.userUsername,)));
                         }
                       },
                     ),

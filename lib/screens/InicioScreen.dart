@@ -63,9 +63,7 @@ class _InicioScreenState extends State<InicioScreen> {
   }
 
   Future<void> getRecipesIDs() async {
-    print('DEBUUUGG:::USERNAME${widget.usernameData}');
     final userIdFromDB = await getDocumentIdByUsername(widget.usernameData);
-    print('DEBUUGGG:::USERID:$userIdFromDB');
     final recipesIDsFromUserId = await getRecipeDocumentIDs(userIdFromDB);
     final followersFromDB = await getFollowers(userIdFromDB);
     final followsFromDB = await getFollows(userIdFromDB);
@@ -93,6 +91,7 @@ class _InicioScreenState extends State<InicioScreen> {
                 nameData: widget.nameData,
                 usernameData: widget.usernameData,
                 profilePicData: widget.profilePicData,
+                emailData: widget.emailData,
               )
             : null,
         body: _getPage(_selectedIndex),
@@ -154,6 +153,7 @@ class _InicioScreenState extends State<InicioScreen> {
           userImage: widget.profilePicData,
           userName: widget.nameData,
           userUsername: widget.usernameData,
+          userEmail: widget.emailData,
         );
       case 2:
         return ProfilePage(
