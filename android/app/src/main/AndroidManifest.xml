@@ -2,7 +2,7 @@
     package="com.example.plateshare">
    <application
         android:label="Plateshare"
-        android:name="Plateshare"
+        android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
