@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:plateshare/screens/AjustesScreen.dart';
 import 'package:plateshare/screens/InicioScreen.dart';
 import 'package:plateshare/screens/LoginScreen.dart';
 
 class MyDrawer extends StatelessWidget {
+  final String profilePicData;
+  final String nameData;
+  final String usernameData;
+  final String emailData;
+
   const MyDrawer({
     Key? key,
     required this.profilePicData,
     required this.nameData,
     required this.usernameData,
+    required this.emailData,
   }) : super(key: key);
-
-  final String profilePicData;
-  final String nameData;
-  final String usernameData;
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +70,7 @@ class MyDrawer extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            '@${usernameData}',
+                            '@$usernameData',
                             style: GoogleFonts.acme(
                               textStyle: const TextStyle(
                                 fontSize: 16,
@@ -84,7 +87,6 @@ class MyDrawer extends StatelessWidget {
               ],
             ),
           ),
-          
           SizedBox(
             height: screenSize.height - 200, // tamaño determinado del contenedor
             child: Column(
@@ -118,7 +120,16 @@ class MyDrawer extends StatelessWidget {
                           ),
                         ),
                       ),
-                      onTap: () {},
+                      onTap: () {Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AjustesScreen(
+                          emailData: emailData,
+                          nameData: nameData,
+                          profilePicData: profilePicData,
+                          usernameData: usernameData),
+                    ),
+                  );},
                     ),
                     ListTile(
                       leading: const Icon(
