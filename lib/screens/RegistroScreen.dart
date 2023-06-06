@@ -327,7 +327,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
       //Compruebo que las contraseñas coincidan
       if (passwordInput == repeatPasswordInput) {
         //Compruebo que la contraseña tenga al menos 8 cracteres
-        if (passwordInput.length >= 8) {
+        if (passwordInput.length >= 8 && passwordInput.length <= 24) {
           //Compruebo que el username sea valido
           if (isValidUsername(usernameInput)) {
             //Compruebo que el username no este en uso
@@ -429,7 +429,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
               return AlertDialog(
                 title: const Text('Contraseña insegura'),
                 content: const Text(
-                    'La contraseña debe tener al menos 8 caracteres'),
+                    'La contraseña debe tener al menos 8 caracteres y máximo 24'),
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(),
