@@ -5,6 +5,7 @@ import 'package:plateshare/models/User.dart';
 import 'package:plateshare/services/firebase_service.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
+import '../util/AppColors.dart';
 import 'InicioScreen.dart';
 import 'RecuperarScreen.dart';
 import 'RegistroScreen.dart';
@@ -25,20 +26,19 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     return Scaffold(
-  body: SingleChildScrollView(
-    child: Container(
-      width: screenSize.width,
-      height: screenSize.height,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: NetworkImage('https://i.imgur.com/pbBleS1.png'),
-          fit: BoxFit.cover,
-        ),
-      ),
-      child: Column(
+      body: SingleChildScrollView(
+        child: Container(
+          width: screenSize.width,
+          height: screenSize.height,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: NetworkImage('https://i.imgur.com/pbBleS1.png'),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              
               Row(
                 children: [
                   Padding(
@@ -81,12 +81,19 @@ class _LoginScreenState extends State<LoginScreen> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50.0),
                         ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50.0),
+                          borderSide: BorderSide(
+                              color: AppColors.orangeColor, width: 2),
+                        ),
                         labelText: 'Username',
                         filled: true,
                         fillColor: Colors.white,
-                        contentPadding: const EdgeInsets.fromLTRB(20, 20, 0, 20),
-                        prefixIcon:
-                            const Icon(Icons.person_outline, color: Colors.black),
+                        contentPadding:
+                            const EdgeInsets.fromLTRB(20, 20, 0, 20),
+                        prefixIcon: const Icon(Icons.person_outline,
+                            color: Colors.black),
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
                       ),
                     ),
                     const SizedBox(height: 20.0),
@@ -96,12 +103,20 @@ class _LoginScreenState extends State<LoginScreen> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50.0),
                         ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50.0),
+                          borderSide: BorderSide(
+                              color: AppColors.orangeColor, width: 2),
+                        ),
                         labelText: 'Contraseña',
                         filled: true,
                         fillColor: Colors.white,
-                        contentPadding: const EdgeInsets.fromLTRB(20, 20, 0, 20),
+                        contentPadding:
+                            const EdgeInsets.fromLTRB(20, 20, 0, 20),
                         prefixIcon:
                             const Icon(Icons.lock_outline, color: Colors.black),
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                        
                         suffixIcon: Padding(
                           padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                           child: IconButton(
@@ -162,7 +177,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         Text('o',
-                            style: TextStyle(fontSize: 15, color: Colors.white)),
+                            style:
+                                TextStyle(fontSize: 15, color: Colors.white)),
                         Expanded(
                           child: Divider(
                             color: Colors.white,
@@ -254,12 +270,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
               ),
-              
-              
             ],
           ),
         ),
-  ),
+      ),
     );
   }
 

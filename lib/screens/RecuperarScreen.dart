@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plateshare/services/firebase_service.dart';
 
+import '../util/AppColors.dart';
 import 'LoginScreen.dart';
 
 class RecuperarScreen extends StatefulWidget {
@@ -27,15 +28,14 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
           width: screenSize.width,
           height: screenSize.height,
           decoration: BoxDecoration(
-        image: DecorationImage(
-          image: NetworkImage('https://i.imgur.com/pbBleS1.png'),
-          fit: BoxFit.cover,
-        ),
+            image: DecorationImage(
+              image: NetworkImage('https://i.imgur.com/pbBleS1.png'),
+              fit: BoxFit.cover,
+            ),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              
               SizedBox(
                 height: 15,
                 child: Align(
@@ -105,12 +105,19 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50.0),
                         ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50.0),
+                          borderSide: BorderSide(
+                              color: AppColors.orangeColor, width: 2),
+                        ),
                         labelText: 'Usuario',
                         filled: true,
                         fillColor: Colors.white,
-                        contentPadding: const EdgeInsets.fromLTRB(20, 20, 0, 20),
-                        prefixIcon:
-                            const Icon(Icons.person_outline, color: Colors.black),
+                        contentPadding:
+                            const EdgeInsets.fromLTRB(20, 20, 0, 20),
+                        prefixIcon: const Icon(Icons.person_outline,
+                            color: Colors.black),
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
                       ),
                     ),
                     const SizedBox(height: 20.0),
@@ -120,12 +127,19 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50.0),
                         ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50.0),
+                          borderSide: BorderSide(
+                              color: AppColors.orangeColor, width: 2),
+                        ),
                         labelText: 'Contraseña',
                         filled: true,
                         fillColor: Colors.white,
-                        contentPadding: const EdgeInsets.fromLTRB(20, 20, 0, 20),
+                        contentPadding:
+                            const EdgeInsets.fromLTRB(20, 20, 0, 20),
                         prefixIcon:
                             const Icon(Icons.lock_outline, color: Colors.black),
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
                       ),
                       obscureText: true,
                     ),
@@ -136,10 +150,17 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50.0),
                         ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50.0),
+                          borderSide: BorderSide(
+                              color: AppColors.orangeColor, width: 2),
+                        ),
                         labelText: 'Repite Contraseña',
                         filled: true,
                         fillColor: Colors.white,
-                        contentPadding: const EdgeInsets.fromLTRB(20, 20, 0, 20),
+                        contentPadding:
+                            const EdgeInsets.fromLTRB(20, 20, 0, 20),
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
                         prefixIcon:
                             const Icon(Icons.lock_outline, color: Colors.black),
                       ),
@@ -205,7 +226,6 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                   ],
                 ),
               ),
-              
             ],
           ),
         ),

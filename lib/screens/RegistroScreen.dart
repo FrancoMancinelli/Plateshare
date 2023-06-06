@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:plateshare/services/firebase_service.dart';
 import 'package:bcrypt/bcrypt.dart';
 
+import '../util/AppColors.dart';
 import 'LoginScreen.dart';
 
 class RegistroScreen extends StatefulWidget {
@@ -101,6 +102,11 @@ class _RegistroScreenState extends State<RegistroScreen> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50.0),
                         ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50.0),
+                          borderSide: BorderSide(
+                              color: AppColors.orangeColor, width: 2),
+                        ),
                         labelText: 'Correo',
                         filled: true,
                         fillColor: Colors.white,
@@ -108,6 +114,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                             const EdgeInsets.fromLTRB(20, 20, 0, 20),
                         prefixIcon: const Icon(Icons.email_outlined,
                             color: Colors.black),
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
                       ),
                     ),
                     const SizedBox(height: 15.0),
@@ -117,6 +124,11 @@ class _RegistroScreenState extends State<RegistroScreen> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50.0),
                         ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50.0),
+                          borderSide: BorderSide(
+                              color: AppColors.orangeColor, width: 2),
+                        ),
                         labelText: 'Nombre',
                         filled: true,
                         fillColor: Colors.white,
@@ -124,6 +136,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                             const EdgeInsets.fromLTRB(20, 20, 0, 20),
                         prefixIcon: const Icon(Icons.contact_emergency_outlined,
                             color: Colors.black),
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
                       ),
                     ),
                     const SizedBox(height: 15.0),
@@ -133,6 +146,11 @@ class _RegistroScreenState extends State<RegistroScreen> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50.0),
                         ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50.0),
+                          borderSide: BorderSide(
+                              color: AppColors.orangeColor, width: 2),
+                        ),
                         labelText: 'Usuario',
                         filled: true,
                         fillColor: Colors.white,
@@ -140,6 +158,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                             const EdgeInsets.fromLTRB(20, 20, 0, 20),
                         prefixIcon: const Icon(Icons.person_outline,
                             color: Colors.black),
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
                       ),
                     ),
                     const SizedBox(height: 15.0),
@@ -149,6 +168,11 @@ class _RegistroScreenState extends State<RegistroScreen> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50.0),
                         ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50.0),
+                          borderSide: BorderSide(
+                              color: AppColors.orangeColor, width: 2),
+                        ),
                         labelText: 'Contraseña',
                         filled: true,
                         fillColor: Colors.white,
@@ -156,6 +180,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                             const EdgeInsets.fromLTRB(20, 20, 0, 20),
                         prefixIcon:
                             const Icon(Icons.lock_outline, color: Colors.black),
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
                         suffixIcon: Padding(
                           padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                           child: IconButton(
@@ -182,6 +207,11 @@ class _RegistroScreenState extends State<RegistroScreen> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50.0),
                         ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50.0),
+                          borderSide: BorderSide(
+                              color: AppColors.orangeColor, width: 2),
+                        ),
                         labelText: 'Repite Contraseña',
                         filled: true,
                         fillColor: Colors.white,
@@ -189,6 +219,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                             const EdgeInsets.fromLTRB(20, 20, 0, 20),
                         prefixIcon:
                             const Icon(Icons.lock_outline, color: Colors.black),
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
                         suffixIcon: Padding(
                           padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                           child: IconButton(
@@ -375,21 +406,21 @@ class _RegistroScreenState extends State<RegistroScreen> {
             }
           } else {
             showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text('Username invalido'),
-                content: const Text(
-                    'El nombre de usuario solo puede contener letras, números, y los siguientes caracters: ( _ - . ) y no puede contener espacios ni terminar con un punto'),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('OK'),
-                  ),
-                ],
-              );
-            },
-          );
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text('Username invalido'),
+                  content: const Text(
+                      'El nombre de usuario solo puede contener letras, números, y los siguientes caracters: ( _ - . ) y no puede contener espacios ni terminar con un punto'),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text('OK'),
+                    ),
+                  ],
+                );
+              },
+            );
           }
         } else {
           showDialog(
@@ -468,5 +499,3 @@ bool isValidUsername(String username) {
 
   return true;
 }
-
-
