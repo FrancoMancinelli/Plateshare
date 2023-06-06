@@ -71,6 +71,16 @@ class _NotificationsPageState extends State<NotificationsPage> {
     });
   }
 
+  Future<void> removeAllNotifications() async {
+    // Remove all notifications from the database
+    await deleteAllNotifications(widget.userId);
+
+    // Clear the list of notifications
+    setState(() {
+      listaNotificaciones.clear();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     screenSize = MediaQuery.of(context).size;
@@ -125,12 +135,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                           ),
                           onPressed: () {
                             // Delete all notifications from the database
-                            deleteAllNotifications(widget.userId);
-
-                            // Clear the list of notifications
-                            setState(() {
-                              listaNotificaciones.clear();
-                            });
+                            removeAllNotifications();
                           },
                         ),
                       ),
@@ -191,7 +196,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
 
                     String timeDifference;
                     if (differenceInSeconds < 60) {
-                      timeDifference = '$differenceInMinutes seg';
+                      timeDifference = '$differenceInSeconds seg';
                     } else if (differenceInMinutes < 60) {
                       timeDifference = '$differenceInMinutes min';
                     } else if (differenceInHours < 24) {
@@ -322,3 +327,4 @@ class _NotificationsPageState extends State<NotificationsPage> {
     );
   }
 }
+
