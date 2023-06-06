@@ -220,80 +220,81 @@ class _NotificationsPageState extends State<NotificationsPage> {
                           ),
                           padding: EdgeInsets.all(8),
                           child: Row(
-                            children: [
-                              imageUrl != null
-                                  ? Container(
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        border: Border.all(
-                                          color: Colors.black,
-                                          width: 1.0,
-                                        ),
-                                      ),
-                                      child: imageUrl != null
-                                          ? CircleAvatar(
-                                              radius: 25,
-                                              backgroundImage:
-                                                  NetworkImage(imageUrl),
-                                            )
-                                          : Placeholder(
-                                              fallbackHeight: 50,
-                                              fallbackWidth: 50,
-                                            ),
-                                    )
-                                  : SizedBox(width: 10),
-                              Flexible(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.fromLTRB(8, 0, 5, 0),
-                                      child: Text(
-                                        text1 ?? '',
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 2,
-                                        style: GoogleFonts.acme(
-                                          textStyle: const TextStyle(
-                                            fontSize: 17,
-                                            color: AppColors.blackColor,
-                                            fontFamily: 'Acme',
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(width: 10),
-                              Align(
-                                alignment: Alignment.centerRight,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(timeDifference),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              0, 5, 5, 0),
-                                          child: Icon(
-                                            notification['type'] == 1
-                                                ? Icons.comment_outlined
-                                                : Icons.favorite,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
+  children: [
+    Expanded(
+      child: Row(
+        children: [
+          imageUrl != null
+              ? Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Colors.black,
+                      width: 1.0,
+                    ),
+                  ),
+                  child: imageUrl != null
+                      ? CircleAvatar(
+                          radius: 25,
+                          backgroundImage: NetworkImage(imageUrl),
+                        )
+                      : Placeholder(
+                          fallbackHeight: 50,
+                          fallbackWidth: 50,
+                        ),
+                )
+              : SizedBox(width: 10),
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 5, 0),
+                  child: Text(
+                    text1 ?? '',
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                    style: GoogleFonts.acme(
+                      textStyle: const TextStyle(
+                        fontSize: 17,
+                        color: AppColors.blackColor,
+                        fontFamily: 'Acme',
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    ),
+    SizedBox(width: 10),
+    Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Row(
+          children: [
+            Text(timeDifference),
+          ],
+        ),
+        Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 5, 5, 0),
+              child: Icon(
+                notification['type'] == 1
+                    ? Icons.comment_outlined
+                    : Icons.star_border_rounded,
+              ),
+            ),
+          ],
+        ),
+      ],
+    ),
+  ],
+),
+
                         ),
                       ),
                     );
