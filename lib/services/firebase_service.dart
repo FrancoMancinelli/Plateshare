@@ -393,14 +393,20 @@ Future<void> addCommentToRecipe(
         await userDoc.reference.collection('recipe').doc(recipeId).get();
 
     if (recipeSnapshot.exists) {
+      final DateTime currentDate = DateTime.now();
+      final DateFormat formatter = DateFormat('dd/MM/yyyy HH:mm:ss');
+      final String formattedDate = formatter.format(currentDate);
+
       await recipeSnapshot.reference.collection('comment').add({
         'owner': owner,
         'text': text,
+        'date': formattedDate,
       });
       break; // Exit the loop once the recipe document is found
     }
   }
 }
+
 
 Future<bool> checkIfRecipeLiked(
     String recipeOwner, String recipeId, String value) async {

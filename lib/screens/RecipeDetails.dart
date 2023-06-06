@@ -695,9 +695,11 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                                               comentario['owner'] as String;
                                           final text =
                                               comentario['text'] as String;
+                                          final date = comentario['date'] as String;
                                           return RecipeComment(
                                             commentOwnerID: owner,
                                             commentText: text,
+                                            commentDate: date,
                                           );
                                         },
                                       ),
