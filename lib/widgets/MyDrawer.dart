@@ -54,36 +54,34 @@ class MyDrawer extends StatelessWidget {
                     ),
                   ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 30),
-                  child: Column(
-                    children: [
-                      Column(
-                        children: [
-                          Text(
-                            nameData,
-                            style: GoogleFonts.acme(
-                              textStyle: const TextStyle(
-                                fontSize: 20,
-                                color: Colors.black,
-                                fontFamily: 'Acme',
-                              ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
+                      children: [
+                        Text(
+                          nameData,
+                          style: GoogleFonts.acme(
+                            textStyle: const TextStyle(
+                              fontSize: 24,
+                              color: Colors.black,
+                              fontFamily: 'Acme',
                             ),
                           ),
-                          Text(
-                            '@$usernameData',
-                            style: GoogleFonts.acme(
-                              textStyle: const TextStyle(
-                                fontSize: 16,
-                                color: Color(0xFF576661),
-                                fontFamily: 'Acme',
-                              ),
+                        ),
+                        Text(
+                          '@$usernameData',
+                          style: GoogleFonts.acme(
+                            textStyle: const TextStyle(
+                              fontSize: 20,
+                              color: Color(0xFF576661),
+                              fontFamily: 'Acme',
                             ),
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ],
             ),
