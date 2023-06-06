@@ -308,18 +308,28 @@ Future<List<Map<String, dynamic>>> getRecipeComments(String recipeId) async {
         await userDoc.reference.collection('recipe').doc(recipeId).get();
 
     if (recipeSnapshot.exists) {
-      final QuerySnapshot ingredientSnapshot =
+      final QuerySnapshot commentSnapshot =
           await recipeSnapshot.reference.collection('comment').get();
 
-      comentarios = ingredientSnapshot.docs
+      comentarios = commentSnapshot.docs
           .map((doc) => doc.data() as Map<String, dynamic>)
           .toList();
+
+      // Sort the comments by the most recent date
+      comentarios.sort((a, b) {
+        final DateFormat format = DateFormat("MM/dd/yyyy HH:mm:ss");
+        final DateTime dateA = format.parse(a['date'] as String);
+        final DateTime dateB = format.parse(b['date'] as String);
+        return dateB.compareTo(dateA);
+      });
+
       break; // Exit the loop once the recipe document is found
     }
   }
 
   return comentarios;
 }
+
 
 Future<List<String>> getRecipeSteps(String recipeId) async {
   final QuerySnapshot userSnapshot =

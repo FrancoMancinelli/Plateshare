@@ -36,6 +36,12 @@ class _RecipeCommentState extends State<RecipeComment> {
     fetchCommentData();
   }
 
+  @override
+  void didUpdateWidget(RecipeComment oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    fetchCommentData();
+  }
+
   Future<void> fetchCommentData() async {
     final image = await getUserImageByDocumentId(widget.commentOwnerID);
     final name = await getUserNameByDocumentId(widget.commentOwnerID);

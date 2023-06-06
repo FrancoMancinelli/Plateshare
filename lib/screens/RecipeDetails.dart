@@ -69,6 +69,9 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
   bool isFavorite = false;
   int amountLikes = 0;
   bool isTheUserTheOwner = false;
+  List<Map<String, dynamic>> comments = [];
+final GlobalKey<RecipeCommentListState> commentListKey =
+      GlobalKey<RecipeCommentListState>();
 
   @override
   void initState() {
@@ -76,7 +79,17 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
     isFavorite = widget.isFavorite;
     amountLikes = widget.recipeLikes;
     checkOwner();
+    refreshComments();
   }
+
+void refreshComments() async {
+  List<Map<String, dynamic>> updatedComments = await getRecipeComments(widget.recipeID);
+  setState(() {
+    comments = updatedComments;
+  });
+  commentListKey.currentState?.updateComments(comments);
+}
+
 
   Future<void> checkOwner() async {
     final ownerId = await getDocumentIdByUsername(widget.ownerUsername);
@@ -640,12 +653,12 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                                         if (_commentController
                                             .text.isNotEmpty) {
                                           addCommentToRecipe(
-                                              widget.recipeID,
-                                              widget.userId,
-                                              _commentController.text);
+                                            widget.recipeID,
+                                            widget.userId,
+                                            _commentController.text,
+                                          );
                                           _commentController.clear();
                                           showBottomMessage(3);
-                                          setState(() {});
                                           String userImage =
                                               await getProfilePicByUsername(
                                                   widget.userUsername);
@@ -653,10 +666,12 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                                               await getDocumentIdByUsername(
                                                   widget.ownerUsername);
                                           addNewNotification(
-                                              ownerId,
-                                              '${widget.userName} ha comentado en tu receta: ${widget.recipeTitle}',
-                                              1,
-                                              userImage);
+                                            ownerId,
+                                            '${widget.userName} ha comentado en tu receta: ${widget.recipeTitle}',
+                                            1,
+                                            userImage,
+                                          );
+                                          refreshComments(); // Update the comments list
                                         }
                                       },
                                     ),
@@ -666,50 +681,10 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                             ),
                           ],
                         ),
-
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: AppColors.greyAccentColor,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            height: 400,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.fromLTRB(5, 1.5, 5, 1.5),
-                              child: Scrollbar(
-                                thickness: 5,
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    children: [
-                                      ListView.builder(
-                                        shrinkWrap: true,
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        itemCount: widget.recipeComments.length,
-                                        itemBuilder: (context, index) {
-                                          final comentario =
-                                              widget.recipeComments[index];
-                                          final owner =
-                                              comentario['owner'] as String;
-                                          final text =
-                                              comentario['text'] as String;
-                                          final date = comentario['date'] as String;
-                                          return RecipeComment(
-                                            commentOwnerID: owner,
-                                            commentText: text,
-                                            commentDate: date,
-                                          );
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
+                        RecipeCommentList(
+  key: commentListKey,
+  comments: comments,
+),
 
                         //END
                       ],
@@ -724,3 +699,81 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
     );
   }
 }
+
+
+
+
+
+class RecipeCommentList extends StatefulWidget {
+  final List<Map<String, dynamic>> comments;
+
+  RecipeCommentList({Key? key, required this.comments}) : super(key: key);
+
+  @override
+  RecipeCommentListState createState() => RecipeCommentListState();
+
+  static RecipeCommentListState? of(BuildContext context) {
+    return context.findAncestorStateOfType<RecipeCommentListState>();
+  }
+}
+
+class RecipeCommentListState extends State<RecipeCommentList> {
+  List<Map<String, dynamic>> comments = [];
+
+  @override
+  void initState() {
+    super.initState();
+    comments = widget.comments;
+  }
+
+  void updateComments(List<Map<String, dynamic>> updatedComments) {
+    setState(() {
+      comments = updatedComments;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppColors.greyAccentColor,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        height: 400,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(5, 1.5, 5, 1.5),
+          child: Scrollbar(
+            thickness: 5,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: comments.length,
+                    itemBuilder: (context, index) {
+                      final comentario = comments[index];
+                      final owner = comentario['owner'] as String;
+                      final text = comentario['text'] as String;
+                      final date = comentario['date'] as String;
+                      return RecipeComment(
+                        commentOwnerID: owner,
+                        commentText: text,
+                        commentDate: date,
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+
