@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:bcrypt/bcrypt.dart';
+import 'package:emailjs/emailjs.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -250,27 +251,9 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
             print(userEmail);
             //TODO ENVIAR MAIL CON PIN DE VERIFICACION
 
-            /* // Configure the SMTP server settings
-                        final smtpServer = SmtpServer('smtp.gmail.com',
-                            username: 'manchiwolf312@gmail.com',
-                            password: 'sasha125',
-                            port: 587);
+            await enviarEmail(email: userEmail, pinCode: pinCode);
 
-            // Create the email message
-                        final message = Message()
-                          ..from = Address('manchiwolf312@gmail.com', 'Plateshare')
-                          ..recipients.add(userEmail) // User's email address
-                          ..subject = 'Cambio de contraseña'
-                          ..text = 'PIN: $pinCode'; // Plain text body
-
-                        try {
-                          // Send the email
-                          final sendReport = await send(message, smtpServer);
-                          print('Email sent: ${sendReport.toString()}');
-                        } catch (e) {
-                          print('Error sending email: $e');
-                        } */
-
+          
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
@@ -349,6 +332,34 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
       );
     }
   }
+
+  Future enviarEmail({email, pinCode}) async {
+  const service_id = 'service_sq5s1dg';
+  const template_id = 'template_2dt3cai';
+  const user_id = 'n-d2ID0-xzJ6fn7m1';
+
+  var url = Uri.parse('https://api.emailjs.com/api/v1.0/email/send');
+  try {
+    var response = await http.post(url,
+        headers: {
+          'origin': '<http://localhost>',
+          'Content-Type': 'application/json'
+        },
+        body: json.encode({
+          'service_id': service_id,
+          'template_id': template_id,
+          'user_id': user_id,
+          'template_params': {
+            'to_email': email,
+            'pin_code': pinCode,
+          }
+        }));
+    print('Pin enviado');
+    print(response.body);
+  } catch (error) {
+    print('Error al enviar el email');
+  }
+}
 
   String generatePin() {
     Random random = Random();

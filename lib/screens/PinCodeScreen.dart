@@ -343,6 +343,18 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
       if(widget.pin == pinCompletoInput) {
 
         updateUserPasswordByUsername(widget.username, widget.password);
+         ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+                'Contraseña actualizada con éxito'),
+            backgroundColor: Colors.green,
+          ),
+        );
+        Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const LoginScreen()),
+                      );
       } else {
         showDialog(
         context: context,
