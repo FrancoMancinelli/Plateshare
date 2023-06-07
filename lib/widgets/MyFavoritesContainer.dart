@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:like_button/like_button.dart';
+import 'package:lottie/lottie.dart';
 import 'package:plateshare/screens/LoginScreen.dart';
 import 'package:plateshare/screens/RecipeDetails.dart';
 import 'package:plateshare/screens/RecipeFormScreenOne.dart';
@@ -47,19 +48,20 @@ class _MyFavoritesContainerState extends State<MyFavoritesContainer> {
           children: [
             if (widget.likedRecipesIDs.isEmpty)
               Padding(
-                padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
+                padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
                 child: Column(
                   children: [
-                    Image.network(
-                      'https://i.imgur.com/csJDysq.png',
-                      width: 150, // Adjust the width as needed
-                      height: 150, // Adjust the height as needed
+                    Lottie.network(
+                      'https://assets9.lottiefiles.com/packages/lf20_t9nbbl1t.json',
+                      width: 200,
+                      height: 200,
+                      fit: BoxFit.cover,
                     ),
                     Text(
                       'Aun no has guardado ninguna receta',
                       style: GoogleFonts.acme(
                         textStyle: const TextStyle(
-                          fontSize: 21,
+                          fontSize: 25,
                           color: AppColors.brownInfoRecipe,
                           fontFamily: 'Acme',
                         ),

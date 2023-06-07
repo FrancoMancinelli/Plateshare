@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:plateshare/screens/InicioScreen.dart';
 import 'package:plateshare/screens/RecipeFormScreenOne.dart';
 import 'package:plateshare/util/AppColors.dart';
@@ -67,7 +68,8 @@ class _NotificationsPageState extends State<NotificationsPage> {
 
     // Remove the notification from the list
     setState(() {
-      listaNotificaciones.removeWhere((notification) => notification['id'] == notificationId);
+      listaNotificaciones
+          .removeWhere((notification) => notification['id'] == notificationId);
     });
   }
 
@@ -150,10 +152,12 @@ class _NotificationsPageState extends State<NotificationsPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.network(
-                        'https://i.imgur.com/bgmgwp5.png',
-                        width: 260, // Adjust the width as needed
-                        height: 260, // Adjust the height as needed
+                      SizedBox(height: 80,),
+                      Lottie.network(
+                        'https://assets5.lottiefiles.com/datafiles/vhvOcuUkH41HdrL/data.json',
+                        width: 200,
+                        height: 200,
+                        fit: BoxFit.cover,
                       ),
                       Text(
                         'No tienes notificaciones nuevas',
@@ -327,4 +331,3 @@ class _NotificationsPageState extends State<NotificationsPage> {
     );
   }
 }
-

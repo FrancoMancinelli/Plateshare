@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:like_button/like_button.dart';
+import 'package:lottie/lottie.dart';
 import 'package:plateshare/screens/LoginScreen.dart';
 import 'package:plateshare/screens/RecipeDetails.dart';
 import 'package:plateshare/screens/RecipeFormScreenOne.dart';
@@ -47,19 +48,20 @@ class _MyRecipesContainerState extends State<MyRecipesContainer> {
           children: [
             if (widget.recipesIDs.isEmpty)
               Padding(
-                padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
+                padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
                 child: Column(
                   children: [
-                    Image.network(
-                      'https://i.imgur.com/6eAm9Lq.png',
-                      width: 130, // Adjust the width as needed
-                      height: 130, // Adjust the height as needed
+                    Lottie.network(
+                      'https://assets9.lottiefiles.com/packages/lf20_t9nbbl1t.json',
+                      width: 200,
+                      height: 200,
+                      fit: BoxFit.cover,
                     ),
                     Text(
                       'Aun no hay recetas',
                       style: GoogleFonts.acme(
                         textStyle: const TextStyle(
-                          fontSize: 24,
+                          fontSize: 25,
                           color: AppColors.brownInfoRecipe,
                           fontFamily: 'Acme',
                         ),
@@ -72,7 +74,7 @@ class _MyRecipesContainerState extends State<MyRecipesContainer> {
                           '¿Ya tienes tu primer receta? ',
                           style: GoogleFonts.acme(
                             textStyle: const TextStyle(
-                              fontSize: 16,
+                              fontSize: 20,
                               color: AppColors.brownInfoRecipe,
                               fontFamily: 'Acme',
                             ),
@@ -95,7 +97,7 @@ class _MyRecipesContainerState extends State<MyRecipesContainer> {
                             'Click aquí',
                             style: GoogleFonts.acme(
                               textStyle: const TextStyle(
-                                fontSize: 15,
+                                fontSize: 19,
                                 color: AppColors.primaryColor,
                                 fontFamily: 'Acme',
                                 decoration: TextDecoration.underline,

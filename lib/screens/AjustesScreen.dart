@@ -445,9 +445,9 @@ class _AjustesScreenState extends State<AjustesScreen> {
                                 } else {
                                   showRequired(5);
                                 }
-                              } else {
-                                showRequired(4);
-                              }
+                              } 
+                            } else {
+                              showRequired(4);
                             }
                           },
                           child: Padding(
