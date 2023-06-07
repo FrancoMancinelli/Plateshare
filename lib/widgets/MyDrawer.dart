@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:plateshare/screens/AjustesScreen.dart';
+import 'package:plateshare/screens/SettingsScreen.dart';
 import 'package:plateshare/screens/InicioScreen.dart';
 import 'package:plateshare/screens/LoginScreen.dart';
+
+import '../screens/ContactScreen.dart';
 
 class MyDrawer extends StatelessWidget {
   final String profilePicData;
@@ -122,7 +124,7 @@ class MyDrawer extends StatelessWidget {
                       onTap: () {Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => AjustesScreen(
+                      builder: (context) => SettingsScreen(
                           emailData: emailData,
                           nameData: nameData,
                           profilePicData: profilePicData,
@@ -147,7 +149,17 @@ class MyDrawer extends StatelessWidget {
                           ),
                         ),
                       ),
-                      onTap: () {},
+                      onTap: () {Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ContactScreen(
+                          emailData: emailData,
+                          nameData: nameData,
+                          profilePicData: profilePicData,
+                          usernameData: usernameData,
+                          ),
+                    ),
+                  );},
                     ),
                     ListTile(
                       leading: const Icon(

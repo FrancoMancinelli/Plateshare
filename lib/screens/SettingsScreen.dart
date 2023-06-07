@@ -10,14 +10,14 @@ import 'package:plateshare/services/firebase_service.dart';
 
 import '../util/AppColors.dart';
 
-class AjustesScreen extends StatefulWidget {
+class SettingsScreen extends StatefulWidget {
   final String emailData;
   final String nameData;
   final String usernameData;
   final String profilePicData;
   final String fechaData;
 
-  const AjustesScreen({
+  const SettingsScreen({
     Key? key,
     required this.emailData,
     required this.nameData,
@@ -27,12 +27,12 @@ class AjustesScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _AjustesScreenState createState() => _AjustesScreenState();
+  _SettingsScreenState createState() => _SettingsScreenState();
 }
 
 var screenSizeAjustesScreen;
 
-class _AjustesScreenState extends State<AjustesScreen> {
+class _SettingsScreenState extends State<SettingsScreen> {
   TextEditingController _nombreController = TextEditingController();
   TextEditingController _userController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
@@ -190,7 +190,7 @@ class _AjustesScreenState extends State<AjustesScreen> {
                       Row(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(5, 5, 0, 0),
+                            padding: const EdgeInsets.fromLTRB(10, 5, 0, 0),
                             child: Text(
                               'Información del perfil',
                               style: GoogleFonts.acme(
@@ -466,7 +466,7 @@ class _AjustesScreenState extends State<AjustesScreen> {
                       Row(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(5, 15, 0, 0),
+                            padding: const EdgeInsets.fromLTRB(10, 15, 0, 0),
                             child: Text(
                               'Información general',
                               style: GoogleFonts.acme(
