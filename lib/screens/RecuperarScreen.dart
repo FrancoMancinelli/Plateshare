@@ -1,10 +1,17 @@
+import 'dart:convert';
+import 'dart:math';
+
 import 'package:bcrypt/bcrypt.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
+
 import 'package:plateshare/services/firebase_service.dart';
 
 import '../util/AppColors.dart';
 import 'LoginScreen.dart';
+import 'PinCodeScreen.dart';
 
 class RecuperarScreen extends StatefulWidget {
   const RecuperarScreen({Key? key}) : super(key: key);
@@ -16,8 +23,7 @@ class RecuperarScreen extends StatefulWidget {
 class _RecuperarScreenState extends State<RecuperarScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _repeatPasswordController =
-      TextEditingController();
+  final TextEditingController _password2Controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -105,11 +111,6 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50.0),
                         ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50.0),
-                          borderSide: BorderSide(
-                              color: AppColors.orangeColor, width: 2),
-                        ),
                         labelText: 'Usuario',
                         filled: true,
                         fillColor: Colors.white,
@@ -117,7 +118,6 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                             const EdgeInsets.fromLTRB(20, 20, 0, 20),
                         prefixIcon: const Icon(Icons.person_outline,
                             color: Colors.black),
-                        floatingLabelBehavior: FloatingLabelBehavior.never,
                       ),
                     ),
                     const SizedBox(height: 20.0),
@@ -127,11 +127,6 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50.0),
                         ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50.0),
-                          borderSide: BorderSide(
-                              color: AppColors.orangeColor, width: 2),
-                        ),
                         labelText: 'Contraseña',
                         filled: true,
                         fillColor: Colors.white,
@@ -139,28 +134,21 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                             const EdgeInsets.fromLTRB(20, 20, 0, 20),
                         prefixIcon:
                             const Icon(Icons.lock_outline, color: Colors.black),
-                        floatingLabelBehavior: FloatingLabelBehavior.never,
                       ),
                       obscureText: true,
                     ),
                     const SizedBox(height: 20.0),
                     TextField(
-                      controller: _repeatPasswordController,
+                      controller: _password2Controller,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50.0),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50.0),
-                          borderSide: BorderSide(
-                              color: AppColors.orangeColor, width: 2),
                         ),
                         labelText: 'Repite Contraseña',
                         filled: true,
                         fillColor: Colors.white,
                         contentPadding:
                             const EdgeInsets.fromLTRB(20, 20, 0, 20),
-                        floatingLabelBehavior: FloatingLabelBehavior.never,
                         prefixIcon:
                             const Icon(Icons.lock_outline, color: Colors.black),
                       ),
@@ -173,13 +161,13 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                         onPressed: validateFields,
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size(double.infinity, 50.0),
-                          backgroundColor: const Color(0xFFFD9A00),
+                          backgroundColor: AppColors.orangeColor,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20.0),
                           ),
                         ),
                         child: Text(
-                          'Confirmar',
+                          'Continuar',
                           style: GoogleFonts.acme(
                             textStyle: const TextStyle(
                               fontSize: 28,
@@ -236,7 +224,7 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
   Future<void> validateFields() async {
     String usernameInput = _usernameController.text.toLowerCase();
     String passwordInput = _passwordController.text;
-    String repeatPasswordInput = _repeatPasswordController.text;
+    String repeatPasswordInput = _password2Controller.text;
 
     // Si estan todos los campos rellenos
     if (usernameInput.isNotEmpty &&
@@ -248,18 +236,50 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
         //Comprueba que las nuevas contraseñas sean iguales
         if (passwordInput == repeatPasswordInput) {
           //Comprueba que la contraseña mida al menos 8 caracteres
-          if (passwordInput.length >= 8) {
-            //Hashea la contraseña y la actualiza, luego vuelve al Login
+          if (passwordInput.length >= 8 && passwordInput.length <= 24) {
+            String pinCode = generatePin();
+            print(pinCode);
+            String userId = await getDocumentIdByUsername(usernameInput);
+
+            DateTime pinTime = DateTime.now();
+
             String salt = await getSaltByUsername(usernameInput);
             String hashedPassword = BCrypt.hashpw(passwordInput, salt);
-            updateUserPasswordByUsername(usernameInput, hashedPassword);
 
-            Future.microtask(() {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => const LoginScreen()),
-              );
-            });
+            String userEmail = await getEmailByUsername(usernameInput);
+            print(userEmail);
+            //TODO ENVIAR MAIL CON PIN DE VERIFICACION
+
+            /* // Configure the SMTP server settings
+                        final smtpServer = SmtpServer('smtp.gmail.com',
+                            username: 'manchiwolf312@gmail.com',
+                            password: 'sasha125',
+                            port: 587);
+
+            // Create the email message
+                        final message = Message()
+                          ..from = Address('manchiwolf312@gmail.com', 'Plateshare')
+                          ..recipients.add(userEmail) // User's email address
+                          ..subject = 'Cambio de contraseña'
+                          ..text = 'PIN: $pinCode'; // Plain text body
+
+                        try {
+                          // Send the email
+                          final sendReport = await send(message, smtpServer);
+                          print('Email sent: ${sendReport.toString()}');
+                        } catch (e) {
+                          print('Error sending email: $e');
+                        } */
+
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => PinCodeScreen(
+                      username: usernameInput,
+                      pin: pinCode,
+                      pinTime: pinTime,
+                      password: hashedPassword)),
+            );
           } else {
             showDialog(
               context: context,
@@ -267,7 +287,7 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                 return AlertDialog(
                   title: const Text('Contraseña insegura'),
                   content: const Text(
-                      'La contraseña debe tener al menos 8 caracteres'),
+                      'La contraseña debe tener al menos 8 caracteres y máximo 24'),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.of(context).pop(),
@@ -328,5 +348,17 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
         },
       );
     }
+  }
+
+  String generatePin() {
+    Random random = Random();
+    String result = '';
+
+    for (int i = 0; i < 4; i++) {
+      int randomNumber = random.nextInt(10);
+      result += randomNumber.toString();
+    }
+
+    return result;
   }
 }
