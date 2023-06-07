@@ -25,6 +25,8 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _password2Controller = TextEditingController();
+  bool _obscureText = true;
+  bool _obscureText2 = true;
 
   @override
   Widget build(BuildContext context) {
@@ -112,11 +114,17 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50.0),
                         ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50.0),
+                          borderSide: BorderSide(
+                              color: AppColors.orangeColor, width: 2),
+                        ),
                         labelText: 'Usuario',
                         filled: true,
                         fillColor: Colors.white,
                         contentPadding:
                             const EdgeInsets.fromLTRB(20, 20, 0, 20),
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
                         prefixIcon: const Icon(Icons.person_outline,
                             color: Colors.black),
                       ),
@@ -128,6 +136,11 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50.0),
                         ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50.0),
+                          borderSide: BorderSide(
+                              color: AppColors.orangeColor, width: 2),
+                        ),
                         labelText: 'Contraseña',
                         filled: true,
                         fillColor: Colors.white,
@@ -135,8 +148,25 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                             const EdgeInsets.fromLTRB(20, 20, 0, 20),
                         prefixIcon:
                             const Icon(Icons.lock_outline, color: Colors.black),
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                        suffixIcon: Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+                          child: IconButton(
+                            icon: Icon(
+                              _obscureText
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Colors.grey,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscureText = !_obscureText;
+                              });
+                            },
+                          ),
+                        ),
                       ),
-                      obscureText: true,
+                      obscureText: _obscureText,
                     ),
                     const SizedBox(height: 20.0),
                     TextField(
@@ -145,6 +175,11 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50.0),
                         ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50.0),
+                          borderSide: BorderSide(
+                              color: AppColors.orangeColor, width: 2),
+                        ),
                         labelText: 'Repite Contraseña',
                         filled: true,
                         fillColor: Colors.white,
@@ -152,8 +187,25 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                             const EdgeInsets.fromLTRB(20, 20, 0, 20),
                         prefixIcon:
                             const Icon(Icons.lock_outline, color: Colors.black),
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                        suffixIcon: Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+                          child: IconButton(
+                            icon: Icon(
+                              _obscureText2
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Colors.grey,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscureText2 = !_obscureText2;
+                              });
+                            },
+                          ),
+                        ),
                       ),
-                      obscureText: true,
+                      obscureText: _obscureText2,
                     ),
                     const SizedBox(height: 40.0),
                     SizedBox(
@@ -249,11 +301,10 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
 
             String userEmail = await getEmailByUsername(usernameInput);
             print(userEmail);
-            //TODO ENVIAR MAIL CON PIN DE VERIFICACION
 
-            await enviarEmail(email: userEmail, pinCode: pinCode);
+            await enviarEmail(
+                email: userEmail, pinCode: pinCode, username: usernameInput);
 
-          
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
@@ -333,33 +384,34 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
     }
   }
 
-  Future enviarEmail({email, pinCode}) async {
-  const service_id = 'service_sq5s1dg';
-  const template_id = 'template_2dt3cai';
-  const user_id = 'n-d2ID0-xzJ6fn7m1';
+  Future enviarEmail({email, pinCode, username}) async {
+    const service_id = 'service_df6jida';
+    const template_id = 'template_2o26bsr';
+    const user_id = 'J0XTNBhNp5LcSKLga';
 
-  var url = Uri.parse('https://api.emailjs.com/api/v1.0/email/send');
-  try {
-    var response = await http.post(url,
-        headers: {
-          'origin': '<http://localhost>',
-          'Content-Type': 'application/json'
-        },
-        body: json.encode({
-          'service_id': service_id,
-          'template_id': template_id,
-          'user_id': user_id,
-          'template_params': {
-            'to_email': email,
-            'pin_code': pinCode,
-          }
-        }));
-    print('Pin enviado');
-    print(response.body);
-  } catch (error) {
-    print('Error al enviar el email');
+    var url = Uri.parse('https://api.emailjs.com/api/v1.0/email/send');
+    try {
+      var response = await http.post(url,
+          headers: {
+            'origin': '<http://localhost>',
+            'Content-Type': 'application/json'
+          },
+          body: json.encode({
+            'service_id': service_id,
+            'template_id': template_id,
+            'user_id': user_id,
+            'template_params': {
+              'username': username,
+              'to_email': email,
+              'pin_code': pinCode,
+            }
+          }));
+      print('Pin enviado');
+      print(response.body);
+    } catch (error) {
+      print('Error al enviar el email');
+    }
   }
-}
 
   String generatePin() {
     Random random = Random();

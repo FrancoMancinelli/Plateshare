@@ -2,6 +2,7 @@ import 'package:bcrypt/bcrypt.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:plateshare/services/firebase_service.dart';
 
 import '../util/AppColors.dart';
@@ -13,7 +14,13 @@ class PinCodeScreen extends StatefulWidget {
   final DateTime pinTime;
   final String password;
 
-  const PinCodeScreen({Key? key, required this.pin, required this.username, required this.pinTime, required this.password}) : super(key: key);
+  const PinCodeScreen(
+      {Key? key,
+      required this.pin,
+      required this.username,
+      required this.pinTime,
+      required this.password})
+      : super(key: key);
 
   @override
   _PinCodeScreenState createState() => _PinCodeScreenState();
@@ -127,12 +134,12 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
                   ),
                   Center(
                     child: Padding(
-                      padding: const EdgeInsets.fromLTRB(30, 25, 30, 0),
+                      padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
                       child: Text(
-                        'Te hemos enviado un correo con un pin de verificación para confirmar el cambio de contraseña. Por favor introdúcelo a continuación',
+                        'Te hemos enviado un correo con un PIN de verificación para confirmar el cambio de contraseña. Por favor introdúcelo a continuación',
                         style: GoogleFonts.acme(
                           textStyle: const TextStyle(
-                            fontSize: 18,
+                            fontSize: 20,
                             color: Colors.white,
                             fontFamily: 'Acme',
                           ),
@@ -142,6 +149,12 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
                     ),
                   ),
                 ],
+              ),
+              Lottie.network(
+                'https://assets6.lottiefiles.com/packages/lf20_e1y24wm2.json',
+                width: 200,
+                height: 200,
+                fit: BoxFit.cover,
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(15, 20, 15, 0),
@@ -330,67 +343,64 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
   }
 
   void validatePin() async {
-  String d1 = _1DigitController.text;
-  String d2 = _2DigitController.text;
-  String d3 = _3DigitController.text;
-  String d4 = _4DigitController.text;
+    String d1 = _1DigitController.text;
+    String d2 = _2DigitController.text;
+    String d3 = _3DigitController.text;
+    String d4 = _4DigitController.text;
 
-  if (d1.isNotEmpty && d2.isNotEmpty && d3.isNotEmpty && d4.isNotEmpty) {
-    DateTime now = DateTime.now();
-    Duration difference = now.difference(widget.pinTime);
-    if (difference.inMinutes < 2) {
-      String pinCompletoInput = d1+d2+d3+d4;
-      if(widget.pin == pinCompletoInput) {
-
-        updateUserPasswordByUsername(widget.username, widget.password);
-         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-                'Contraseña actualizada con éxito'),
-            backgroundColor: Colors.green,
-          ),
-        );
-        Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const LoginScreen()),
-                      );
+    if (d1.isNotEmpty && d2.isNotEmpty && d3.isNotEmpty && d4.isNotEmpty) {
+      DateTime now = DateTime.now();
+      Duration difference = now.difference(widget.pinTime);
+      if (difference.inMinutes < 2) {
+        String pinCompletoInput = d1 + d2 + d3 + d4;
+        if (widget.pin == pinCompletoInput) {
+          updateUserPasswordByUsername(widget.username, widget.password);
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Contraseña actualizada con éxito'),
+              backgroundColor: Colors.green,
+            ),
+          );
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const LoginScreen()),
+          );
+        } else {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('PIN Incorrecto'),
+                content: const Text('El pin introducido es incorrecto'),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('OK'),
+                  ),
+                ],
+              );
+            },
+          );
+        }
       } else {
         showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('PIN Incorrecto'),
-            content: const Text('El pin introducido es incorrecto'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('PIN Caducado'),
+              content: const Text('El tiempo de uso del PIN ha caducado'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
       }
     } else {
       showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('PIN Caducado'),
-            content: const Text('El tiempo de uso del PIN ha caducado'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
-    }
-  } else {
-    showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
@@ -405,9 +415,6 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
           );
         },
       );
+    }
   }
 }
-
-}
-
-
