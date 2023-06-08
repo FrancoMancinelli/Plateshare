@@ -45,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
           String nameData = await getNameByUsername(usernameInput);
           String profilePicData = await getProfilePicByUsername(usernameInput);
 
-          await Future.delayed(Duration(seconds: 3)); // Delay for 5 seconds
+          await Future.delayed(Duration(seconds: 1)); // Delay for 5 seconds
 
           final BuildContext _context = context;
           Future.microtask(() {

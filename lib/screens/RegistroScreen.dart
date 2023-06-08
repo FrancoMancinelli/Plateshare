@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:plateshare/services/firebase_service.dart';
 import 'package:bcrypt/bcrypt.dart';
 
@@ -22,6 +23,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
       TextEditingController();
   bool _obscureText = true;
   bool _obscureText2 = true;
+  bool isImageVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -46,11 +48,13 @@ class _RegistroScreenState extends State<RegistroScreen> {
                   alignment: Alignment.centerRight,
                   child: IconButton(
                     onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const LoginScreen()),
-                      );
+                      if (!isImageVisible) {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const LoginScreen()),
+                        );
+                      }
                     },
                     icon: const Icon(
                       Icons.close,
@@ -240,29 +244,39 @@ class _RegistroScreenState extends State<RegistroScreen> {
                       obscureText: _obscureText2,
                     ),
                     const SizedBox(height: 20.0),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: validateRegiser,
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: const Size(double.infinity, 45.0),
-                          backgroundColor: const Color(0xFFFD9A00),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
+                    Visibility(
+                      visible: !isImageVisible,
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: validateRegiser,
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size(double.infinity, 45.0),
+                            backgroundColor: const Color(0xFFFD9A00),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
                           ),
-                        ),
-                        child: Text(
-                          'Registrar',
-                          style: GoogleFonts.acme(
-                            textStyle: const TextStyle(
-                              fontSize: 28,
-                              color: Colors.white,
-                              fontFamily: 'Acme',
+                          child: Text(
+                            'Registrar',
+                            style: GoogleFonts.acme(
+                              textStyle: const TextStyle(
+                                fontSize: 28,
+                                color: Colors.white,
+                                fontFamily: 'Acme',
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
+                    if (isImageVisible)
+                      Lottie.network(
+                        'https://assets1.lottiefiles.com/packages/lf20_zuyjlvgp.json',
+                        width: 50,
+                        height: 50,
+                        fit: BoxFit.cover,
+                      ),
                     const SizedBox(
                       height: 10,
                     ),
@@ -281,11 +295,13 @@ class _RegistroScreenState extends State<RegistroScreen> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const LoginScreen()),
-                            );
+                            if (!isImageVisible) {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const LoginScreen()),
+                              );
+                            }
                           },
                           child: Text(
                             'Inicia sesión',
@@ -317,7 +333,9 @@ class _RegistroScreenState extends State<RegistroScreen> {
     String usernameInput = _usernameController.text.toLowerCase();
     String passwordInput = _passwordController.text;
     String repeatPasswordInput = _repeatPasswordController.text;
-
+    setState(() {
+      isImageVisible = true;
+    });
     //Compruebo que esten todos los campos rellenos
     if (emailInput.isNotEmpty &&
         nameInput.isNotEmpty &&
@@ -343,6 +361,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                   String hashedPassword = BCrypt.hashpw(passwordInput, salt);
                   addNewUser(emailInput, nameInput, usernameInput,
                       hashedPassword, salt);
+                  await Future.delayed(Duration(seconds: 3));
                   Future.microtask(() {
                     Navigator.pushReplacement(
                       context,
@@ -351,6 +370,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                     );
                   });
                 } else {
+                  await Future.delayed(Duration(seconds: 3));
                   // ignore: use_build_context_synchronously
                   showDialog(
                     context: context,
@@ -367,9 +387,14 @@ class _RegistroScreenState extends State<RegistroScreen> {
                       );
                     },
                   );
+                  setState(() {
+                    isImageVisible = false;
+                  });
                 }
               } else {
-                // ignore: use_build_context_synchronously
+                await Future.delayed(Duration(seconds: 3));
+                // ignore: use_build_context
+                // _synchronously
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
@@ -385,8 +410,12 @@ class _RegistroScreenState extends State<RegistroScreen> {
                     );
                   },
                 );
+                setState(() {
+                  isImageVisible = false;
+                });
               }
             } else {
+              await Future.delayed(Duration(seconds: 3));
               // ignore: use_build_context_synchronously
               showDialog(
                 context: context,
@@ -403,8 +432,12 @@ class _RegistroScreenState extends State<RegistroScreen> {
                   );
                 },
               );
+              setState(() {
+                isImageVisible = false;
+              });
             }
           } else {
+            await Future.delayed(Duration(seconds: 3));
             showDialog(
               context: context,
               builder: (BuildContext context) {
@@ -421,8 +454,12 @@ class _RegistroScreenState extends State<RegistroScreen> {
                 );
               },
             );
+            setState(() {
+              isImageVisible = false;
+            });
           }
         } else {
+          await Future.delayed(Duration(seconds: 3));
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -439,8 +476,12 @@ class _RegistroScreenState extends State<RegistroScreen> {
               );
             },
           );
+          setState(() {
+            isImageVisible = false;
+          });
         }
       } else {
+        await Future.delayed(Duration(seconds: 3));
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -456,6 +497,9 @@ class _RegistroScreenState extends State<RegistroScreen> {
             );
           },
         );
+        setState(() {
+          isImageVisible = false;
+        });
       }
     } else {
       showDialog(
@@ -473,6 +517,9 @@ class _RegistroScreenState extends State<RegistroScreen> {
           );
         },
       );
+      setState(() {
+        isImageVisible = false;
+      });
     }
   }
 }
