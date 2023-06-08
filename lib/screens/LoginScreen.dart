@@ -24,43 +24,69 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _obscureText = true;
   bool isImageVisible = false;
 
- void validateAndAuthenticate() async {
-  String usernameInput = _usernameController.text.toLowerCase();
-  String passwordInput = _passwordController.text;
-        setState(() {
-          isImageVisible = true;
-        });
-  // Si todos los campos estan rellenos
-  if (usernameInput.isNotEmpty && passwordInput.isNotEmpty) {
-    // Compruebo si el usuario introducido existe, de ser así, encrypto la contraseña
-    // y compruebo las credenciales
-    Future<bool> userExist = checkIfUsernameExists(usernameInput);
-    if (await userExist) {
-      String databaseSalt = await getSaltByUsername(usernameInput);
-      String hashedPassword = BCrypt.hashpw(passwordInput, databaseSalt);
-      Future<bool> validCredentials =
-          checkCredentials(usernameInput, hashedPassword);
-      if (await validCredentials) {
-        String emailData = await getEmailByUsername(usernameInput);
-        String nameData = await getNameByUsername(usernameInput);
-        String profilePicData = await getProfilePicByUsername(usernameInput);
+  void validateAndAuthenticate() async {
+    String usernameInput = _usernameController.text.toLowerCase();
+    String passwordInput = _passwordController.text;
+    setState(() {
+      isImageVisible = true;
+    });
+    // Si todos los campos estan rellenos
+    if (usernameInput.isNotEmpty && passwordInput.isNotEmpty) {
+      // Compruebo si el usuario introducido existe, de ser así, encrypto la contraseña
+      // y compruebo las credenciales
+      Future<bool> userExist = checkIfUsernameExists(usernameInput);
+      if (await userExist) {
+        String databaseSalt = await getSaltByUsername(usernameInput);
+        String hashedPassword = BCrypt.hashpw(passwordInput, databaseSalt);
+        Future<bool> validCredentials =
+            checkCredentials(usernameInput, hashedPassword);
+        if (await validCredentials) {
+          String emailData = await getEmailByUsername(usernameInput);
+          String nameData = await getNameByUsername(usernameInput);
+          String profilePicData = await getProfilePicByUsername(usernameInput);
 
-        await Future.delayed(Duration(seconds: 3)); // Delay for 5 seconds
+          await Future.delayed(Duration(seconds: 3)); // Delay for 5 seconds
 
-        final BuildContext _context = context;
-        Future.microtask(() {
-          Navigator.pushReplacement(
-            _context,
-            MaterialPageRoute(
-              builder: (context) => InicioScreen(
-                emailData: emailData,
-                nameData: nameData,
-                usernameData: usernameInput,
-                profilePicData: profilePicData,
+          final BuildContext _context = context;
+          Future.microtask(() {
+            Navigator.pushReplacement(
+              _context,
+              MaterialPageRoute(
+                builder: (context) => InicioScreen(
+                  emailData: emailData,
+                  nameData: nameData,
+                  usernameData: usernameInput,
+                  profilePicData: profilePicData,
+                ),
               ),
+            );
+          });
+        } else {
+          await Future.delayed(Duration(seconds: 3)); // Delay for 5 seconds
+
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('Credenciales invalidas'),
+              content: const Text('El usuario o contraseña son incorrectos'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    setState(() {
+                      isImageVisible = false;
+                    });
+                    Navigator.pop(context);
+                  },
+                  child: const Text('OK.'),
+                ),
+              ],
             ),
           );
-        });
+          setState(() {
+            isImageVisible = false;
+          });
+          return;
+        }
       } else {
         await Future.delayed(Duration(seconds: 3)); // Delay for 5 seconds
 
@@ -88,58 +114,31 @@ class _LoginScreenState extends State<LoginScreen> {
         return;
       }
     } else {
-      await Future.delayed(Duration(seconds: 3)); // Delay for 5 seconds
-
       showDialog(
         context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Credenciales invalidas'),
-          content: const Text('El usuario o contraseña son incorrectos'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                setState(() {
-                  isImageVisible = false;
-                });
-                Navigator.pop(context);
-              },
-              child: const Text('OK.'),
-            ),
-          ],
-        ),
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Campos incompletos'),
+            content: const Text('Rellena todos los campos'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  setState(() {
+                    isImageVisible = false;
+                  });
+                  Navigator.of(context).pop();
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
       );
       setState(() {
         isImageVisible = false;
       });
-      return;
     }
-  } else {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Campos incompletos'),
-          content: const Text('Rellena todos los campos'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                setState(() {
-                  isImageVisible = false;
-                });
-                Navigator.of(context).pop();
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-    setState(() {
-      isImageVisible = false;
-    });
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -256,39 +255,39 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 30.0),
                     Visibility(
-  visible: !isImageVisible,
-  child: SizedBox(
-    width: double.infinity,
-    child: ElevatedButton(
-      onPressed: isImageVisible ? null : validateAndAuthenticate,
-      style: ElevatedButton.styleFrom(
-        minimumSize: const Size(double.infinity, 50.0),
-        backgroundColor: const Color(0xFFFD9A00),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-      ),
-      child: Text(
-        'Iniciar sesión',
-        style: GoogleFonts.acme(
-          textStyle: const TextStyle(
-            fontSize: 28,
-            color: Colors.white,
-            fontFamily: 'Acme',
-          ),
-        ),
-      ),
-    ),
-  ),
-),
-if (isImageVisible)
-  Lottie.network(
-    'https://assets1.lottiefiles.com/packages/lf20_zuyjlvgp.json',
-    width: 50,
-    height: 50,
-    fit: BoxFit.cover,
-  ),
-
+                      visible: !isImageVisible,
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed:
+                              isImageVisible ? null : validateAndAuthenticate,
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size(double.infinity, 50.0),
+                            backgroundColor: const Color(0xFFFD9A00),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                          ),
+                          child: Text(
+                            'Iniciar sesión',
+                            style: GoogleFonts.acme(
+                              textStyle: const TextStyle(
+                                fontSize: 28,
+                                color: Colors.white,
+                                fontFamily: 'Acme',
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    if (isImageVisible)
+                      Lottie.network(
+                        'https://assets1.lottiefiles.com/packages/lf20_zuyjlvgp.json',
+                        width: 50,
+                        height: 50,
+                        fit: BoxFit.cover,
+                      ),
                     const SizedBox(
                       height: 20,
                     ),
@@ -323,7 +322,16 @@ if (isImageVisible)
                       height: 20,
                     ),
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        if (!isImageVisible)
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                  'La autenticación con google aún no esta disponible. Disculpe las molestias'),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                      },
                       child: Image.network(
                         'https://i.imgur.com/h4jfgvd.png',
                       ),
@@ -346,12 +354,14 @@ if (isImageVisible)
                             ),
                             GestureDetector(
                               onTap: () {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const RegistroScreen()),
-                                );
+                                if (!isImageVisible) {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const RegistroScreen()),
+                                  );
+                                }
                               },
                               child: Text(
                                 'Registrate',
@@ -372,12 +382,14 @@ if (isImageVisible)
                           child: Center(
                             child: GestureDetector(
                               onTap: () {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const RecuperarScreen()),
-                                );
+                                if (!isImageVisible) {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const RecuperarScreen()),
+                                  );
+                                }
                               },
                               child: Text(
                                 '¿Olvidaste tu contraseña?',
