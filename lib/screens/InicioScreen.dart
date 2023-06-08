@@ -6,13 +6,13 @@ import 'package:plateshare/pages/NotificationsPage.dart';
 import 'package:plateshare/pages/ProfilePage.dart';
 import 'package:plateshare/pages/RecipesPage.dart';
 import 'package:plateshare/screens/AddRecipeScreen.dart';
-import 'package:plateshare/screens/RecipeFormScreenOne.dart';
 import 'package:plateshare/services/firebase_service.dart';
 import 'package:plateshare/widgets/MyAppBar.dart';
 import 'package:plateshare/widgets/MyDrawer.dart';
 
 import '../util/AppColors.dart';
 import 'LoginScreen.dart';
+import 'RecipeFormScreenOne.dart';
 
 class InicioScreen extends StatefulWidget {
   final String emailData;

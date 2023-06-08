@@ -4,7 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:plateshare/screens/InicioScreen.dart';
-import 'package:plateshare/screens/RecipeFormScreenOne.dart';
 import 'package:plateshare/util/AppColors.dart';
 import 'package:plateshare/widgets/RecipeContainer.dart';
 
@@ -131,7 +130,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                         padding: const EdgeInsets.only(right: 5),
                         child: IconButton(
                           icon: Icon(
-                            Icons.close,
+                            Icons.delete_forever_outlined,
                             color: Colors.white,
                             size: 30,
                           ),

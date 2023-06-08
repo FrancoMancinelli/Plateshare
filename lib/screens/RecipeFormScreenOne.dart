@@ -31,33 +31,33 @@ class RecipeFormScreenOne extends StatefulWidget {
 
 class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
   List<List<String>> buttonTexts = [
-    ['Vegano', 'Gluten free', 'Sin lactosa', 'Vegetariano'],
-    ['Ocasional', 'Infantil', 'Rápido', 'Salsas'],
-    ['Bebidas', 'Picante', 'Económica', 'Agridulce'],
-    ['Saludable', 'Proteico', 'Postre', 'Fríos'],
-    ['Caliente', 'Italiana', 'Asiática', 'Mexicana'],
-    ['Festiva', 'Tradicional', 'Snack', 'Fácil'],
+    ['Vegano', 'Ocasional', 'Bebidas', 'Saludable', 'Caliente', 'Festiva'],
+    ['Gluten free', 'Infantil', 'Fríos', 'Proteico', 'Italiana', 'Tradicional'],
+    ['Sin lactosa', 'Rápido', 'Económica', 'Postre', 'Asiática', 'Snack'],
+    ['Vegetariano', 'Salsas', 'Agridulce', 'Picante', 'Mexicana', 'Fácil'],
   ];
 
   List<List<bool>> buttonStates = List.generate(
-    6,
-    (rowIndex) => List.generate(4, (colIndex) => false),
+    4,
+    (rowIndex) => List.generate(6, (colIndex) => false),
   );
 
   List<String> getSelectedButtonValues() {
-  List<String> selectedValues = [];
+    List<String> selectedValues = [];
 
-  for (int rowIndex = 0; rowIndex < buttonStates.length; rowIndex++) {
-    for (int colIndex = 0; colIndex < buttonStates[rowIndex].length; colIndex++) {
-      if (buttonStates[rowIndex][colIndex]) {
-        String value = buttonTexts[rowIndex][colIndex];
-        selectedValues.add(value);
+    for (int rowIndex = 0; rowIndex < buttonStates.length; rowIndex++) {
+      for (int colIndex = 0;
+          colIndex < buttonStates[rowIndex].length;
+          colIndex++) {
+        if (buttonStates[rowIndex][colIndex]) {
+          String value = buttonTexts[rowIndex][colIndex];
+          selectedValues.add(value);
+        }
       }
     }
-  }
 
-  return selectedValues;
-}
+    return selectedValues;
+  }
 
   void updateButtonState(int rowIndex, int colIndex) {
     setState(() {
@@ -99,12 +99,11 @@ class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
       case 3:
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text(
-                'Selecciona primero una imagen para poder continuar'),
+            content: Text('Selecciona primero una imagen para poder continuar'),
             backgroundColor: Colors.red,
           ),
         );
-        break;      
+        break;
     }
   }
 
@@ -114,7 +113,6 @@ class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
     });
   }
 
-
   final TextEditingController _tituloController = TextEditingController();
   double _sliderValue = 45.0;
   XFile? imageRecipe = XFile('');
@@ -123,175 +121,172 @@ class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Container(
-              color: AppColors.primaryColor,
-              child: SafeArea(
-                child: Container(
-                  width: screenSize.width,
-                  height: screenSize.height,
-                  decoration: const BoxDecoration(
-                    color: AppColors.accentColor,
-                  ),
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 45,
-                        width: screenSize.width,
-                        color: AppColors.primaryColor,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: Stack(
-                                alignment: Alignment.centerLeft,
-                                children: [
-                                  IconButton(
-                                    onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) => AlertDialog(
-                                          title: const Text('Confirmación'),
-                                          content: const Text(
-                                              '¿Estás seguro que deseas abandonar el proceso? Si abandonas, el progreso no se guardará'),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(
-                                                    context); // Close the dialog
-                                              },
-                                              child: const Text(
-                                                'Continuar',
-                                                style: TextStyle(
-                                                    color: Colors.blueGrey),
-                                              ),
-                                            ),
-                                            TextButton(
-                                              onPressed: () {
-                                                // set all selection states to false
-                                                setState(() {
-                                                  buttonStates = List.generate(
-                                                      6,
-                                                      (index) => List.generate(
-                                                          4, (index) => false));
-                                                });
-                                                Navigator.pushReplacement(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        InicioScreen(
-                                                      emailData:
-                                                          widget.emailData,
-                                                      nameData: widget.nameData,
-                                                      profilePicData:
-                                                          widget.profilePicData,
-                                                      usernameData:
-                                                          widget.usernameData,
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                              child: const Text(
-                                                'Abandonar',
-                                                style: TextStyle(
-                                                    color: Colors.red),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                    icon: const Icon(
-                                      Icons.close,
-                                      color: Colors.white,
-                                      size: 20,
-                                    ),
-                                  ),
-                                  Positioned.fill(
-                                    child: Align(
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        'Sube una receta',
-                                        textAlign: TextAlign.center,
-                                        style: GoogleFonts.acme(
-                                          textStyle: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 24,
-                                            fontFamily: 'Acme',
-                                          ),
-                                        ),
+      body: SafeArea(
+        child: Container(
+          width: screenSize.width,
+          height: screenSize.height,
+          decoration: const BoxDecoration(
+            color: AppColors.accentColor,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    height: 50,
+                    width: screenSize.width,
+                    color: AppColors.primaryColor,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 5),
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.arrow_back_ios,
+                              color: AppColors.primaryColor,
+                              size: 20,
+                            ),
+                            onPressed: () {},
+                          ),
+                        ),
+                        Text(
+                          'Sube una receta',
+                          style: GoogleFonts.acme(
+                            textStyle: const TextStyle(
+                              fontSize: 24,
+                              color: Colors.white,
+                              fontFamily: 'Acme',
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 5),
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.close,
+                              color: Colors.white,
+                              size: 25,
+                            ),
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: const Text('Confirmación'),
+                                  content: const Text(
+                                      '¿Estás seguro que deseas abandonar el proceso? Si abandonas, el progreso no se guardará'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(
+                                            context); // Close the dialog
+                                      },
+                                      child: const Text(
+                                        'Continuar',
+                                        style:
+                                            TextStyle(color: Colors.blueGrey),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(10, 5, 0, 0),
-                                child: Row(
-                                  children: [
-                                    RichText(
-                                      text: TextSpan(
-                                        children: [
-                                          TextSpan(
-                                            text: 'Imagen',
-                                            style: GoogleFonts.acme(
-                                              textStyle: const TextStyle(
-                                                color: AppColors.brownTextColor,
-                                                fontSize: 16,
-                                                fontFamily: 'Acme',
-                                              ),
+                                    TextButton(
+                                      onPressed: () {
+                                        // set all selection states to false
+                                        setState(() {
+                                          buttonStates = List.generate(
+                                              4,
+                                              (index) => List.generate(
+                                                  6, (index) => false));
+                                        });
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => InicioScreen(
+                                              emailData: widget.emailData,
+                                              nameData: widget.nameData,
+                                              profilePicData:
+                                                  widget.profilePicData,
+                                              usernameData: widget.usernameData,
                                             ),
                                           ),
-                                          const TextSpan(
-                                            text: '*',
-                                            style: TextStyle(
-                                              color: Color(
-                                                  0xFFFF6600), // Set your desired color for the '*'
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 16,
-                                            ),
-                                          ),
-                                        ],
+                                        );
+                                      },
+                                      child: const Text(
+                                        'Abandonar',
+                                        style: TextStyle(color: Colors.red),
                                       ),
                                     ),
                                   ],
                                 ),
-                              ),
-                            ],
+                              );
+                            },
                           ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(10, 5, 0, 0),
+                        child: Row(
+                          children: [
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: 'Imagen',
+                                    style: GoogleFonts.acme(
+                                      textStyle: const TextStyle(
+                                        color: AppColors.brownTextColor,
+                                        fontSize: 16,
+                                        fontFamily: 'Acme',
+                                      ),
+                                    ),
+                                  ),
+                                  const TextSpan(
+                                    text: '*',
+                                    style: TextStyle(
+                                      color: Color(
+                                          0xFFFF6600), // Set your desired color for the '*'
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       Row(
                         children: [
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.fromLTRB(50, 5, 50, 0),
+                              padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
                               child: GestureDetector(
-                                //https://www.google.com/search?q=how+to+load+a+image+in+firestore+using+flutter&rlz=1C1CHBF_esES1059&oq=how+to+load+a+image+in+firestore+using+&aqs=chrome.1.69i57j33i10i160l5.20310j0j7&sourceid=chrome&ie=UTF-8#kpvalbx=_8L1zZIydJO2rkdUP_ZqwwAI_34
                                 onTap: () async {
                                   ImagePicker imagePicker = ImagePicker();
-                                  imageRecipe = await imagePicker.pickImage(source: ImageSource.gallery);
+                                  imageRecipe = await imagePicker.pickImage(
+                                      source: ImageSource.gallery);
                                 },
-                                child: Image.network(
-                                  'https://i.imgur.com/zjmuaBZ.png',
-                                  fit: BoxFit.contain,
+                                child: Container(
+                                  width: 160, // Set the desired width
+                                  height: 160, // Set the desired height
+                                  child: Image.network(
+                                    'https://i.imgur.com/zjmuaBZ.png',
+                                    fit: BoxFit.contain,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ],
                       ),
+
                       Padding(
                         padding: const EdgeInsets.fromLTRB(10, 20, 0, 0),
                         child: Row(
@@ -312,8 +307,7 @@ class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
                                   const TextSpan(
                                     text: '*',
                                     style: TextStyle(
-                                      color: Color(
-                                          0xFFFF6600), // Set your desired color for the '*'
+                                      color: Color(0xFFFF6600),
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16,
                                     ),
@@ -409,15 +403,22 @@ class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
                           ],
                         ),
                       ),
-                      Slider(
-                        value: _sliderValue,
-                        divisions: 35,
-                        min: 5.0,
-                        max: 180.0,
-                        onChanged: _updateSliderValue,
-                        activeColor: AppColors.orangeColor,
-                        inactiveColor: const Color(0xFFCCDDD7),
+                      SliderTheme(
+                        data: SliderTheme.of(context).copyWith(
+                          trackHeight: 4.0,
+                          tickMarkShape: SliderTickMarkShape.noTickMark,
+                        ),
+                        child: Slider(
+                          value: _sliderValue,
+                          divisions: 35,
+                          min: 5.0,
+                          max: 180.0,
+                          onChanged: _updateSliderValue,
+                          activeColor: AppColors.orangeColor,
+                          inactiveColor: const Color(0xFFCCDDD7),
+                        ),
                       ),
+
                       Padding(
                         padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
                         child: Row(
@@ -426,7 +427,7 @@ class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
                               text: TextSpan(
                                 children: [
                                   TextSpan(
-                                    text: 'Categorías',
+                                    text: 'Categorías (máx 5)',
                                     style: GoogleFonts.acme(
                                       textStyle: const TextStyle(
                                         color: AppColors.brownTextColor,
@@ -455,11 +456,11 @@ class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
                           scrollDirection: Axis.horizontal,
                           child: Column(
                             children: List.generate(
-                              6,
+                              4, // Number of rows
                               (rowIndex) => Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: List.generate(
-                                  4,
+                                  6, // Number of columns
                                   (colIndex) => Container(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 3.0),
@@ -502,6 +503,7 @@ class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
                           ),
                         ),
                       ),
+
                       Align(
                         alignment: Alignment.bottomCenter,
                         child: Padding(
@@ -535,37 +537,45 @@ class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
                                     child: ElevatedButton(
                                       onPressed: () {
                                         //Check the user insert a image
-                                        if (imageRecipe != null && imageRecipe!.path.isNotEmpty) {
-                                        // Check if _tituloController is not null or empty
-                                        if (_tituloController.text.isNotEmpty) {
-                                          // Check if at least one button in buttonStates is true
-                                          bool isButtonSelected =
-                                              buttonStates.any((row) =>
-                                                  row.any((col) => col));
-                                          if (isButtonSelected) {
-                                            // Navigate to the screen where you want to add a recipe
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    RecipeFormScreenTwo(
-                                                  emailData: widget.emailData,
-                                                  nameData: widget.nameData,
-                                                  profilePicData: widget.profilePicData,
-                                                  usernameData: widget.usernameData,
-                                                  tituloRecepie: _tituloController.value.text,
-                                                  tiempoRecepie: _sliderValue.toInt(),
-                                                  categoriasRecepie: getSelectedButtonValues(),
-                                                  imageRecipe: imageRecipe,
+                                        if (imageRecipe != null &&
+                                            imageRecipe!.path.isNotEmpty) {
+                                          // Check if _tituloController is not null or empty
+                                          if (_tituloController
+                                              .text.isNotEmpty) {
+                                            // Check if at least one button in buttonStates is true
+                                            bool isButtonSelected =
+                                                buttonStates.any((row) =>
+                                                    row.any((col) => col));
+                                            if (isButtonSelected) {
+                                              // Navigate to the screen where you want to add a recipe
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      RecipeFormScreenTwo(
+                                                    emailData: widget.emailData,
+                                                    nameData: widget.nameData,
+                                                    profilePicData:
+                                                        widget.profilePicData,
+                                                    usernameData:
+                                                        widget.usernameData,
+                                                    tituloRecepie:
+                                                        _tituloController
+                                                            .value.text,
+                                                    tiempoRecepie:
+                                                        _sliderValue.toInt(),
+                                                    categoriasRecepie:
+                                                        getSelectedButtonValues(),
+                                                    imageRecipe: imageRecipe,
+                                                  ),
                                                 ),
-                                              ),
-                                            );
+                                              );
+                                            } else {
+                                              showRequired(2);
+                                            }
                                           } else {
-                                            showRequired(2);
+                                            showRequired(1);
                                           }
-                                        } else {
-                                          showRequired(1);
-                                        }
                                         } else {
                                           showRequired(3);
                                         }
@@ -595,12 +605,13 @@ class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
                           ),
                         ),
                       ),
+                      //END
                     ],
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

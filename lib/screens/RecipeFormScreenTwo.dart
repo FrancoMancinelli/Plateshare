@@ -127,108 +127,108 @@ class _RecipeFormScreenTwoState extends State<RecipeFormScreenTwo> {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Container(
-              color: AppColors.primaryColor,
-              child: SafeArea(
-                child: Container(
-                  width: screenSize.width,
-                  height: screenSize.height,
-                  decoration: const BoxDecoration(
-                    color: AppColors.accentColor,
-                  ),
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 45,
-                        width: screenSize.width,
-                        color: AppColors.primaryColor,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: Stack(
-                                alignment: Alignment.centerLeft,
-                                children: [
-                                  IconButton(
-                                    onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) => AlertDialog(
-                                          title: const Text('Confirmación'),
-                                          content: const Text(
-                                              '¿Estás seguro que deseas abandonar el proceso? Si abandonas, el progreso no se guardará'),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(
-                                                    context); // Close the dialog
-                                              },
-                                              child: const Text(
-                                                'Continuar',
-                                                style: TextStyle(
-                                                    color: Colors.blueGrey),
-                                              ),
+    body: SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Container(
+            color: AppColors.primaryColor,
+            child: SafeArea(
+              child: Container(
+                width: screenSize.width,
+                height: screenSize.height,
+                decoration: const BoxDecoration(
+                  color: AppColors.accentColor,
+                ),
+                child: Column(
+                  children: [
+                    Container(
+                      height: 45,
+                      width: screenSize.width,
+                      color: AppColors.primaryColor,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Stack(
+                              alignment: Alignment.centerRight, // Updated alignment to centerRight
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                        title: const Text('Confirmación'),
+                                        content: const Text(
+                                            '¿Estás seguro que deseas abandonar el proceso? Si abandonas, el progreso no se guardará'),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(
+                                                  context); // Close the dialog
+                                            },
+                                            child: const Text(
+                                              'Continuar',
+                                              style: TextStyle(
+                                                  color: Colors.blueGrey),
                                             ),
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pushReplacement(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        InicioScreen(
-                                                      emailData:
-                                                          widget.emailData,
-                                                      nameData: widget.nameData,
-                                                      profilePicData:
-                                                          widget.profilePicData,
-                                                      usernameData:
-                                                          widget.usernameData,
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                              child: const Text(
-                                                'Abandonar',
-                                                style: TextStyle(
-                                                    color: Colors.red),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                    icon: const Icon(
-                                      Icons.close,
-                                      color: Colors.white,
-                                      size: 20,
-                                    ),
-                                  ),
-                                  Positioned.fill(
-                                    child: Align(
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        'Sube una receta',
-                                        textAlign: TextAlign.center,
-                                        style: GoogleFonts.acme(
-                                          textStyle: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 24,
-                                            fontFamily: 'Acme',
                                           ),
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.pushReplacement(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      InicioScreen(
+                                                    emailData:
+                                                        widget.emailData,
+                                                    nameData: widget.nameData,
+                                                    profilePicData:
+                                                        widget.profilePicData,
+                                                    usernameData:
+                                                        widget.usernameData,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            child: const Text(
+                                              'Abandonar',
+                                              style: TextStyle(
+                                                  color: Colors.red),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                  icon: const Icon(
+                                    Icons.close,
+                                    color: Colors.white,
+                                    size: 20,
+                                  ),
+                                ),
+                                Positioned.fill(
+                                  child: Align(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      'Sube una receta',
+                                      textAlign: TextAlign.center,
+                                      style: GoogleFonts.acme(
+                                        textStyle: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 24,
+                                          fontFamily: 'Acme',
                                         ),
                                       ),
                                     ),
                                   ),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
                       ),
+                    ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: ClipRRect(
@@ -533,7 +533,7 @@ class _RecipeFormScreenTwoState extends State<RecipeFormScreenTwo> {
                               ),
                               const SizedBox(height: 20),
                               Container(
-                                height: 411,
+                                height: 300,
                                 child: ListView.builder(
                                   shrinkWrap: true,
                                   itemCount: texts.length,
@@ -594,134 +594,132 @@ class _RecipeFormScreenTwoState extends State<RecipeFormScreenTwo> {
                                   },
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 24.0),
+                               Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 24.0),
+                                  child: Text(
+                                    'Paso 2 de 3',
+                                    style: GoogleFonts.acme(
+                                      textStyle: const TextStyle(
+                                        color: Color(0xFF80684C),
+                                        fontSize: 15,
+                                        fontFamily: 'Acme',
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 5, 20, 0),
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.pop(
+                                          context); // Close the current screen
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(100),
+                                      ),
+                                    ),
                                     child: Text(
-                                      'Paso 2 de 3',
+                                      'Volver',
                                       style: GoogleFonts.acme(
                                         textStyle: const TextStyle(
-                                          color: Color(0xFF80684C),
-                                          fontSize: 15,
+                                          color: AppColors.brownTextColor,
+                                          fontSize: 16,
                                           fontFamily: 'Acme',
                                         ),
                                       ),
                                     ),
                                   ),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(0, 5, 20, 0),
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.pop(
-                                            context); // Close the current screen
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.white,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(100),
-                                        ),
-                                      ),
-                                      child: Text(
-                                        'Volver',
-                                        style: GoogleFonts.acme(
-                                          textStyle: const TextStyle(
-                                            color: AppColors.brownTextColor,
-                                            fontSize: 16,
-                                            fontFamily: 'Acme',
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(0, 5, 20, 0),
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        if (_racionesController
-                                            .text.isNotEmpty) {
-                                          if (int.parse(_racionesController.text) > 0 && int.parse(_racionesController.text) <= 100) {
-                                            if (texts.length >= 2) {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      RecipeFormScreenThree(
-                                                    emailData: widget.emailData,
-                                                    nameData: widget.nameData,
-                                                    profilePicData:
-                                                        widget.profilePicData,
-                                                    usernameData:
-                                                        widget.usernameData,
-                                                    tituloRecepie:
-                                                        widget.tituloRecepie,
-                                                    tiempoRecepie:
-                                                        widget.tiempoRecepie,
-                                                    categoriasRecepie: widget
-                                                        .categoriasRecepie,
-                                                    racionesRecepie:
-                                                        _racionesController
-                                                            .value.text,
-                                                    ingredientesRecepie: texts,
-                                                    imageRecipe:
-                                                        widget.imageRecipe,
-                                                  ),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 5, 20, 0),
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      if (_racionesController
+                                          .text.isNotEmpty) {
+                                        if (int.parse(_racionesController.text) > 0 && int.parse(_racionesController.text) <= 100) {
+                                          if (texts.length >= 2) {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    RecipeFormScreenThree(
+                                                  emailData: widget.emailData,
+                                                  nameData: widget.nameData,
+                                                  profilePicData:
+                                                      widget.profilePicData,
+                                                  usernameData:
+                                                      widget.usernameData,
+                                                  tituloRecepie:
+                                                      widget.tituloRecepie,
+                                                  tiempoRecepie:
+                                                      widget.tiempoRecepie,
+                                                  categoriasRecepie: widget
+                                                      .categoriasRecepie,
+                                                  racionesRecepie:
+                                                      _racionesController
+                                                          .value.text,
+                                                  ingredientesRecepie: texts,
+                                                  imageRecipe:
+                                                      widget.imageRecipe,
                                                 ),
-                                              );
-                                            } else {
-                                              showRequired(2);
-                                            }
+                                              ),
+                                            );
                                           } else {
-                                            showRequired(4);
+                                            showRequired(2);
                                           }
                                         } else {
-                                          showRequired(1);
+                                          showRequired(4);
                                         }
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.orange,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(100),
-                                        ),
+                                      } else {
+                                        showRequired(1);
+                                      }
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.orange,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(100),
                                       ),
-                                      child: Text(
-                                        'Continuar',
-                                        style: GoogleFonts.acme(
-                                          textStyle: const TextStyle(
-                                            color: AppColors.whiteColor,
-                                            fontSize: 16,
-                                            fontFamily: 'Acme',
-                                          ),
+                                    ),
+                                    child: Text(
+                                      'Continuar',
+                                      style: GoogleFonts.acme(
+                                        textStyle: const TextStyle(
+                                          color: AppColors.whiteColor,
+                                          fontSize: 16,
+                                          fontFamily: 'Acme',
                                         ),
                                       ),
                                     ),
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
                             ],
                           ),
                         ),
                       ),
+                     
                     ],
                   ),
                 ),
