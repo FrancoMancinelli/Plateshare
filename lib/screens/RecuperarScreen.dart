@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:lottie/lottie.dart';
 
 import 'package:plateshare/services/firebase_service.dart';
 
@@ -27,6 +28,7 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
   final TextEditingController _password2Controller = TextEditingController();
   bool _obscureText = true;
   bool _obscureText2 = true;
+  bool isImageVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -51,11 +53,13 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                   alignment: Alignment.centerRight,
                   child: IconButton(
                     onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const LoginScreen()),
-                      );
+                      if (!isImageVisible) {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const LoginScreen()),
+                        );
+                      }
                     },
                     icon: const Icon(
                       Icons.close,
@@ -208,39 +212,51 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                       obscureText: _obscureText2,
                     ),
                     const SizedBox(height: 40.0),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: validateFields,
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: const Size(double.infinity, 50.0),
-                          backgroundColor: AppColors.orangeColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
+                    Visibility(
+                      visible: !isImageVisible,
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: validateFields,
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size(double.infinity, 50.0),
+                            backgroundColor: AppColors.orangeColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
                           ),
-                        ),
-                        child: Text(
-                          'Continuar',
-                          style: GoogleFonts.acme(
-                            textStyle: const TextStyle(
-                              fontSize: 28,
-                              color: Colors.white,
-                              fontFamily: 'Acme',
+                          child: Text(
+                            'Continuar',
+                            style: GoogleFonts.acme(
+                              textStyle: const TextStyle(
+                                fontSize: 28,
+                                color: Colors.white,
+                                fontFamily: 'Acme',
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
+                    if (isImageVisible)
+                      Lottie.network(
+                        'https://assets1.lottiefiles.com/packages/lf20_zuyjlvgp.json',
+                        width: 50,
+                        height: 50,
+                        fit: BoxFit.cover,
+                      ),
                     const SizedBox(height: 20.0),
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const LoginScreen()),
-                          );
+                          if (!isImageVisible) {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const LoginScreen()),
+                            );
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size(double.infinity, 50.0),
@@ -278,7 +294,9 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
     String usernameInput = _usernameController.text.toLowerCase();
     String passwordInput = _passwordController.text;
     String repeatPasswordInput = _password2Controller.text;
-
+    setState(() {
+      isImageVisible = true;
+    });
     // Si estan todos los campos rellenos
     if (usernameInput.isNotEmpty &&
         passwordInput.isNotEmpty &&
@@ -305,6 +323,8 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
             await enviarEmail(
                 email: userEmail, pinCode: pinCode, username: usernameInput);
 
+            await Future.delayed(Duration(seconds: 3));
+
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
@@ -315,6 +335,8 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                       password: hashedPassword)),
             );
           } else {
+            await Future.delayed(Duration(seconds: 3));
+
             showDialog(
               context: context,
               builder: (BuildContext context) {
@@ -331,8 +353,13 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                 );
               },
             );
+            setState(() {
+              isImageVisible = false;
+            });
           }
         } else {
+          await Future.delayed(Duration(seconds: 3));
+
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -348,8 +375,13 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
               );
             },
           );
+          setState(() {
+            isImageVisible = false;
+          });
         }
       } else {
+        await Future.delayed(Duration(seconds: 3));
+
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
@@ -363,6 +395,9 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
             ],
           ),
         );
+        setState(() {
+          isImageVisible = false;
+        });
         return;
       }
     } else {
@@ -381,6 +416,9 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
           );
         },
       );
+      setState(() {
+        isImageVisible = false;
+      });
     }
   }
 
