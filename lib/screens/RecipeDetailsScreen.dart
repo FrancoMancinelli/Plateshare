@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plateshare/models/Ingredient.dart';
+import 'package:plateshare/screens/UserProfileScreen.dart';
 import 'package:plateshare/util/AppColors.dart';
 import 'package:plateshare/widgets/IngredientContainer.dart';
 import 'package:plateshare/widgets/InstructionsContainer.dart';
@@ -71,7 +72,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
   int amountLikes = 0;
   bool isTheUserTheOwner = false;
   List<Map<String, dynamic>> comments = [];
-final GlobalKey<RecipeCommentListState> commentListKey =
+  final GlobalKey<RecipeCommentListState> commentListKey =
       GlobalKey<RecipeCommentListState>();
 
   @override
@@ -83,14 +84,14 @@ final GlobalKey<RecipeCommentListState> commentListKey =
     refreshComments();
   }
 
-void refreshComments() async {
-  List<Map<String, dynamic>> updatedComments = await getRecipeComments(widget.recipeID);
-  setState(() {
-    comments = updatedComments;
-  });
-  commentListKey.currentState?.updateComments(comments);
-}
-
+  void refreshComments() async {
+    List<Map<String, dynamic>> updatedComments =
+        await getRecipeComments(widget.recipeID);
+    setState(() {
+      comments = updatedComments;
+    });
+    commentListKey.currentState?.updateComments(comments);
+  }
 
   Future<void> checkOwner() async {
     final ownerId = await getDocumentIdByUsername(widget.ownerUsername);
@@ -293,18 +294,29 @@ void refreshComments() async {
                           padding: EdgeInsets.symmetric(horizontal: 8),
                           child: Row(
                             children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Colors.black,
-                                    width: 1.5,
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => UserProfileScreen(
+                                          ownerUsername: widget.ownerUsername),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.5,
+                                    ),
                                   ),
-                                ),
-                                child: CircleAvatar(
-                                  radius: 17.5,
-                                  backgroundImage:
-                                      NetworkImage(widget.ownerImage),
+                                  child: CircleAvatar(
+                                    radius: 17.5,
+                                    backgroundImage:
+                                        NetworkImage(widget.ownerImage),
+                                  ),
                                 ),
                               ),
                               SizedBox(width: 5),
@@ -683,9 +695,9 @@ void refreshComments() async {
                           ],
                         ),
                         RecipeCommentList(
-  key: commentListKey,
-  comments: comments,
-),
+                          key: commentListKey,
+                          comments: comments,
+                        ),
 
                         //END
                       ],

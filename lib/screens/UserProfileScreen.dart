@@ -14,17 +14,11 @@ import 'package:http/http.dart' as http;
 import '../util/AppColors.dart';
 
 class UserProfileScreen extends StatefulWidget {
-  final String emailData;
-  final String nameData;
-  final String usernameData;
-  final String profilePicData;
+  final String ownerUsername;
 
   const UserProfileScreen({
-    Key? key,
-    required this.emailData,
-    required this.nameData,
-    required this.usernameData,
-    required this.profilePicData,
+    Key? key, required this.ownerUsername
+
   }) : super(key: key);
 
   @override
@@ -59,7 +53,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   Expanded(
                     child: Center(
                       child: Text(
-                        '@${widget.usernameData}',
+                        '@${widget.ownerUsername}',
                         style: GoogleFonts.acme(
                           textStyle: const TextStyle(
                             color: AppColors.whiteColor,
