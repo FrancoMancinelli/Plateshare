@@ -351,11 +351,11 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                                            recipeCount: recipeCount,
                                            recipesIDs: recipesIDs,
 
-                                           currentUser_email: widget.userEmail,
-                                           currentUser_image: widget.userImage,
-                                           currentUser_name: widget.userName,
-                                           currentUser_userId: widget.userId,
-                                           currentUser_username: widget.userUsername,
+                                           currentUseremail: widget.userEmail,
+                                           currentUserimage: widget.userImage,
+                                           currentUsername: widget.userName,
+                                           currentUseruserId: widget.userId,
+                                           currentUserusername: widget.userUsername,
                                            ),
                                     ),
                                   );

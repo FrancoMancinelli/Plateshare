@@ -28,11 +28,11 @@ class UserProfileScreen extends StatefulWidget {
   final List<String> recipesIDs;
   final List<dynamic> likedRecipesIDs;
 
-  final String currentUser_username;
-  final String currentUser_userId;
-  final String currentUser_name;
-  final String currentUser_email;
-  final String currentUser_image;
+  final String currentUserusername;
+  final String currentUseruserId;
+  final String currentUsername;
+  final String currentUseremail;
+  final String currentUserimage;
 
   const UserProfileScreen(
       {Key? key,
@@ -46,11 +46,11 @@ class UserProfileScreen extends StatefulWidget {
       required this.ownerId,
       required this.recipesIDs,
       required this.likedRecipesIDs,
-      required this.currentUser_username,
-      required this.currentUser_userId,
-      required this.currentUser_name,
-      required this.currentUser_email,
-      required this.currentUser_image})
+      required this.currentUserusername,
+      required this.currentUseruserId,
+      required this.currentUsername,
+      required this.currentUseremail,
+      required this.currentUserimage})
       : super(key: key);
 
   @override
@@ -75,14 +75,25 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       if (buttonText == 'Seguir') {
         buttonText = 'Dejar de seguir';
         buttonColor = AppColors.orangeColor;
-        addFollower(widget.ownerId, widget.currentUser_userId);
-        addMyFollows(widget.currentUser_userId, widget.ownerId);
-        addNewNotification(widget.ownerId, '${widget.currentUser_name} te ha comenzado a seguir', 2, widget.currentUser_image);
+        addFollower(widget.ownerId, widget.currentUseruserId);
+        addMyFollows(widget.currentUseruserId, widget.ownerId);
+        addNewNotification(
+          widget.ownerId,
+          '${widget.currentUsername} te ha comenzado a seguir',
+          2,
+          widget.currentUserimage,
+        );
+
+        // Update the 'followers' value in the 'data' list
+        data[1]['count'] = (widget.followers).toString();
       } else {
         buttonText = 'Seguir';
         buttonColor = AppColors.primaryColor;
-        removeFollower(widget.ownerId, widget.currentUser_userId);
-        removeMyFollows(widget.currentUser_userId, widget.ownerId);
+        removeFollower(widget.ownerId, widget.currentUseruserId);
+        removeMyFollows(widget.currentUseruserId, widget.ownerId);
+
+        // Update the 'followers' value in the 'data' list
+        data[1]['count'] = (widget.followers - 1).toString();
       }
     });
   }
@@ -107,16 +118,20 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   void initState() {
     super.initState();
     getProfileData();
-    
   }
 
   Future<void> getProfileData() async {
-    final isFollowed = await checkIfFollowsExist(widget.currentUser_userId, widget.ownerId);
+    final isFollowed =
+        await checkIfFollowsExist(widget.currentUseruserId, widget.ownerId);
     setState(() {
-      data = generateDataList(widget.recipeCount, widget.followers, widget.follows);
-      if(isFollowed) {
+      if (isFollowed) {
         buttonText = 'Dejar de seguir';
         buttonColor = AppColors.orangeColor;
+        data = generateDataList(
+            widget.recipeCount, widget.followers, widget.follows);
+      } else {
+        data = generateDataList(
+            widget.recipeCount, widget.followers - 1, widget.follows);
       }
     });
   }
@@ -185,7 +200,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           ),
                         ),
                       ),
-                      if (widget.currentUser_userId != widget.ownerId)
+                      if (widget.currentUseruserId != widget.ownerId)
                         ElevatedButton(
                           onPressed: changeButtonProperties,
                           style: ButtonStyle(
@@ -306,22 +321,22 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         children: [
                           if (flag == 1)
                             MyRecipesContainer(
-                              emailData: widget.currentUser_email,
-                              nameData: widget.currentUser_name,
-                              profilePicData: widget.currentUser_image,
+                              emailData: widget.currentUseremail,
+                              nameData: widget.currentUsername,
+                              profilePicData: widget.currentUserimage,
                               recipesIDs: widget.recipesIDs,
-                              userId: widget.currentUser_userId,
-                              usernameData: widget.currentUser_username,
+                              userId: widget.currentUseruserId,
+                              usernameData: widget.currentUserusername,
                               ownerId: widget.ownerId,
                             ),
                           if (flag == 2)
                             MyFavoritesContainer(
-                              emailData: widget.currentUser_email,
-                              nameData: widget.currentUser_name,
-                              profilePicData: widget.currentUser_image,
+                              emailData: widget.currentUseremail,
+                              nameData: widget.currentUsername,
+                              profilePicData: widget.currentUserimage,
                               likedRecipesIDs: widget.likedRecipesIDs,
-                              userId: widget.currentUser_userId,
-                              usernameData: widget.currentUser_username,
+                              userId: widget.currentUseruserId,
+                              usernameData: widget.currentUserusername,
                               ownerId: widget.ownerId,
                             ),
                         ],
