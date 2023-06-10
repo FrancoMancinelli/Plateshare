@@ -175,30 +175,33 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           ),
                         ),
                       ),
-
-                      ElevatedButton(
-                        onPressed: changeButtonProperties,
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all<Color>(buttonColor),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0),
+                      if (widget.currentUser_userId != widget.ownerId)
+                        ElevatedButton(
+                          onPressed: changeButtonProperties,
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all<Color>(buttonColor),
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                              ),
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(25, 10, 25, 10),
+                            child: Text(
+                              buttonText,
+                              style: GoogleFonts.acme(
+                                textStyle: const TextStyle(
+                                  fontSize: 20,
+                                  color: AppColors.whiteColor,
+                                  fontFamily: 'Acme',
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(25, 12, 25, 12),
-                          child: Text(
-                            buttonText,
-                            style: TextStyle(
-                              fontSize: 18.0,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
 
                       Padding(
                         padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
