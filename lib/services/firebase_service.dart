@@ -897,5 +897,78 @@ Future<void> updateProfilePic(String userId, String newProfilePic) async {
   }
 }
 
+Future<void> addFollower(String userId, String followerId) async {
+  DocumentReference userRef =
+      FirebaseFirestore.instance.collection('user').doc(userId);
+
+  DocumentSnapshot userSnapshot = await userRef.get();
+  List<dynamic>? favorites = (userSnapshot.data()
+      as Map<String, dynamic>)['followers'] as List<dynamic>?;
+
+  favorites ??= [];
+  favorites.add(followerId);
+
+  await userRef.update({'followers': favorites});
+}
+
+Future<void> removeFollower(String userId, String followerId) async {
+  DocumentReference userRef =
+      FirebaseFirestore.instance.collection('user').doc(userId);
+
+  DocumentSnapshot userSnapshot = await userRef.get();
+  List<dynamic>? followers = (userSnapshot.data()
+      as Map<String, dynamic>)['followers'] as List<dynamic>?;
+
+  if (followers != null) {
+    followers.remove(followerId);
+  }
+
+  await userRef.update({'followers': followers});
+}
+
+Future<void> addMyFollows(String userId, String followId) async {
+  DocumentReference userRef =
+      FirebaseFirestore.instance.collection('user').doc(userId);
+
+  DocumentSnapshot userSnapshot = await userRef.get();
+  List<dynamic>? follows = (userSnapshot.data()
+      as Map<String, dynamic>)['follows'] as List<dynamic>?;
+
+  follows ??= [];
+  follows.add(followId);
+
+  await userRef.update({'follows': follows});
+}
+
+Future<void> removeMyFollows(String userId, String followId) async {
+  DocumentReference userRef =
+      FirebaseFirestore.instance.collection('user').doc(userId);
+
+  DocumentSnapshot userSnapshot = await userRef.get();
+  List<dynamic>? favorites = (userSnapshot.data()
+      as Map<String, dynamic>)['follows'] as List<dynamic>?;
+
+  if (favorites != null) {
+    favorites.remove(followId);
+  }
+
+  await userRef.update({'follows': favorites});
+}
+
+Future<bool> checkIfFollowsExist(String userId, String searchString) async {
+  try {
+    final userDoc = await FirebaseFirestore.instance.collection('user').doc(userId).get();
+    final follows = userDoc.data()?['follows'] as List<dynamic>?;
+
+    if (follows != null && follows.contains(searchString)) {
+      return true;
+    }
+
+    return false;
+  } catch (e) {
+    print('Error: $e');
+    return false;
+  }
+}
 
 
