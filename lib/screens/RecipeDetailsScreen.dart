@@ -75,6 +75,45 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
   final GlobalKey<RecipeCommentListState> commentListKey =
       GlobalKey<RecipeCommentListState>();
 
+  int recipeCount = 0;
+  int followers = 0;
+  int follows = 0;
+  String ownerName = '';
+  String ownerEmail = '';
+  String ownerImage = '';
+  String ownerId = '';
+  List<String> recipesIDs = [];
+  List<dynamic> likedRecipesIDs = [];
+
+  List<Map<String, dynamic>> data = [];
+
+
+  Future<void> getProfileData() async {
+    final ownerIdDB = await getDocumentIdByUsername(widget.ownerUsername);
+    final recipeList = await getRecipeDocumentIDs(ownerIdDB);
+    final recipeCountDB = recipeList.length;
+    final followersList = await getFollowers(ownerIdDB);
+    final followersDB = followersList.length;
+    final followsList = await getFollows(ownerIdDB);
+    final followsDB = followsList.length;
+    final likedRecipesIDsFromUserId = await getLikedRecipes(ownerIdDB);
+    final nameDB = await getNameByUsername(widget.ownerUsername);
+    final emailDB = await getEmailByUsername(widget.ownerUsername);
+    final imageDB = await getProfilePicByUsername(widget.ownerUsername);
+
+    setState(() {
+      recipeCount = recipeCountDB;
+      followers = followersDB;
+      follows = followsDB;
+      ownerEmail = emailDB;
+      ownerName = nameDB;
+      ownerImage = imageDB;
+      ownerId = ownerIdDB;
+      likedRecipesIDs = likedRecipesIDsFromUserId;
+      recipesIDs = recipeList;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -82,6 +121,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
     amountLikes = widget.recipeLikes;
     checkOwner();
     refreshComments();
+    getProfileData();
   }
 
   void refreshComments() async {
@@ -300,7 +340,23 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => UserProfileScreen(
-                                          ownerUsername: widget.ownerUsername),
+                                          ownerUsername: widget.ownerUsername,
+                                           followers: followers, 
+                                           follows: follows,
+                                           likedRecipesIDs: likedRecipesIDs,
+                                           ownerEmail: ownerEmail,
+                                           ownerId: ownerId,
+                                           ownerImage: ownerImage,
+                                           ownerName: ownerName,
+                                           recipeCount: recipeCount,
+                                           recipesIDs: recipesIDs,
+
+                                           currentUser_email: widget.userEmail,
+                                           currentUser_image: widget.userImage,
+                                           currentUser_name: widget.userName,
+                                           currentUser_userId: widget.userId,
+                                           currentUser_username: widget.userUsername,
+                                           ),
                                     ),
                                   );
                                 },
