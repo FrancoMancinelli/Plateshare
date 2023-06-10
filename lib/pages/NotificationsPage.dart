@@ -308,7 +308,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                                         child: Icon(
                                           notification['type'] == 1
                                               ? Icons.comment_outlined
-                                              : Icons.star_border_rounded,
+                                              : Icons.follow_the_signs_rounded,
                                         ),
                                       ),
                                     ],
