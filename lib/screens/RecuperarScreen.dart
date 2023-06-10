@@ -2,10 +2,8 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:bcrypt/bcrypt.dart';
-import 'package:emailjs/emailjs.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
 
