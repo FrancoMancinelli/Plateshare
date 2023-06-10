@@ -76,7 +76,6 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
       GlobalKey<RecipeCommentListState>();
 
   int recipeCount = 0;
-  int followers = 0;
   int follows = 0;
   String ownerName = '';
   String ownerEmail = '';
@@ -92,8 +91,6 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
     final ownerIdDB = await getDocumentIdByUsername(widget.ownerUsername);
     final recipeList = await getRecipeDocumentIDs(ownerIdDB);
     final recipeCountDB = recipeList.length;
-    final followersList = await getFollowers(ownerIdDB);
-    final followersDB = followersList.length;
     final followsList = await getFollows(ownerIdDB);
     final followsDB = followsList.length;
     final likedRecipesIDsFromUserId = await getLikedRecipes(ownerIdDB);
@@ -103,7 +100,6 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
 
     setState(() {
       recipeCount = recipeCountDB;
-      followers = followersDB;
       follows = followsDB;
       ownerEmail = emailDB;
       ownerName = nameDB;
@@ -341,7 +337,6 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                                     MaterialPageRoute(
                                       builder: (context) => UserProfileScreen(
                                           ownerUsername: widget.ownerUsername,
-                                           followers: followers, 
                                            follows: follows,
                                            likedRecipesIDs: likedRecipesIDs,
                                            ownerEmail: ownerEmail,

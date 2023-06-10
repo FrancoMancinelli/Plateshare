@@ -19,7 +19,6 @@ import 'RecipeFormScreenOne.dart';
 class UserProfileScreen extends StatefulWidget {
   final String ownerUsername;
   final int recipeCount;
-  final int followers;
   final int follows;
   final String ownerName;
   final String ownerEmail;
@@ -38,7 +37,6 @@ class UserProfileScreen extends StatefulWidget {
       {Key? key,
       required this.ownerUsername,
       required this.recipeCount,
-      required this.followers,
       required this.follows,
       required this.ownerName,
       required this.ownerEmail,
@@ -69,34 +67,43 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
   String buttonText = 'Seguir';
   Color buttonColor = AppColors.primaryColor;
+  int actualFollowers = 0;
 
   void changeButtonProperties() {
-    setState(() {
-      if (buttonText == 'Seguir') {
-        buttonText = 'Dejar de seguir';
-        buttonColor = AppColors.orangeColor;
-        addFollower(widget.ownerId, widget.currentUseruserId);
-        addMyFollows(widget.currentUseruserId, widget.ownerId);
-        addNewNotification(
+  setState(() {
+    if (buttonText == 'Seguir') {
+      buttonText = 'Dejar de seguir';
+      buttonColor = AppColors.orangeColor;
+      addFollower(widget.ownerId, widget.currentUseruserId);
+      addMyFollows(widget.currentUseruserId, widget.ownerId);
+      addNewNotification(
           widget.ownerId,
           '${widget.currentUsername} te ha comenzado a seguir',
           2,
-          widget.currentUserimage,
-        );
+          widget.currentUserimage);
+      actualFollowers++;
 
-        // Update the 'followers' value in the 'data' list
-        data[1]['count'] = (widget.followers).toString();
-      } else {
-        buttonText = 'Seguir';
-        buttonColor = AppColors.primaryColor;
-        removeFollower(widget.ownerId, widget.currentUseruserId);
-        removeMyFollows(widget.currentUseruserId, widget.ownerId);
-
-        // Update the 'followers' value in the 'data' list
-        data[1]['count'] = (widget.followers - 1).toString();
+      // Update the 'Seguidores' value in the 'data' list
+      final followersIndex = data.indexWhere((item) => item['label'] == 'Seguidores');
+      if (followersIndex != -1) {
+        data[followersIndex]['count'] = actualFollowers.toString();
       }
-    });
-  }
+    } else {
+      buttonText = 'Seguir';
+      buttonColor = AppColors.primaryColor;
+      removeFollower(widget.ownerId, widget.currentUseruserId);
+      removeMyFollows(widget.currentUseruserId, widget.ownerId);
+      actualFollowers--;
+
+      // Update the 'Seguidores' value in the 'data' list
+      final followersIndex = data.indexWhere((item) => item['label'] == 'Seguidores');
+      if (followersIndex != -1) {
+        data[followersIndex]['count'] = actualFollowers.toString();
+      }
+    }
+  });
+}
+
 
   void handleMenuButtonTap() {
     setState(() {
@@ -118,20 +125,18 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   void initState() {
     super.initState();
     getProfileData();
+    
   }
 
   Future<void> getProfileData() async {
-    final isFollowed =
-        await checkIfFollowsExist(widget.currentUseruserId, widget.ownerId);
+    final isFollowed = await checkIfFollowsExist(widget.currentUseruserId, widget.ownerId);
+    final followersDB = await getFollowers(widget.ownerId);
     setState(() {
-      if (isFollowed) {
+      actualFollowers = followersDB.length;
+      data = generateDataList(widget.recipeCount, actualFollowers, widget.follows);
+      if(isFollowed) {
         buttonText = 'Dejar de seguir';
         buttonColor = AppColors.orangeColor;
-        data = generateDataList(
-            widget.recipeCount, widget.followers, widget.follows);
-      } else {
-        data = generateDataList(
-            widget.recipeCount, widget.followers - 1, widget.follows);
       }
     });
   }
