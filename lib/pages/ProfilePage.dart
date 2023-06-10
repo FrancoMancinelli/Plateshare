@@ -251,6 +251,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             recipesIDs: widget.recipesIDs,
                             userId: widget.userId,
                             usernameData: widget.usernameData,
+                            ownerId: widget.userId,
                           ),
                         if (flag == 2)
                           MyFavoritesContainer(
@@ -260,6 +261,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             likedRecipesIDs: widget.likedRecipesIDs,
                             usernameData: widget.usernameData,
                             userId: widget.userId,
+                            ownerId: widget.userId,
                           ),
                       ],
                     )

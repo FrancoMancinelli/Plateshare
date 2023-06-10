@@ -16,6 +16,7 @@ class MyRecipesContainer extends StatefulWidget {
   final String nameData;
   final String usernameData;
   final String profilePicData;
+  final String ownerId;
 
   final String userId;
   final List<String> recipesIDs;
@@ -27,7 +28,7 @@ class MyRecipesContainer extends StatefulWidget {
     required this.emailData,
     required this.nameData,
     required this.usernameData,
-    required this.profilePicData,
+    required this.profilePicData, required this.ownerId,
   }) : super(key: key);
 
   @override
@@ -48,7 +49,71 @@ class _MyRecipesContainerState extends State<MyRecipesContainer> {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            if (widget.recipesIDs.isEmpty)
+            if (widget.recipesIDs.isEmpty && widget.userId == widget.ownerId)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                child: Column(
+                  children: [
+                    Lottie.network(
+                      'https://assets9.lottiefiles.com/packages/lf20_t9nbbl1t.json',
+                      width: 200,
+                      height: 200,
+                      fit: BoxFit.cover,
+                    ),
+                    Text(
+                      'Aun no hay recetas',
+                      style: GoogleFonts.acme(
+                        textStyle: const TextStyle(
+                          fontSize: 25,
+                          color: AppColors.brownInfoRecipe,
+                          fontFamily: 'Acme',
+                        ),
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          '¿Ya tienes tu primer receta? ',
+                          style: GoogleFonts.acme(
+                            textStyle: const TextStyle(
+                              fontSize: 20,
+                              color: AppColors.brownInfoRecipe,
+                              fontFamily: 'Acme',
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => RecipeFormScreenOne(
+                                    emailData: widget.emailData,
+                                    nameData: widget.nameData,
+                                    profilePicData: widget.profilePicData,
+                                    usernameData: widget.usernameData),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            'Click aquí',
+                            style: GoogleFonts.acme(
+                              textStyle: const TextStyle(
+                                fontSize: 19,
+                                color: AppColors.primaryColor,
+                                fontFamily: 'Acme',
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              if (widget.recipesIDs.isEmpty && widget.userId != widget.ownerId)
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
                 child: Column(

@@ -14,6 +14,7 @@ class MyFavoritesContainer extends StatefulWidget {
   final String usernameData;
   final String profilePicData;
   final String userId;
+  final String ownerId;
 
   final List<dynamic> likedRecipesIDs;
 
@@ -24,7 +25,7 @@ class MyFavoritesContainer extends StatefulWidget {
     required this.profilePicData,
     required this.likedRecipesIDs,
     required this.userId,
-    required this.emailData,
+    required this.emailData, required this.ownerId,
   }) : super(key: key);
 
   @override
@@ -45,7 +46,7 @@ class _MyFavoritesContainerState extends State<MyFavoritesContainer> {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            if (widget.likedRecipesIDs.isEmpty)
+            if (widget.likedRecipesIDs.isEmpty && widget.userId == widget.ownerId)
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
                 child: Column(
@@ -58,6 +59,30 @@ class _MyFavoritesContainerState extends State<MyFavoritesContainer> {
                     ),
                     Text(
                       'Aun no has guardado ninguna receta',
+                      style: GoogleFonts.acme(
+                        textStyle: const TextStyle(
+                          fontSize: 25,
+                          color: AppColors.brownInfoRecipe,
+                          fontFamily: 'Acme',
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            if (widget.likedRecipesIDs.isEmpty && widget.userId != widget.ownerId)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                child: Column(
+                  children: [
+                    Lottie.network(
+                      'https://assets9.lottiefiles.com/packages/lf20_t9nbbl1t.json',
+                      width: 200,
+                      height: 200,
+                      fit: BoxFit.cover,
+                    ),
+                    Text(
+                      'Aun no se ha guardado ninguna receta',
                       style: GoogleFonts.acme(
                         textStyle: const TextStyle(
                           fontSize: 25,

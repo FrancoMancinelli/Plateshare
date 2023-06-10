@@ -243,6 +243,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               recipesIDs: widget.recipesIDs,
                               userId: widget.currentUser_userId,
                               usernameData: widget.currentUser_username,
+                              ownerId: widget.ownerId,
                             ),
                           if (flag == 2)
                             MyFavoritesContainer(
@@ -252,6 +253,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               likedRecipesIDs: widget.likedRecipesIDs,
                               userId: widget.currentUser_userId,
                               usernameData: widget.currentUser_username,
+                              ownerId: widget.ownerId,
                             ),
                         ],
                       )
