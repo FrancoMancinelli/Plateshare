@@ -27,14 +27,30 @@ class UserProfileScreen extends StatefulWidget {
   final String ownerId;
   final List<String> recipesIDs;
   final List<dynamic> likedRecipesIDs;
-  
+
   final String currentUser_username;
   final String currentUser_userId;
   final String currentUser_name;
   final String currentUser_email;
   final String currentUser_image;
 
-  const UserProfileScreen({Key? key, required this.ownerUsername, required this.recipeCount, required this.followers, required this.follows, required this.ownerName, required this.ownerEmail, required this.ownerImage, required this.ownerId, required this.recipesIDs, required this.likedRecipesIDs, required this.currentUser_username, required this.currentUser_userId, required this.currentUser_name, required this.currentUser_email, required this.currentUser_image})
+  const UserProfileScreen(
+      {Key? key,
+      required this.ownerUsername,
+      required this.recipeCount,
+      required this.followers,
+      required this.follows,
+      required this.ownerName,
+      required this.ownerEmail,
+      required this.ownerImage,
+      required this.ownerId,
+      required this.recipesIDs,
+      required this.likedRecipesIDs,
+      required this.currentUser_username,
+      required this.currentUser_userId,
+      required this.currentUser_name,
+      required this.currentUser_email,
+      required this.currentUser_image})
       : super(key: key);
 
   @override
@@ -50,6 +66,21 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   List<Map<String, dynamic>> data = [];
 
   int flag = 1;
+
+  String buttonText = 'Seguir';
+  Color buttonColor = AppColors.primaryColor;
+
+  void changeButtonProperties() {
+    setState(() {
+      if (buttonText == 'Seguir') {
+        buttonText = 'Dejar de seguir';
+        buttonColor = AppColors.orangeColor;
+      } else {
+        buttonText = 'Seguir';
+        buttonColor = AppColors.primaryColor;
+      }
+    });
+  }
 
   void handleMenuButtonTap() {
     setState(() {
@@ -75,7 +106,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
   Future<void> getProfileData() async {
     setState(() {
-      data = generateDataList(widget.recipeCount, widget.followers, widget.follows);
+      data = generateDataList(
+          widget.recipeCount, widget.followers, widget.follows);
     });
   }
 
@@ -140,6 +172,30 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                             fontSize: 24,
                             color: AppColors.blackColor,
                             fontFamily: 'Acme',
+                          ),
+                        ),
+                      ),
+
+                      ElevatedButton(
+                        onPressed: changeButtonProperties,
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(buttonColor),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(25, 12, 25, 12),
+                          child: Text(
+                            buttonText,
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
