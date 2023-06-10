@@ -1,20 +1,11 @@
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:lottie/lottie.dart';
-import 'package:plateshare/screens/InicioScreen.dart';
 import 'package:plateshare/services/firebase_service.dart';
 import 'package:http/http.dart' as http;
 
 import '../util/AppColors.dart';
 import '../widgets/MyFavoritesContainer.dart';
 import '../widgets/MyRecipesContainer.dart';
-import 'RecipeFormScreenOne.dart';
 
 class UserProfileScreen extends StatefulWidget {
   final String ownerUsername;

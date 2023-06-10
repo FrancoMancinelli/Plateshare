@@ -5,11 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:plateshare/models/User.dart';
 import 'package:plateshare/screens/InicioScreen.dart';
 import 'package:plateshare/screens/RecipeFormScreenThree.dart';
-import 'package:plateshare/services/firebase_service.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:plateshare/util/AppColors.dart';
 
 class RecipeFormScreenTwo extends StatefulWidget {

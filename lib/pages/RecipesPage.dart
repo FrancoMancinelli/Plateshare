@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:plateshare/screens/InicioScreen.dart';
 import 'package:plateshare/util/AppColors.dart';
 import 'package:plateshare/widgets/RecipeContainer.dart';
 import 'dart:math';
@@ -37,26 +36,6 @@ class RecipesPage extends StatelessWidget {
     'Festivas'
   ];
 
-  Future<List<String>> idRecetasSaludables =
-      getRecipesFromCategory('Saludable');
-  Future<List<String>> idRecetasEconomicas =
-      getRecipesFromCategory('Económica');
-  Future<List<String>> idRecetasEn15Min = getRecepiesLessThan15Min();
-  Future<List<String>> idRecetasPostres = getRecipesFromCategory('Postre');
-  Future<List<String>> idRecetasVeganas = getRecipesFromCategory('Vegano');
-  Future<List<String>> idRecetasVegetarianas =
-      getRecipesFromCategory('Vegetariano');
-  Future<List<String>> idRecetasGlutenFree =
-      getRecipesFromCategory('Gluten free');
-  Future<List<String>> idRecetasSinLactosa =
-      getRecipesFromCategory('Sin lactosa');
-  Future<List<String>> idRecetasCalientes = getRecipesFromCategory('Caliente');
-  Future<List<String>> idRecetasFrios = getRecipesFromCategory('Fríos');
-  Future<List<String>> idRecetasTradicional =
-      getRecipesFromCategory('Tradicional');
-  Future<List<String>> idRecetas3Ingredientes = getRecipiesWith3Ingredients();
-  Future<List<String>> idRecetasFestivas = getRecipesFromCategory('Festiva');
-
   String primeraSeccion = "";
   String segundaSeccion = "";
   String terceraSeccion = "";
@@ -68,6 +47,8 @@ class RecipesPage extends StatelessWidget {
 
     switch (categoria) {
       case 'Saludable':
+        Future<List<String>> idRecetasSaludables =
+            getRecipesFromCategory('Saludable');
         List<String> recipes = await idRecetasSaludables;
         for (int i = 0; i < 5 && i < recipes.length; i++) {
           String idReceta = recipes[i];
@@ -81,6 +62,8 @@ class RecipesPage extends StatelessWidget {
         }
         break;
       case 'Económicas':
+        Future<List<String>> idRecetasEconomicas =
+            getRecipesFromCategory('Económica');
         List<String> recipes = await idRecetasEconomicas;
         for (int i = 0; i < 5 && i < recipes.length; i++) {
           String idReceta = recipes[i];
@@ -94,6 +77,7 @@ class RecipesPage extends StatelessWidget {
         }
         break;
       case "En menos de 15'":
+        Future<List<String>> idRecetasEn15Min = getRecepiesLessThan15Min();
         List<String> recipes = await idRecetasEn15Min;
         for (int i = 0; i < 5 && i < recipes.length; i++) {
           String idReceta = recipes[i];
@@ -107,6 +91,8 @@ class RecipesPage extends StatelessWidget {
         }
         break;
       case 'Postres':
+        Future<List<String>> idRecetasPostres =
+            getRecipesFromCategory('Postre');
         List<String> recipes = await idRecetasPostres;
         for (int i = 0; i < 5 && i < recipes.length; i++) {
           String idReceta = recipes[i];
@@ -120,6 +106,8 @@ class RecipesPage extends StatelessWidget {
         }
         break;
       case 'Veganas':
+        Future<List<String>> idRecetasVeganas =
+            getRecipesFromCategory('Vegano');
         List<String> recipes = await idRecetasVeganas;
         for (int i = 0; i < 5 && i < recipes.length; i++) {
           String idReceta = recipes[i];
@@ -133,6 +121,8 @@ class RecipesPage extends StatelessWidget {
         }
         break;
       case 'Vegetarianas':
+        Future<List<String>> idRecetasVegetarianas =
+            getRecipesFromCategory('Vegetariano');
         List<String> recipes = await idRecetasVegetarianas;
         for (int i = 0; i < 5 && i < recipes.length; i++) {
           String idReceta = recipes[i];
@@ -146,6 +136,8 @@ class RecipesPage extends StatelessWidget {
         }
         break;
       case 'Gluten free':
+        Future<List<String>> idRecetasGlutenFree =
+            getRecipesFromCategory('Gluten free');
         List<String> recipes = await idRecetasGlutenFree;
         for (int i = 0; i < 5 && i < recipes.length; i++) {
           String idReceta = recipes[i];
@@ -159,6 +151,8 @@ class RecipesPage extends StatelessWidget {
         }
         break;
       case 'Sin lactosa':
+        Future<List<String>> idRecetasSinLactosa =
+            getRecipesFromCategory('Sin lactosa');
         List<String> recipes = await idRecetasSinLactosa;
         for (int i = 0; i < 5 && i < recipes.length; i++) {
           String idReceta = recipes[i];
@@ -172,6 +166,8 @@ class RecipesPage extends StatelessWidget {
         }
         break;
       case 'Calientes':
+        Future<List<String>> idRecetasCalientes =
+            getRecipesFromCategory('Caliente');
         List<String> recipes = await idRecetasCalientes;
         for (int i = 0; i < 5 && i < recipes.length; i++) {
           String idReceta = recipes[i];
@@ -185,6 +181,7 @@ class RecipesPage extends StatelessWidget {
         }
         break;
       case 'Fríos':
+        Future<List<String>> idRecetasFrios = getRecipesFromCategory('Fríos');
         List<String> recipes = await idRecetasFrios;
         for (int i = 0; i < 5 && i < recipes.length; i++) {
           String idReceta = recipes[i];
@@ -198,6 +195,8 @@ class RecipesPage extends StatelessWidget {
         }
         break;
       case 'Tradicional':
+        Future<List<String>> idRecetasTradicional =
+            getRecipesFromCategory('Tradicional');
         List<String> recipes = await idRecetasTradicional;
         for (int i = 0; i < 5 && i < recipes.length; i++) {
           String idReceta = recipes[i];
@@ -211,6 +210,8 @@ class RecipesPage extends StatelessWidget {
         }
         break;
       case 'De 3 ingredientes':
+        Future<List<String>> idRecetas3Ingredientes =
+            getRecipiesWith3Ingredients();
         List<String> recipes = await idRecetas3Ingredientes;
         for (int i = 0; i < 5 && i < recipes.length; i++) {
           String idReceta = recipes[i];
@@ -224,6 +225,8 @@ class RecipesPage extends StatelessWidget {
         }
         break;
       case 'Festivas':
+        Future<List<String>> idRecetasFestivas =
+            getRecipesFromCategory('Festiva');
         List<String> recipes = await idRecetasFestivas;
         for (int i = 0; i < 5 && i < recipes.length; i++) {
           String idReceta = recipes[i];

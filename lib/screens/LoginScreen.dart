@@ -2,9 +2,7 @@ import 'package:bcrypt/bcrypt.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
-import 'package:plateshare/models/User.dart';
 import 'package:plateshare/services/firebase_service.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 
 import '../util/AppColors.dart';
 import 'InicioScreen.dart';

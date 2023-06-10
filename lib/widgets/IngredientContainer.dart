@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:plateshare/screens/InicioScreen.dart';
 import 'package:plateshare/util/AppColors.dart';
 
 import '../models/Ingredient.dart';

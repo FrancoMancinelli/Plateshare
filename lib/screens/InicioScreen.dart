@@ -1,17 +1,13 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:plateshare/models/User.dart';
 import 'package:plateshare/pages/NotificationsPage.dart';
 import 'package:plateshare/pages/ProfilePage.dart';
 import 'package:plateshare/pages/RecipesPage.dart';
-import 'package:plateshare/screens/AddRecipeScreen.dart';
 import 'package:plateshare/services/firebase_service.dart';
 import 'package:plateshare/widgets/MyAppBar.dart';
 import 'package:plateshare/widgets/MyDrawer.dart';
 
 import '../util/AppColors.dart';
-import 'LoginScreen.dart';
 import 'RecipeFormScreenOne.dart';
 
 class InicioScreen extends StatefulWidget {

@@ -8,7 +8,6 @@ import 'package:plateshare/widgets/IngredientContainer.dart';
 import 'package:plateshare/widgets/InstructionsContainer.dart';
 
 import '../services/firebase_service.dart';
-import '../widgets/RecipeComment.dart';
 import '../widgets/RecipeCommentList.dart';
 import 'InicioScreen.dart';
 

@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:plateshare/screens/InicioScreen.dart';
 import 'package:plateshare/util/AppColors.dart';
-import 'package:plateshare/widgets/RecipeContainer.dart';
 
 import '../services/firebase_service.dart';
 
