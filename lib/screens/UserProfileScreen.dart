@@ -75,9 +75,14 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       if (buttonText == 'Seguir') {
         buttonText = 'Dejar de seguir';
         buttonColor = AppColors.orangeColor;
+        addFollower(widget.ownerId, widget.currentUser_userId);
+        addMyFollows(widget.currentUser_userId, widget.ownerId);
+        addNewNotification(widget.ownerId, '${widget.currentUser_name} te ha comenzado a seguir', 2, widget.currentUser_image);
       } else {
         buttonText = 'Seguir';
         buttonColor = AppColors.primaryColor;
+        removeFollower(widget.ownerId, widget.currentUser_userId);
+        removeMyFollows(widget.currentUser_userId, widget.ownerId);
       }
     });
   }
@@ -102,12 +107,17 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   void initState() {
     super.initState();
     getProfileData();
+    
   }
 
   Future<void> getProfileData() async {
+    final isFollowed = await checkIfFollowsExist(widget.currentUser_userId, widget.ownerId);
     setState(() {
-      data = generateDataList(
-          widget.recipeCount, widget.followers, widget.follows);
+      data = generateDataList(widget.recipeCount, widget.followers, widget.follows);
+      if(isFollowed) {
+        buttonText = 'Dejar de seguir';
+        buttonColor = AppColors.orangeColor;
+      }
     });
   }
 
