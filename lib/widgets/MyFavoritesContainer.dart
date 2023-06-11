@@ -90,6 +90,7 @@ class _MyFavoritesContainerState extends State<MyFavoritesContainer> {
                   ],
                 ),
               ),
+              if(widget.likedRecipesIDs.isNotEmpty)
             for (int i = 0; i < widget.likedRecipesIDs.length; i += 2)
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
