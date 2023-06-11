@@ -13,34 +13,25 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
 
   @override
-Widget build(BuildContext context) {
-  return AppBar(
-    backgroundColor: AppColors.primaryColor,
-    title: SizedBox(
-      height: 30, // ajusta la altura
-      child: TextField(
-        controller: _searchController,
-        decoration: InputDecoration(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(50.0),
-            borderSide: BorderSide.none, // borra el borde
-          ),
-          labelText: 'Buscar...',
-          errorText: _searchErrorText.isEmpty ? null : _searchErrorText,
-          filled: true,
-          fillColor: AppColors.whiteColor,
-          contentPadding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-          prefixIcon: const Icon(Icons.search_outlined, color: AppColors.blackColor),
-          floatingLabelBehavior: FloatingLabelBehavior.never, // Keep the hint text in place
-        ),
-      ),
+  Widget build(BuildContext context) {
+    return AppBar(
+  backgroundColor: AppColors.primaryColor,
+  title: Text(
+    'Home',
+    style: TextStyle(
+      color: AppColors.whiteColor,
+      fontSize: 22,
+      fontWeight: FontWeight.bold,
     ),
-    actions: [
-      IconButton(
-        onPressed: () {},
-        icon: const Icon(Icons.filter_list_outlined),
-      ),
-    ],
-  );
-}
+  ),
+  centerTitle: true, // Add this line to center the title
+  actions: [
+    IconButton(
+      onPressed: () {},
+      icon: const Icon(Icons.search_rounded),
+    ),
+  ],
+);
+
+  }
 }
