@@ -46,132 +46,85 @@ class _MyRecipesContainerState extends State<MyRecipesContainer> {
         child: Column(
           children: [
             if (widget.recipesIDs.isEmpty && widget.userId == widget.ownerId)
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                child: Column(
-                  children: [
-                    Lottie.network(
-                      'https://assets9.lottiefiles.com/packages/lf20_t9nbbl1t.json',
-                      width: 200,
-                      height: 200,
-                      fit: BoxFit.cover,
-                    ),
-                    Text(
-                      'Aun no hay recetas',
-                      style: GoogleFonts.acme(
-                        textStyle: const TextStyle(
-                          fontSize: 25,
-                          color: AppColors.brownInfoRecipe,
-                          fontFamily: 'Acme',
-                        ),
+              Column(
+                children: [
+                  Lottie.network(
+                    'https://assets6.lottiefiles.com/private_files/lf30_gctc76jz.json',
+                    width: 250,
+                    height: 250,
+                  ),
+                  Text(
+                    'Aun no hay recetas',
+                    style: GoogleFonts.acme(
+                      textStyle: const TextStyle(
+                        fontSize: 25,
+                        color: AppColors.brownInfoRecipe,
+                        fontFamily: 'Acme',
                       ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          '¿Ya tienes tu primer receta? ',
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '¿Ya tienes tu primer receta? ',
+                        style: GoogleFonts.acme(
+                          textStyle: const TextStyle(
+                            fontSize: 20,
+                            color: AppColors.brownInfoRecipe,
+                            fontFamily: 'Acme',
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => RecipeFormScreenOne(
+                                  emailData: widget.emailData,
+                                  nameData: widget.nameData,
+                                  profilePicData: widget.profilePicData,
+                                  usernameData: widget.usernameData),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          'Click aquí',
                           style: GoogleFonts.acme(
                             textStyle: const TextStyle(
-                              fontSize: 20,
-                              color: AppColors.brownInfoRecipe,
+                              fontSize: 19,
+                              color: AppColors.primaryColor,
                               fontFamily: 'Acme',
+                              decoration: TextDecoration.underline,
                             ),
                           ),
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => RecipeFormScreenOne(
-                                    emailData: widget.emailData,
-                                    nameData: widget.nameData,
-                                    profilePicData: widget.profilePicData,
-                                    usernameData: widget.usernameData),
-                              ),
-                            );
-                          },
-                          child: Text(
-                            'Click aquí',
-                            style: GoogleFonts.acme(
-                              textStyle: const TextStyle(
-                                fontSize: 19,
-                                color: AppColors.primaryColor,
-                                fontFamily: 'Acme',
-                                decoration: TextDecoration.underline,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
               if (widget.recipesIDs.isEmpty && widget.userId != widget.ownerId)
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                child: Column(
-                  children: [
-                    Lottie.network(
-                      'https://assets9.lottiefiles.com/packages/lf20_t9nbbl1t.json',
-                      width: 200,
-                      height: 200,
-                      fit: BoxFit.cover,
-                    ),
-                    Text(
-                      'Aun no hay recetas',
-                      style: GoogleFonts.acme(
-                        textStyle: const TextStyle(
-                          fontSize: 25,
-                          color: AppColors.brownInfoRecipe,
-                          fontFamily: 'Acme',
-                        ),
+              Column(
+                children: [
+                  Lottie.network(
+                    'https://assets6.lottiefiles.com/private_files/lf30_gctc76jz.json',
+                    width: 250,
+                    height:250,
+                  ),
+                  Text(
+                    '¡Ups! Aun no se han publicado recetas',
+                    style: GoogleFonts.acme(
+                      textStyle: const TextStyle(
+                        fontSize: 25,
+                        color: AppColors.brownInfoRecipe,
+                        fontFamily: 'Acme',
                       ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          '¿Ya tienes tu primer receta? ',
-                          style: GoogleFonts.acme(
-                            textStyle: const TextStyle(
-                              fontSize: 20,
-                              color: AppColors.brownInfoRecipe,
-                              fontFamily: 'Acme',
-                            ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => RecipeFormScreenOne(
-                                    emailData: widget.emailData,
-                                    nameData: widget.nameData,
-                                    profilePicData: widget.profilePicData,
-                                    usernameData: widget.usernameData),
-                              ),
-                            );
-                          },
-                          child: Text(
-                            'Click aquí',
-                            style: GoogleFonts.acme(
-                              textStyle: const TextStyle(
-                                fontSize: 19,
-                                color: AppColors.primaryColor,
-                                fontFamily: 'Acme',
-                                decoration: TextDecoration.underline,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                  ),
+                  
+                ],
               ),
             for (int i = 0; i < widget.recipesIDs.length; i += 2)
               Row(

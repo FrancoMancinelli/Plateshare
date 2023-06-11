@@ -35,6 +35,7 @@ class _SearchScreenState extends State<SearchScreen> {
   String? selectedCheckbox = 'ingredientes';
   List<String> busquedaRealizada = [];
   String userId = '';
+  bool firstflag = true;
 
   @override
   void initState() {
@@ -163,6 +164,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                     child: IconButton(
                                       onPressed: () async {
                                         if (_searchController.text.isNotEmpty) {
+                                          firstflag = false;
                                           if (selectedCheckbox ==
                                               'ingredientes') {
                                             String busquedaCompleta =
@@ -195,10 +197,16 @@ class _SearchScreenState extends State<SearchScreen> {
                                               busquedaRealizada =
                                                   usuariosEncontrados;
                                             });
-                                            print('USUARIOS::' +
-                                                usuariosEncontrados.length
-                                                    .toString());
                                           }
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
+                                              content: Text(
+                                                  'Introduce algúna palabra clave de busqueda primero'),
+                                              backgroundColor: Colors.red,
+                                            ),
+                                          );
                                         }
                                       },
                                       icon: Icon(
@@ -348,19 +356,18 @@ class _SearchScreenState extends State<SearchScreen> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            if (busquedaRealizada.isEmpty)
+                            if (busquedaRealizada.isEmpty && !firstflag)
                               Padding(
                                 padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
                                 child: Column(
                                   children: [
                                     Lottie.network(
-                                      'https://assets9.lottiefiles.com/packages/lf20_t9nbbl1t.json',
-                                      width: 200,
+                                      'https://assets2.lottiefiles.com/packages/lf20_wnqlfojb.json',
+                                      width: 300,
                                       height: 200,
-                                      fit: BoxFit.cover,
                                     ),
                                     Text(
-                                      'No se ha encontrado ninguna receta',
+                                      'No se ha encontrado ningún resultado',
                                       style: GoogleFonts.acme(
                                         textStyle: const TextStyle(
                                           fontSize: 25,

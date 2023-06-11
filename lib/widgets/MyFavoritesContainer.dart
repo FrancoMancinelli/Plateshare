@@ -43,52 +43,44 @@ class _MyFavoritesContainerState extends State<MyFavoritesContainer> {
         child: Column(
           children: [
             if (widget.likedRecipesIDs.isEmpty && widget.userId == widget.ownerId)
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                child: Column(
-                  children: [
-                    Lottie.network(
-                      'https://assets9.lottiefiles.com/packages/lf20_t9nbbl1t.json',
-                      width: 200,
-                      height: 200,
-                      fit: BoxFit.cover,
-                    ),
-                    Text(
-                      'Aun no has guardado ninguna receta',
-                      style: GoogleFonts.acme(
-                        textStyle: const TextStyle(
-                          fontSize: 25,
-                          color: AppColors.brownInfoRecipe,
-                          fontFamily: 'Acme',
-                        ),
+              Column(
+                children: [
+                  Lottie.network(
+                  'https://assets6.lottiefiles.com/private_files/lf30_gctc76jz.json',
+                  width: 250,
+                  height:250,
+                ),
+                  Text(
+                    'Aun no has guardado ninguna receta',
+                    style: GoogleFonts.acme(
+                      textStyle: const TextStyle(
+                        fontSize: 25,
+                        color: AppColors.brownInfoRecipe,
+                        fontFamily: 'Acme',
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             if (widget.likedRecipesIDs.isEmpty && widget.userId != widget.ownerId)
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                child: Column(
-                  children: [
-                    Lottie.network(
-                      'https://assets9.lottiefiles.com/packages/lf20_t9nbbl1t.json',
-                      width: 200,
-                      height: 200,
-                      fit: BoxFit.cover,
-                    ),
-                    Text(
-                      'Aun no se ha guardado ninguna receta',
-                      style: GoogleFonts.acme(
-                        textStyle: const TextStyle(
-                          fontSize: 25,
-                          color: AppColors.brownInfoRecipe,
-                          fontFamily: 'Acme',
-                        ),
+              Column(
+                children: [
+                  Lottie.network(
+                  'https://assets6.lottiefiles.com/private_files/lf30_gctc76jz.json',
+                  width: 250,
+                  height:250,
+                ),
+                  Text(
+                    'Aun no se ha guardado ninguna receta',
+                    style: GoogleFonts.acme(
+                      textStyle: const TextStyle(
+                        fontSize: 25,
+                        color: AppColors.brownInfoRecipe,
+                        fontFamily: 'Acme',
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
               if(widget.likedRecipesIDs.isNotEmpty)
             for (int i = 0; i < widget.likedRecipesIDs.length; i += 2)
