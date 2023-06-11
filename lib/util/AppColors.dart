@@ -17,5 +17,4 @@ class AppColors {
   static const Color brownButtonsRecipe = Color(0xFFCCB38D);
   static const Color lightBrownRecipe = Color(0xFFA38F71);
   static const Color desabledField = Color(0xFFCCC6BE);
-  // Add more color constants here as needed
 }

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
-
-import '../models/User.dart';
-import '../services/firebase_service.dart';
 import 'LoginScreen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -14,7 +11,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
   @override
   void initState() {
     super.initState();
@@ -24,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
   _navigateToLogin() async {
     await Future.delayed(const Duration(milliseconds: 10000), () {});
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => LoginScreen()));
+        context, MaterialPageRoute(builder: (context) => const LoginScreen()));
   }
 
   @override
@@ -33,15 +29,15 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFF056C49),
       body: Container(
-      width: screenSize.width,
-      height: screenSize.height,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: NetworkImage('https://i.imgur.com/pbBleS1.png'),
-          fit: BoxFit.cover,
+        width: screenSize.width,
+        height: screenSize.height,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: NetworkImage('https://i.imgur.com/pbBleS1.png'),
+            fit: BoxFit.cover,
+          ),
         ),
-      ),
-      child: Column(
+        child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
             Expanded(
@@ -62,10 +58,11 @@ class _SplashScreenState extends State<SplashScreen> {
                               width: 170,
                               height: 170,
                               decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 255, 255, 255),
+                                color: const Color.fromARGB(255, 255, 255, 255),
                                 shape: BoxShape.circle,
                                 border: Border.all(
-                                  color: Color.fromARGB(255, 135, 154, 159),
+                                  color:
+                                      const Color.fromARGB(255, 135, 154, 159),
                                   width: 6,
                                 ),
                               ),
@@ -101,7 +98,6 @@ class _SplashScreenState extends State<SplashScreen> {
                               ),
                             ),
                           ),
-                          
                         ],
                       ),
                     ),
@@ -109,7 +105,6 @@ class _SplashScreenState extends State<SplashScreen> {
                 ],
               ),
             ),
-            
           ],
         ),
       ),

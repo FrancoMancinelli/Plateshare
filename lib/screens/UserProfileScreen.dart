@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plateshare/services/firebase_service.dart';
-import 'package:http/http.dart' as http;
 
 import '../util/AppColors.dart';
 import '../widgets/MyFavoritesContainer.dart';
@@ -46,7 +45,7 @@ class UserProfileScreen extends StatefulWidget {
   _UserProfileScreenState createState() => _UserProfileScreenState();
 }
 
-var screenSizeUserProfileScreen;
+dynamic screenSizeUserProfileScreen;
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
   Color menuButtonColor = AppColors.brownRecepieColor;
@@ -60,42 +59,44 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   Color buttonColor = AppColors.primaryColor;
   int actualFollowers = 0;
 
+  // Actualiza el botón de seguir/dejar de seguir y actualiza la información en la base de datos
   void changeButtonProperties() {
-  setState(() {
-    if (buttonText == 'Seguir') {
-      buttonText = 'Dejar de seguir';
-      buttonColor = AppColors.orangeColor;
-      addFollower(widget.ownerId, widget.currentUseruserId);
-      addMyFollows(widget.currentUseruserId, widget.ownerId);
-      addNewNotification(
-          widget.ownerId,
-          '${widget.currentUsername} te ha comenzado a seguir',
-          2,
-          widget.currentUserimage);
-      actualFollowers++;
+    setState(() {
+      if (buttonText == 'Seguir') {
+        buttonText = 'Dejar de seguir';
+        buttonColor = AppColors.orangeColor;
+        addFollower(widget.ownerId, widget.currentUseruserId);
+        addMyFollows(widget.currentUseruserId, widget.ownerId);
+        addNewNotification(
+            widget.ownerId,
+            '${widget.currentUsername} te ha comenzado a seguir',
+            2,
+            widget.currentUserimage);
+        actualFollowers++;
 
-      // Update the 'Seguidores' value in the 'data' list
-      final followersIndex = data.indexWhere((item) => item['label'] == 'Seguidores');
-      if (followersIndex != -1) {
-        data[followersIndex]['count'] = actualFollowers.toString();
+        final followersIndex =
+            data.indexWhere((item) => item['label'] == 'Seguidores');
+        if (followersIndex != -1) {
+          data[followersIndex]['count'] = actualFollowers.toString();
+        }
+      } else {
+        buttonText = 'Seguir';
+        buttonColor = AppColors.primaryColor;
+        removeFollower(widget.ownerId, widget.currentUseruserId);
+        removeMyFollows(widget.currentUseruserId, widget.ownerId);
+        actualFollowers--;
+
+        // Update the 'Seguidores' value in the 'data' list
+        final followersIndex =
+            data.indexWhere((item) => item['label'] == 'Seguidores');
+        if (followersIndex != -1) {
+          data[followersIndex]['count'] = actualFollowers.toString();
+        }
       }
-    } else {
-      buttonText = 'Seguir';
-      buttonColor = AppColors.primaryColor;
-      removeFollower(widget.ownerId, widget.currentUseruserId);
-      removeMyFollows(widget.currentUseruserId, widget.ownerId);
-      actualFollowers--;
+    });
+  }
 
-      // Update the 'Seguidores' value in the 'data' list
-      final followersIndex = data.indexWhere((item) => item['label'] == 'Seguidores');
-      if (followersIndex != -1) {
-        data[followersIndex]['count'] = actualFollowers.toString();
-      }
-    }
-  });
-}
-
-
+  // Actualiza los colores de los botones y la bandera si es apretado el boton de recetas
   void handleMenuButtonTap() {
     setState(() {
       menuButtonColor = AppColors.brownRecepieColor;
@@ -104,6 +105,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     });
   }
 
+  // Actualiza los colores de los botones y la bandera si es apretado el boton de favoritos
   void handleFavoriteButtonTap() {
     setState(() {
       favoriteButtonColor = AppColors.brownRecepieColor;
@@ -116,22 +118,25 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   void initState() {
     super.initState();
     getProfileData();
-    
   }
 
+  // Obtiene datos generales del usuario dueño del perfil
   Future<void> getProfileData() async {
-    final isFollowed = await checkIfFollowsExist(widget.currentUseruserId, widget.ownerId);
+    final isFollowed =
+        await checkIfFollowsExist(widget.currentUseruserId, widget.ownerId);
     final followersDB = await getFollowers(widget.ownerId);
     setState(() {
       actualFollowers = followersDB.length;
-      data = generateDataList(widget.recipeCount, actualFollowers, widget.follows);
-      if(isFollowed) {
+      data =
+          generateDataList(widget.recipeCount, actualFollowers, widget.follows);
+      if (isFollowed) {
         buttonText = 'Dejar de seguir';
         buttonColor = AppColors.orangeColor;
       }
     });
   }
 
+  // Genera en forma de lista los datos de cantidad de recetas, followers y follows.
   List<Map<String, dynamic>> generateDataList(
       int recipeCount, int followers, int follows) {
     return [
@@ -154,9 +159,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 pinned: true,
                 delegate: _ProfileHeaderDelegate(
                   username: widget.ownerUsername,
-                  onBackButtonPressed: () {
-                    // Handle left icon button press
-                  },
+                  onBackButtonPressed: () {},
                   onAddButtonPressed: () {
                     Navigator.pop(
                       context,
@@ -169,9 +172,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      SizedBox(
-                          height:
-                              20), // Add spacing between the row and the image
+                      const SizedBox(height: 20),
                       Container(
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
@@ -185,9 +186,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           backgroundImage: NetworkImage(widget.ownerImage),
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       Text(
-                        '${widget.ownerName}',
+                        widget.ownerName,
                         style: GoogleFonts.acme(
                           textStyle: const TextStyle(
                             fontSize: 24,
@@ -223,7 +224,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                             ),
                           ),
                         ),
-
                       Padding(
                         padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                         child: Column(
@@ -268,7 +268,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           height: 1,
                         ),
                       ),
-
                       Align(
                         alignment: Alignment.center,
                         child: Row(
@@ -283,9 +282,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(25.0),
                                   ),
-                                  minimumSize: Size(150, 20),
+                                  minimumSize: const Size(150, 20),
                                 ),
-                                child: Icon(Icons.restaurant_menu_rounded,
+                                child: const Icon(Icons.restaurant_menu_rounded,
                                     size: 24, color: AppColors.blackColor),
                               ),
                             ),
@@ -303,16 +302,17 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(25.0),
                                   ),
-                                  minimumSize: Size(150, 20),
+                                  minimumSize: const Size(150, 20),
                                 ),
-                                child: Icon(Icons.favorite_border_outlined,
-                                    size: 24, color: AppColors.blackColor),
+                                child: const Icon(
+                                    Icons.favorite_border_outlined,
+                                    size: 24,
+                                    color: AppColors.blackColor),
                               ),
                             ),
                           ],
                         ),
                       ),
-
                       Column(
                         children: [
                           if (flag == 1)
@@ -336,9 +336,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               ownerId: widget.ownerId,
                             ),
                         ],
-                      )
-
-                      //
+                      ),
                     ],
                   ),
                 ),
@@ -351,6 +349,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   }
 }
 
+// Classe que contiene el widget de la cabecera
 class _ProfileHeaderDelegate extends SliverPersistentHeaderDelegate {
   final String username;
   final VoidCallback onBackButtonPressed;
@@ -374,7 +373,7 @@ class _ProfileHeaderDelegate extends SliverPersistentHeaderDelegate {
           Padding(
             padding: const EdgeInsets.only(left: 5),
             child: IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.arrow_back_ios,
                 color: AppColors.primaryColor,
                 size: 20,
@@ -383,34 +382,34 @@ class _ProfileHeaderDelegate extends SliverPersistentHeaderDelegate {
             ),
           ),
           Text.rich(
-      TextSpan(
-        children: [
-          TextSpan(
-            text: '@$username',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: '@$username',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                if (username == 'plateshare')
+                  const WidgetSpan(
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(6, 6, 0, 0),
+                      child: Icon(
+                        Icons.verified,
+                        color: Colors.white,
+                        size: 21,
+                      ),
+                    ),
+                  ),
+              ],
             ),
           ),
-          if (username == 'plateshare')
-            WidgetSpan(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(6, 6, 0, 0),
-                child: Icon(
-                  Icons.verified,
-                  color: Colors.white,
-                  size: 21,
-                ),
-              ),
-            ),
-        ],
-      ),
-    ),
           Padding(
             padding: const EdgeInsets.only(right: 5),
             child: IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.close,
                 color: Colors.white,
                 size: 24,

@@ -3,23 +3,19 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:plateshare/screens/SearchScreen.dart';
 import 'package:plateshare/util/AppColors.dart';
 
-import '../screens/InicioScreen.dart';
-
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String emailData;
   final String nameData;
   final String profilePicData;
   final String usernameData;
-  MyAppBar({
+  
+  const MyAppBar({
     Key? key,
     required this.emailData,
     required this.nameData,
     required this.profilePicData,
     required this.usernameData,
   }) : super(key: key);
-
-  final TextEditingController _searchController = TextEditingController();
-  String _searchErrorText = '';
 
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
@@ -38,7 +34,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
       ),
-      centerTitle: true, // Add this line to center the title
+      centerTitle: true,
       actions: [
         Padding(
           padding: const EdgeInsets.fromLTRB(0, 0, 2, 0),

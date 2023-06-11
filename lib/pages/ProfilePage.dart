@@ -19,7 +19,7 @@ class ProfilePage extends StatefulWidget {
   final List<String> recipesIDs;
   final List<dynamic> likedRecipesIDs;
 
-  ProfilePage({
+  const ProfilePage({
     Key? key,
     required this.usernameData,
     required this.nameData,
@@ -37,7 +37,7 @@ class ProfilePage extends StatefulWidget {
   _ProfilePageState createState() => _ProfilePageState();
 }
 
-var screenSize;
+dynamic screenSize;
 
 class _ProfilePageState extends State<ProfilePage> {
   Color menuButtonColor = AppColors.brownRecepieColor;
@@ -47,6 +47,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   int flag = 1;
 
+  // Actualiza el estado de los botones al ser pulsado el botón de recetas
   void handleMenuButtonTap() {
     setState(() {
       menuButtonColor = AppColors.brownRecepieColor;
@@ -55,6 +56,7 @@ class _ProfilePageState extends State<ProfilePage> {
     });
   }
 
+  // Actualiza el estado de los botones al ser pulsado el botón de favoritos
   void handleFavoriteButtonTap() {
     setState(() {
       favoriteButtonColor = AppColors.brownRecepieColor;
@@ -69,6 +71,7 @@ class _ProfilePageState extends State<ProfilePage> {
     getProfileData();
   }
 
+  //Genera una lista de datos del perfil como la cantidad de recetas publicadas y la cantidad de seguidores y seguidos
   Future<void> getProfileData() async {
     setState(() {
       data = generateDataList(
@@ -76,6 +79,7 @@ class _ProfilePageState extends State<ProfilePage> {
     });
   }
 
+  // Genera una mapa dinamico con la información del perfil
   List<Map<String, dynamic>> generateDataList(
       int recipeCount, int followers, int follows) {
     return [
@@ -121,8 +125,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    SizedBox(
-                        height: 20), // Add spacing between the row and the image
+                    const SizedBox(
+                        height:
+                            20), // Add spacing between the row and the image
                     Container(
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
@@ -136,9 +141,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         backgroundImage: NetworkImage(widget.profilePicData),
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Text(
-                      '${widget.nameData}',
+                      widget.nameData,
                       style: GoogleFonts.acme(
                         textStyle: const TextStyle(
                           fontSize: 24,
@@ -147,7 +152,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                     ),
-      
+
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                       child: Column(
@@ -192,7 +197,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         height: 1,
                       ),
                     ),
-      
+
                     Align(
                       alignment: Alignment.center,
                       child: Row(
@@ -207,9 +212,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(25.0),
                                 ),
-                                minimumSize: Size(150, 20),
+                                minimumSize: const Size(150, 20),
                               ),
-                              child: Icon(Icons.restaurant_menu_rounded,
+                              child: const Icon(Icons.restaurant_menu_rounded,
                                   size: 24, color: AppColors.blackColor),
                             ),
                           ),
@@ -227,16 +232,16 @@ class _ProfilePageState extends State<ProfilePage> {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(25.0),
                                 ),
-                                minimumSize: Size(150, 20),
+                                minimumSize: const Size(150, 20),
                               ),
-                              child: Icon(Icons.favorite_border_outlined,
+                              child: const Icon(Icons.favorite_border_outlined,
                                   size: 24, color: AppColors.blackColor),
                             ),
                           ),
                         ],
                       ),
                     ),
-      
+
                     Column(
                       children: [
                         if (flag == 1)
@@ -260,9 +265,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ownerId: widget.userId,
                           ),
                       ],
-                    )
-      
-                    //
+                    ),
                   ],
                 ),
               ),
@@ -274,6 +277,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 }
 
+//Clase para mostrar la cabecera de la pagina
 class _ProfileHeaderDelegate extends SliverPersistentHeaderDelegate {
   final String username;
   final VoidCallback onBackButtonPressed;
@@ -292,58 +296,57 @@ class _ProfileHeaderDelegate extends SliverPersistentHeaderDelegate {
       height: 50,
       color: AppColors.primaryColor,
       child: Row(
-  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  children: [
-    Padding(
-      padding: const EdgeInsets.only(left: 5),
-      child: IconButton(
-        icon: Icon(
-          Icons.arrow_back_ios,
-          color: AppColors.primaryColor,
-          size: 20,
-        ),
-        onPressed: onBackButtonPressed,
-      ),
-    ),
-    Text.rich(
-      TextSpan(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          TextSpan(
-            text: '@$username',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
+          Padding(
+            padding: const EdgeInsets.only(left: 5),
+            child: IconButton(
+              icon: const Icon(
+                Icons.arrow_back_ios,
+                color: AppColors.primaryColor,
+                size: 20,
+              ),
+              onPressed: onBackButtonPressed,
             ),
           ),
-          if (username == 'plateshare')
-            WidgetSpan(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(6, 6, 0, 0),
-                child: Icon(
-                  Icons.verified,
-                  color: Colors.white,
-                  size: 21,
+          Text.rich(
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: '@$username',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
+                if (username == 'plateshare')
+                  const WidgetSpan(
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(6, 6, 0, 0),
+                      child: Icon(
+                        Icons.verified,
+                        color: Colors.white,
+                        size: 21,
+                      ),
+                    ),
+                  ),
+              ],
             ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 5),
+            child: IconButton(
+              icon: const Icon(
+                Icons.add_rounded,
+                color: Colors.white,
+                size: 30,
+              ),
+              onPressed: onAddButtonPressed,
+            ),
+          ),
         ],
       ),
-    ),
-    Padding(
-      padding: const EdgeInsets.only(right: 5),
-      child: IconButton(
-        icon: Icon(
-          Icons.add_rounded,
-          color: Colors.white,
-          size: 30,
-        ),
-        onPressed: onAddButtonPressed,
-      ),
-    ),
-  ],
-),
-
     );
   }
 

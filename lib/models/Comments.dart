@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class Comments {
   final String date;
   final String owner;

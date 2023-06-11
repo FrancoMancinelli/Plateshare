@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:bcrypt/bcrypt.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -44,6 +41,7 @@ class _RecipeFormScreenTwoState extends State<RecipeFormScreenTwo> {
   TextEditingController textController2 = TextEditingController();
   TextEditingController textController3 = TextEditingController();
 
+  // Añade un ingrediente a la lista de ser posible
   void addTexts() {
     String text1 = textController1.text;
     String text2 = textController2.text;
@@ -64,6 +62,7 @@ class _RecipeFormScreenTwoState extends State<RecipeFormScreenTwo> {
     }
   }
 
+  // Muestra un mensaje de requerimiento en la parte inferior de la pantalla
   void showRequired(int index) {
     switch (index) {
       case 1:
@@ -100,7 +99,7 @@ class _RecipeFormScreenTwoState extends State<RecipeFormScreenTwo> {
           ),
         );
         break;
-              case 5:
+      case 5:
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text(
@@ -112,120 +111,120 @@ class _RecipeFormScreenTwoState extends State<RecipeFormScreenTwo> {
     }
   }
 
+  // Elimina un ingrediente de la lista
   void deleteText(int index) {
     setState(() {
       texts.removeAt(index);
     });
   }
 
-  String dropdownValue = 'Litros'; // Declare dropdownValue variable
+  String dropdownValue = 'Litros';
 
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     return Scaffold(
-    body: SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Container(
-            color: AppColors.primaryColor,
-            child: SafeArea(
-              child: Container(
-                width: screenSize.width,
-                height: screenSize.height,
-                decoration: const BoxDecoration(
-                  color: AppColors.accentColor,
-                ),
-                child: Column(
-                  children: [
-                    Container(
-                      height: 45,
-                      width: screenSize.width,
-                      color: AppColors.primaryColor,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: Stack(
-                              alignment: Alignment.centerRight, // Updated alignment to centerRight
-                              children: [
-                                IconButton(
-                                  onPressed: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) => AlertDialog(
-                                        title: const Text('Confirmación'),
-                                        content: const Text(
-                                            '¿Estás seguro que deseas abandonar el proceso? Si abandonas, el progreso no se guardará'),
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.pop(
-                                                  context); // Close the dialog
-                                            },
-                                            child: const Text(
-                                              'Continuar',
-                                              style: TextStyle(
-                                                  color: Colors.blueGrey),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Container(
+              color: AppColors.primaryColor,
+              child: SafeArea(
+                child: Container(
+                  width: screenSize.width,
+                  height: screenSize.height,
+                  decoration: const BoxDecoration(
+                    color: AppColors.accentColor,
+                  ),
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 45,
+                        width: screenSize.width,
+                        color: AppColors.primaryColor,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Stack(
+                                alignment: Alignment.centerRight,
+                                children: [
+                                  IconButton(
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) => AlertDialog(
+                                          title: const Text('Confirmación'),
+                                          content: const Text(
+                                              '¿Estás seguro que deseas abandonar el proceso? Si abandonas, el progreso no se guardará'),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text(
+                                                'Continuar',
+                                                style: TextStyle(
+                                                    color: Colors.blueGrey),
+                                              ),
                                             ),
-                                          ),
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.pushReplacement(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      InicioScreen(
-                                                    emailData:
-                                                        widget.emailData,
-                                                    nameData: widget.nameData,
-                                                    profilePicData:
-                                                        widget.profilePicData,
-                                                    usernameData:
-                                                        widget.usernameData,
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.pushReplacement(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        InicioScreen(
+                                                      emailData:
+                                                          widget.emailData,
+                                                      nameData: widget.nameData,
+                                                      profilePicData:
+                                                          widget.profilePicData,
+                                                      usernameData:
+                                                          widget.usernameData,
+                                                    ),
                                                   ),
-                                                ),
-                                              );
-                                            },
-                                            child: const Text(
-                                              'Abandonar',
-                                              style: TextStyle(
-                                                  color: Colors.red),
+                                                );
+                                              },
+                                              child: const Text(
+                                                'Abandonar',
+                                                style: TextStyle(
+                                                    color: Colors.red),
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                  icon: const Icon(
-                                    Icons.close,
-                                    color: Colors.white,
-                                    size: 25,
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                    icon: const Icon(
+                                      Icons.close,
+                                      color: Colors.white,
+                                      size: 25,
+                                    ),
                                   ),
-                                ),
-                                Positioned.fill(
-                                  child: Align(
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      'Sube una receta',
-                                      textAlign: TextAlign.center,
-                                      style: GoogleFonts.acme(
-                                        textStyle: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 24,
-                                          fontFamily: 'Acme',
+                                  Positioned.fill(
+                                    child: Align(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        'Sube una receta',
+                                        textAlign: TextAlign.center,
+                                        style: GoogleFonts.acme(
+                                          textStyle: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 24,
+                                            fontFamily: 'Acme',
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
                       ),
-                    ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: ClipRRect(
@@ -328,11 +327,9 @@ class _RecipeFormScreenTwoState extends State<RecipeFormScreenTwo> {
                                 fontSize: 16,
                                 fontFamily: 'Acme',
                               ),
-                              keyboardType: TextInputType
-                                  .number, // Set the keyboard type to number
+                              keyboardType: TextInputType.number,
                               inputFormatters: <TextInputFormatter>[
-                                FilteringTextInputFormatter
-                                    .digitsOnly, // Restrict input to digits only
+                                FilteringTextInputFormatter.digitsOnly,
                               ],
                             ),
                           ),
@@ -421,7 +418,7 @@ class _RecipeFormScreenTwoState extends State<RecipeFormScreenTwo> {
                                         keyboardType: TextInputType.number,
                                         inputFormatters: <TextInputFormatter>[
                                           FilteringTextInputFormatter
-                                              .digitsOnly, // Restrict input to digits only
+                                              .digitsOnly,
                                         ],
                                         style: const TextStyle(
                                           color: AppColors.brownTextColor,
@@ -591,132 +588,143 @@ class _RecipeFormScreenTwoState extends State<RecipeFormScreenTwo> {
                                   },
                                 ),
                               ),
-                               Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 24.0),
-                                  child: Text(
-                                    'Paso 2 de 3',
-                                    style: GoogleFonts.acme(
-                                      textStyle: const TextStyle(
-                                        color: Color(0xFF80684C),
-                                        fontSize: 15,
-                                        fontFamily: 'Acme',
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(0, 5, 20, 0),
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.pop(
-                                          context); // Close the current screen
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.white,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(100),
-                                      ),
-                                    ),
-                                    child: Text(
-                                      'Volver',
-                                      style: GoogleFonts.acme(
-                                        textStyle: const TextStyle(
-                                          color: AppColors.brownTextColor,
-                                          fontSize: 16,
-                                          fontFamily: 'Acme',
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 24.0),
+                                          child: Text(
+                                            'Paso 2 de 3',
+                                            style: GoogleFonts.acme(
+                                              textStyle: const TextStyle(
+                                                color: Color(0xFF80684C),
+                                                fontSize: 15,
+                                                fontFamily: 'Acme',
+                                              ),
+                                            ),
+                                          ),
                                         ),
-                                      ),
+                                      ],
                                     ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(0, 5, 20, 0),
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      if (_racionesController
-                                          .text.isNotEmpty) {
-                                        if (int.parse(_racionesController.text) > 0 && int.parse(_racionesController.text) <= 100) {
-                                          if (texts.length >= 2) {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    RecipeFormScreenThree(
-                                                  emailData: widget.emailData,
-                                                  nameData: widget.nameData,
-                                                  profilePicData:
-                                                      widget.profilePicData,
-                                                  usernameData:
-                                                      widget.usernameData,
-                                                  tituloRecepie:
-                                                      widget.tituloRecepie,
-                                                  tiempoRecepie:
-                                                      widget.tiempoRecepie,
-                                                  categoriasRecepie: widget
-                                                      .categoriasRecepie,
-                                                  racionesRecepie:
-                                                      _racionesController
-                                                          .value.text,
-                                                  ingredientesRecepie: texts,
-                                                  imageRecipe:
-                                                      widget.imageRecipe,
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              0, 5, 20, 0),
+                                          child: ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Colors.white,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(100),
+                                              ),
+                                            ),
+                                            child: Text(
+                                              'Volver',
+                                              style: GoogleFonts.acme(
+                                                textStyle: const TextStyle(
+                                                  color:
+                                                      AppColors.brownTextColor,
+                                                  fontSize: 16,
+                                                  fontFamily: 'Acme',
                                                 ),
                                               ),
-                                            );
-                                          } else {
-                                            showRequired(2);
-                                          }
-                                        } else {
-                                          showRequired(4);
-                                        }
-                                      } else {
-                                        showRequired(1);
-                                      }
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.orange,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(100),
-                                      ),
-                                    ),
-                                    child: Text(
-                                      'Continuar',
-                                      style: GoogleFonts.acme(
-                                        textStyle: const TextStyle(
-                                          color: AppColors.whiteColor,
-                                          fontSize: 16,
-                                          fontFamily: 'Acme',
+                                            ),
+                                          ),
                                         ),
-                                      ),
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              0, 5, 20, 0),
+                                          child: ElevatedButton(
+                                            onPressed: () {
+                                              if (_racionesController
+                                                  .text.isNotEmpty) {
+                                                if (int.parse(
+                                                            _racionesController
+                                                                .text) >
+                                                        0 &&
+                                                    int.parse(
+                                                            _racionesController
+                                                                .text) <=
+                                                        100) {
+                                                  if (texts.length >= 2) {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            RecipeFormScreenThree(
+                                                          emailData:
+                                                              widget.emailData,
+                                                          nameData:
+                                                              widget.nameData,
+                                                          profilePicData: widget
+                                                              .profilePicData,
+                                                          usernameData: widget
+                                                              .usernameData,
+                                                          tituloRecepie: widget
+                                                              .tituloRecepie,
+                                                          tiempoRecepie: widget
+                                                              .tiempoRecepie,
+                                                          categoriasRecepie: widget
+                                                              .categoriasRecepie,
+                                                          racionesRecepie:
+                                                              _racionesController
+                                                                  .value.text,
+                                                          ingredientesRecepie:
+                                                              texts,
+                                                          imageRecipe: widget
+                                                              .imageRecipe,
+                                                        ),
+                                                      ),
+                                                    );
+                                                  } else {
+                                                    showRequired(2);
+                                                  }
+                                                } else {
+                                                  showRequired(4);
+                                                }
+                                              } else {
+                                                showRequired(1);
+                                              }
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Colors.orange,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(100),
+                                              ),
+                                            ),
+                                            child: Text(
+                                              'Continuar',
+                                              style: GoogleFonts.acme(
+                                                textStyle: const TextStyle(
+                                                  color: AppColors.whiteColor,
+                                                  fontSize: 16,
+                                                  fontFamily: 'Acme',
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
+                              ),
                             ],
                           ),
                         ),
                       ),
-                     
                     ],
                   ),
                 ),

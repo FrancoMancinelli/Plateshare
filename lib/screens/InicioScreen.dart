@@ -28,7 +28,7 @@ class InicioScreen extends StatefulWidget {
   _InicioScreenState createState() => _InicioScreenState();
 }
 
-var screenSize;
+dynamic screenSize;
 
 class _InicioScreenState extends State<InicioScreen> {
   final items = <Widget>[
@@ -38,12 +38,6 @@ class _InicioScreenState extends State<InicioScreen> {
   ];
 
   int _selectedIndex = 1;
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
 
   String userId = '';
   int followers = 0;
@@ -59,6 +53,7 @@ class _InicioScreenState extends State<InicioScreen> {
     getRecipesIDs();
   }
 
+  // Obtiene la información de cada receta a mostrar en el inicio
   Future<void> getRecipesIDs() async {
     final userIdFromDB = await getDocumentIdByUsername(widget.usernameData);
     final recipesIDsFromUserId = await getRecipeDocumentIDs(userIdFromDB);
@@ -84,7 +79,14 @@ class _InicioScreenState extends State<InicioScreen> {
       top: false,
       child: Scaffold(
         //El AppBar y Drawer solo se muestran si la pagina es la de recetas
-        appBar: _selectedIndex == 1 ? MyAppBar(emailData: widget.emailData, nameData: widget.nameData, profilePicData: widget.profilePicData, usernameData: widget.usernameData,) : null,
+        appBar: _selectedIndex == 1
+            ? MyAppBar(
+                emailData: widget.emailData,
+                nameData: widget.nameData,
+                profilePicData: widget.profilePicData,
+                usernameData: widget.usernameData,
+              )
+            : null,
         drawer: _selectedIndex == 1
             ? MyDrawer(
                 nameData: widget.nameData,
@@ -98,12 +100,11 @@ class _InicioScreenState extends State<InicioScreen> {
         floatingActionButton: _selectedIndex == 1
             ? FloatingActionButton(
                 backgroundColor: AppColors.orangeColor,
-                child: Icon(
+                child: const Icon(
                   Icons.add,
                   size: 30,
                 ),
                 onPressed: () {
-                  // Navigate to the screen where you want to add a recipe
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -123,24 +124,25 @@ class _InicioScreenState extends State<InicioScreen> {
               iconTheme: const IconThemeData(color: AppColors.whiteColor)),
           child: CurvedNavigationBar(
             color: AppColors.primaryColor,
-            backgroundColor: Color.fromARGB(255, 16, 141, 99),
+            backgroundColor: const Color.fromARGB(255, 16, 141, 99),
             buttonBackgroundColor: AppColors.orangeColor,
             animationCurve: Curves.easeInOut,
             animationDuration: const Duration(milliseconds: 500),
             items: items,
             height: 60,
             index: _selectedIndex,
-            onTap: (_selectedIndex) =>
-                setState(() => this._selectedIndex = _selectedIndex),
+            onTap: (selectedIndex) =>
+                setState(() => _selectedIndex = selectedIndex),
           ),
         ),
       ),
     );
   }
 
+  // Cambia el contenido de la pantalla y muestra una de las paginas según la sección donde se encuentre el usuario
   Widget _getPage(int index) {
     switch (index) {
-      case 0:
+      case 0: // Notificaciones
         return NotificationsPage(
           emailData: widget.emailData,
           nameData: widget.nameData,
@@ -155,7 +157,7 @@ class _InicioScreenState extends State<InicioScreen> {
           userUsername: widget.usernameData,
           userEmail: widget.emailData,
         );
-      case 2:
+      case 2: // Mi Perfil
         return ProfilePage(
           emailData: widget.emailData,
           usernameData: widget.usernameData,

@@ -21,14 +21,15 @@ class MyFavoritesContainer extends StatefulWidget {
     required this.profilePicData,
     required this.likedRecipesIDs,
     required this.userId,
-    required this.emailData, required this.ownerId,
+    required this.emailData,
+    required this.ownerId,
   }) : super(key: key);
 
   @override
   _MyFavoritesContainerState createState() => _MyFavoritesContainerState();
 }
 
-var screenSize;
+dynamic screenSize;
 
 class _MyFavoritesContainerState extends State<MyFavoritesContainer> {
   @override
@@ -42,14 +43,15 @@ class _MyFavoritesContainerState extends State<MyFavoritesContainer> {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            if (widget.likedRecipesIDs.isEmpty && widget.userId == widget.ownerId)
+            if (widget.likedRecipesIDs.isEmpty &&
+                widget.userId == widget.ownerId)
               Column(
                 children: [
                   Lottie.network(
-                  'https://assets6.lottiefiles.com/private_files/lf30_gctc76jz.json',
-                  width: 250,
-                  height:250,
-                ),
+                    'https://assets6.lottiefiles.com/private_files/lf30_gctc76jz.json',
+                    width: 250,
+                    height: 250,
+                  ),
                   Text(
                     'Aun no has guardado ninguna receta',
                     style: GoogleFonts.acme(
@@ -62,14 +64,15 @@ class _MyFavoritesContainerState extends State<MyFavoritesContainer> {
                   ),
                 ],
               ),
-            if (widget.likedRecipesIDs.isEmpty && widget.userId != widget.ownerId)
+            if (widget.likedRecipesIDs.isEmpty &&
+                widget.userId != widget.ownerId)
               Column(
                 children: [
                   Lottie.network(
-                  'https://assets6.lottiefiles.com/private_files/lf30_gctc76jz.json',
-                  width: 250,
-                  height:250,
-                ),
+                    'https://assets6.lottiefiles.com/private_files/lf30_gctc76jz.json',
+                    width: 250,
+                    height: 250,
+                  ),
                   Text(
                     'Aun no se ha guardado ninguna receta',
                     style: GoogleFonts.acme(
@@ -82,29 +85,15 @@ class _MyFavoritesContainerState extends State<MyFavoritesContainer> {
                   ),
                 ],
               ),
-              if(widget.likedRecipesIDs.isNotEmpty)
-            for (int i = 0; i < widget.likedRecipesIDs.length; i += 2)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Column(
-                    children: [
-                      ProfileRecipes(
-                        idRecepieInDatabase: widget.likedRecipesIDs[i],
-                        userImage: widget.profilePicData,
-                        userName: widget.nameData,
-                        userUsername: widget.usernameData,
-                        screenWidth: screenSize.width,
-                        userId: widget.userId,
-                        userEmail: widget.emailData,
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      if (i + 1 < widget.likedRecipesIDs.length)
+            if (widget.likedRecipesIDs.isNotEmpty)
+              for (int i = 0; i < widget.likedRecipesIDs.length; i += 2)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
+                      children: [
                         ProfileRecipes(
-                          idRecepieInDatabase: widget.likedRecipesIDs[i + 1],
+                          idRecepieInDatabase: widget.likedRecipesIDs[i],
                           userImage: widget.profilePicData,
                           userName: widget.nameData,
                           userUsername: widget.usernameData,
@@ -112,16 +101,30 @@ class _MyFavoritesContainerState extends State<MyFavoritesContainer> {
                           userId: widget.userId,
                           userEmail: widget.emailData,
                         ),
-                      if (i + 1 >= widget.likedRecipesIDs.length)
-                        Container(
-                          width: screenSize.width / 2,
-                          height: 245,
-                          color: AppColors.accentColor,
-                        ),
-                    ],
-                  ),
-                ],
-              ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        if (i + 1 < widget.likedRecipesIDs.length)
+                          ProfileRecipes(
+                            idRecepieInDatabase: widget.likedRecipesIDs[i + 1],
+                            userImage: widget.profilePicData,
+                            userName: widget.nameData,
+                            userUsername: widget.usernameData,
+                            screenWidth: screenSize.width,
+                            userId: widget.userId,
+                            userEmail: widget.emailData,
+                          ),
+                        if (i + 1 >= widget.likedRecipesIDs.length)
+                          Container(
+                            width: screenSize.width / 2,
+                            height: 245,
+                            color: AppColors.accentColor,
+                          ),
+                      ],
+                    ),
+                  ],
+                ),
           ],
         ),
       ),

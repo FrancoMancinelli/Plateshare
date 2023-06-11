@@ -29,22 +29,23 @@ class SettingsScreen extends StatefulWidget {
   _SettingsScreenState createState() => _SettingsScreenState();
 }
 
-var screenSizeAjustesScreen;
+dynamic screenSizeAjustesScreen;
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  TextEditingController _nombreController = TextEditingController();
-  TextEditingController _userController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-  TextEditingController _fechaController = TextEditingController();
-  TextEditingController _idiomaController = TextEditingController();
-  TextEditingController _versionController = TextEditingController();
+  final TextEditingController _nombreController = TextEditingController();
+  final TextEditingController _userController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _fechaController = TextEditingController();
+  final TextEditingController _idiomaController = TextEditingController();
+  final TextEditingController _versionController = TextEditingController();
   String currentUsername = '';
   String currentName = '';
   String currentImage = '';
   String imageUrl = '';
   XFile? imageRecipe = XFile('');
 
+  // Muestra un mensaje en la parte inferior de la pantalla según el valor indicado
   void showRequired(int index) {
     switch (index) {
       case 1:
@@ -135,7 +136,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               child: Row(
                 children: [
                   IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.arrow_back_ios,
                       color: AppColors.primaryColor,
                     ),
@@ -156,7 +157,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                   ),
                   IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.close,
                       color: AppColors.whiteColor,
                       size: 22,
@@ -224,7 +225,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             Padding(
                               padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
                               child: IconButton(
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.edit,
                                   color: AppColors.brownInfoRecipe,
                                   size: 25,
@@ -257,14 +258,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                       currentImage = imageUrl;
 
                                       setState(() {
-                                        // Update the UI with the new profile picture
                                         currentImage = imageUrl;
                                       });
 
                                       updateProfilePic(userId, currentImage);
                                       showRequired(6);
                                     } catch (error) {
-                                      print('Error uploading image: $error');
+                                     //
                                     }
                                   }
                                 },
@@ -273,27 +273,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           ],
                         ),
                       ),
-
                       Padding(
                         padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                         child: Column(
                           children: [
                             Container(
-                              margin: EdgeInsets.symmetric(vertical: 4),
-                              padding: EdgeInsets.fromLTRB(10, 1, 0, 1),
+                              margin: const EdgeInsets.symmetric(vertical: 4),
+                              padding: const EdgeInsets.fromLTRB(10, 1, 0, 1),
                               decoration: BoxDecoration(
                                 color: AppColors.greyAccentColor,
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Row(
                                 children: [
-                                  Icon(Icons.person),
-                                  SizedBox(width: 10),
-                                  Text('Nombre: '),
+                                  const Icon(Icons.person),
+                                  const SizedBox(width: 10),
+                                  const Text('Nombre: '),
                                   Expanded(
                                     child: TextField(
                                       controller: _nombreController,
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         hintText: 'Nombre',
                                         border: InputBorder.none,
                                       ),
@@ -303,21 +302,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               ),
                             ),
                             Container(
-                              margin: EdgeInsets.symmetric(vertical: 4),
-                              padding: EdgeInsets.fromLTRB(10, 1, 0, 1),
+                              margin: const EdgeInsets.symmetric(vertical: 4),
+                              padding: const EdgeInsets.fromLTRB(10, 1, 0, 1),
                               decoration: BoxDecoration(
                                 color: AppColors.greyAccentColor,
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Row(
                                 children: [
-                                  Icon(Icons.language_outlined),
-                                  SizedBox(width: 10),
-                                  Text('Usuario: '),
+                                  const Icon(Icons.language_outlined),
+                                  const SizedBox(width: 10),
+                                  const Text('Usuario: '),
                                   Expanded(
                                     child: TextField(
                                       controller: _userController,
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         hintText: 'Usuario',
                                         border: InputBorder.none,
                                       ),
@@ -327,22 +326,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               ),
                             ),
                             Container(
-                              margin: EdgeInsets.symmetric(vertical: 4),
-                              padding: EdgeInsets.fromLTRB(10, 1, 0, 1),
+                              margin: const EdgeInsets.symmetric(vertical: 4),
+                              padding: const EdgeInsets.fromLTRB(10, 1, 0, 1),
                               decoration: BoxDecoration(
                                 color: AppColors.desabledField,
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Row(
                                 children: [
-                                  Icon(Icons.email_outlined),
-                                  SizedBox(width: 10),
-                                  Text('Email: '),
+                                  const Icon(Icons.email_outlined),
+                                  const SizedBox(width: 10),
+                                  const Text('Email: '),
                                   Expanded(
                                     child: TextField(
                                       enabled: false,
                                       controller: _emailController,
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         hintText: 'Email',
                                         border: InputBorder.none,
                                       ),
@@ -352,22 +351,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               ),
                             ),
                             Container(
-                              margin: EdgeInsets.symmetric(vertical: 4),
-                              padding: EdgeInsets.fromLTRB(10, 1, 0, 1),
+                              margin: const EdgeInsets.symmetric(vertical: 4),
+                              padding: const EdgeInsets.fromLTRB(10, 1, 0, 1),
                               decoration: BoxDecoration(
                                 color: AppColors.desabledField,
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Row(
                                 children: [
-                                  Icon(Icons.lock),
-                                  SizedBox(width: 10),
-                                  Text('Contraseña: '),
+                                  const Icon(Icons.lock),
+                                  const SizedBox(width: 10),
+                                  const Text('Contraseña: '),
                                   Expanded(
                                     child: TextField(
                                       enabled: false,
                                       controller: _passwordController,
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         hintText: 'Contraseña actual',
                                         border: InputBorder.none,
                                       ),
@@ -377,22 +376,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               ),
                             ),
                             Container(
-                              margin: EdgeInsets.symmetric(vertical: 4),
-                              padding: EdgeInsets.fromLTRB(10, 1, 0, 1),
+                              margin: const EdgeInsets.symmetric(vertical: 4),
+                              padding: const EdgeInsets.fromLTRB(10, 1, 0, 1),
                               decoration: BoxDecoration(
                                 color: AppColors.desabledField,
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Row(
                                 children: [
-                                  Icon(Icons.calendar_month_outlined),
-                                  SizedBox(width: 10),
-                                  Text('Miembro desde: '),
+                                  const Icon(Icons.calendar_month_outlined),
+                                  const SizedBox(width: 10),
+                                  const Text('Miembro desde: '),
                                   Expanded(
                                     child: TextField(
                                       enabled: false,
                                       controller: _fechaController,
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         hintText: 'Fecha creación',
                                         border: InputBorder.none,
                                       ),
@@ -444,13 +443,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 } else {
                                   showRequired(5);
                                 }
-                              } 
+                              }
                             } else {
                               showRequired(4);
                             }
                           },
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
+                          child: const Padding(
+                            padding: EdgeInsets.all(10.0),
                             child: Text(
                               'Actualizar datos',
                               style: TextStyle(
@@ -484,22 +483,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         child: Column(
                           children: [
                             Container(
-                              margin: EdgeInsets.symmetric(vertical: 4),
-                              padding: EdgeInsets.fromLTRB(10, 1, 0, 1),
+                              margin: const EdgeInsets.symmetric(vertical: 4),
+                              padding: const EdgeInsets.fromLTRB(10, 1, 0, 1),
                               decoration: BoxDecoration(
                                 color: AppColors.desabledField,
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Row(
                                 children: [
-                                  Icon(Icons.spellcheck_rounded),
-                                  SizedBox(width: 10),
-                                  Text('Idioma: '),
+                                  const Icon(Icons.spellcheck_rounded),
+                                  const SizedBox(width: 10),
+                                  const Text('Idioma: '),
                                   Expanded(
                                     child: TextField(
                                       enabled: false,
                                       controller: _idiomaController,
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         hintText: 'Idioma',
                                         border: InputBorder.none,
                                       ),
@@ -509,22 +508,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               ),
                             ),
                             Container(
-                              margin: EdgeInsets.symmetric(vertical: 4),
-                              padding: EdgeInsets.fromLTRB(10, 1, 0, 1),
+                              margin: const EdgeInsets.symmetric(vertical: 4),
+                              padding: const EdgeInsets.fromLTRB(10, 1, 0, 1),
                               decoration: BoxDecoration(
                                 color: AppColors.desabledField,
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Row(
                                 children: [
-                                  Icon(Icons.settings_backup_restore_outlined),
-                                  SizedBox(width: 10),
-                                  Text('Versión: '),
+                                  const Icon(
+                                      Icons.settings_backup_restore_outlined),
+                                  const SizedBox(width: 10),
+                                  const Text('Versión: '),
                                   Expanded(
                                     child: TextField(
                                       enabled: false,
                                       controller: _versionController,
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         hintText: 'Version',
                                         border: InputBorder.none,
                                       ),
@@ -536,7 +536,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           ],
                         ),
                       ),
-                      //END
                     ],
                   ),
                 ),
@@ -548,6 +547,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
+  // Método que comprueba que el usuario nuevo introducido sea valido
   bool isValidUsername(String username) {
     // Verificar si no hay espacios en blanco
     if (username.contains(' ')) {

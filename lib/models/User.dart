@@ -1,23 +1,22 @@
-
 import 'MyNotification.dart';
 import 'Recipe.dart';
 
 class User {
-   String id;
-   String username;
-   String email;
-   String salt;
-   String name;
-   String password;
-   String profilepic;
-   List<String> favorites;
-   List<String> followers;
-   List<String> follows;
-   List<Recipe> recipes;
-   String fechaCreacion;
-   List<MyNotification> notifications;
+  String id;
+  String username;
+  String email;
+  String salt;
+  String name;
+  String password;
+  String profilepic;
+  List<String> favorites;
+  List<String> followers;
+  List<String> follows;
+  List<Recipe> recipes;
+  String fechaCreacion;
+  List<MyNotification> notifications;
 
-User({
+  User({
     required this.id,
     required this.email,
     required this.favorites,

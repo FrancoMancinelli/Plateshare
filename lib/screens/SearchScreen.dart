@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
@@ -28,7 +27,7 @@ class SearchScreen extends StatefulWidget {
   _SearchScreenState createState() => _SearchScreenState();
 }
 
-var screenSizeContactScreen;
+dynamic screenSizeContactScreen;
 
 class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController _searchController = TextEditingController();
@@ -63,7 +62,7 @@ class _SearchScreenState extends State<SearchScreen> {
               child: Row(
                 children: [
                   IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.arrow_back_ios,
                       color: AppColors.primaryColor,
                     ),
@@ -84,7 +83,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     ),
                   ),
                   IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.close,
                       color: AppColors.whiteColor,
                       size: 22,
@@ -137,7 +136,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                         enabledBorder: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.circular(50.0),
-                                          borderSide: BorderSide(
+                                          borderSide: const BorderSide(
                                             color: AppColors.desabledField,
                                             width: 3.0,
                                           ),
@@ -145,7 +144,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                         focusedBorder: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.circular(50.0),
-                                          borderSide: BorderSide(
+                                          borderSide: const BorderSide(
                                             color: AppColors.primaryColor,
                                             width: 2.0,
                                           ),
@@ -153,7 +152,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                       ),
                                     ),
                                   ),
-                                  SizedBox(width: 6),
+                                  const SizedBox(width: 6),
                                   Container(
                                     height: 45,
                                     width: 48,
@@ -198,6 +197,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                                   usuariosEncontrados;
                                             });
                                           }
+                                          _searchController.clear();
                                         } else {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(
@@ -209,7 +209,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                           );
                                         }
                                       },
-                                      icon: Icon(
+                                      icon: const Icon(
                                         Icons.search,
                                         size: 25,
                                       ),
@@ -233,12 +233,14 @@ class _SearchScreenState extends State<SearchScreen> {
                                   ),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 20,
                               ),
                               InkWell(
                                 onTap: () {
                                   setState(() {
+                                    firstflag == true;
+                                    busquedaRealizada = [];
                                     selectedCheckbox = 'ingredientes';
                                   });
                                 },
@@ -252,7 +254,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                         : AppColors.desabledField,
                                   ),
                                   child: selectedCheckbox == 'ingredientes'
-                                      ? Icon(
+                                      ? const Icon(
                                           Icons.check,
                                           color: Colors.white,
                                           size: 16,
@@ -260,7 +262,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                       : null,
                                 ),
                               ),
-                              SizedBox(width: 2),
+                              const SizedBox(width: 2),
                               Text(
                                 'Ingredientes',
                                 style: GoogleFonts.acme(
@@ -271,10 +273,12 @@ class _SearchScreenState extends State<SearchScreen> {
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 16),
+                              const SizedBox(width: 16),
                               InkWell(
                                 onTap: () {
                                   setState(() {
+                                    firstflag == true;
+                                    busquedaRealizada = [];
                                     selectedCheckbox = 'titulos';
                                   });
                                 },
@@ -288,7 +292,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                         : AppColors.desabledField,
                                   ),
                                   child: selectedCheckbox == 'titulos'
-                                      ? Icon(
+                                      ? const Icon(
                                           Icons.check,
                                           color: Colors.white,
                                           size: 16,
@@ -296,7 +300,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                       : null,
                                 ),
                               ),
-                              SizedBox(width: 2),
+                              const SizedBox(width: 2),
                               Text(
                                 'Titulos',
                                 style: GoogleFonts.acme(
@@ -307,10 +311,12 @@ class _SearchScreenState extends State<SearchScreen> {
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 16),
+                              const SizedBox(width: 16),
                               InkWell(
                                 onTap: () {
                                   setState(() {
+                                    firstflag == true;
+                                    busquedaRealizada = [];
                                     selectedCheckbox = 'usuarios';
                                   });
                                 },
@@ -324,7 +330,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                         : AppColors.desabledField,
                                   ),
                                   child: selectedCheckbox == 'usuarios'
-                                      ? Icon(
+                                      ? const Icon(
                                           Icons.check,
                                           color: Colors.white,
                                           size: 16,
@@ -332,7 +338,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                       : null,
                                 ),
                               ),
-                              SizedBox(width: 2),
+                              const SizedBox(width: 2),
                               Text(
                                 'Usuarios',
                                 style: GoogleFonts.acme(
@@ -345,7 +351,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                         ],
@@ -429,7 +435,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 selectedCheckbox == 'usuarios')
                               ListView.builder(
                                 shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
+                                physics: const NeverScrollableScrollPhysics(),
                                 itemCount: busquedaRealizada.length,
                                 itemBuilder: (context, index) {
                                   String elemento = busquedaRealizada[index];
@@ -438,11 +444,12 @@ class _SearchScreenState extends State<SearchScreen> {
                                     builder: (context, snapshot) {
                                       if (snapshot.connectionState ==
                                           ConnectionState.waiting) {
-                                        return CircularProgressIndicator();
+                                        return const CircularProgressIndicator();
                                       } else if (snapshot.hasError) {
-                                        return Text('Error fetching user data');
+                                        return const Text(
+                                            'Error fetching user data');
                                       } else if (!snapshot.hasData) {
-                                        return Text('No user data found');
+                                        return const Text('No user data found');
                                       } else {
                                         String name =
                                             snapshot.data!.get('name');
@@ -465,14 +472,14 @@ class _SearchScreenState extends State<SearchScreen> {
                                             if (recipeSnapshot
                                                     .connectionState ==
                                                 ConnectionState.waiting) {
-                                              return CircularProgressIndicator();
+                                              return const CircularProgressIndicator();
                                             } else if (recipeSnapshot
                                                 .hasError) {
-                                              return Text(
+                                              return const Text(
                                                   'Error fetching recipe data');
                                             } else if (!recipeSnapshot
                                                 .hasData) {
-                                              return Text(
+                                              return const Text(
                                                   'No recipe data found');
                                             } else {
                                               List<String> recipes =
@@ -519,8 +526,10 @@ class _SearchScreenState extends State<SearchScreen> {
                                                         BorderRadius.circular(
                                                             10),
                                                   ),
-                                                  padding: EdgeInsets.all(8),
-                                                  margin: EdgeInsets.symmetric(
+                                                  padding:
+                                                      const EdgeInsets.all(8),
+                                                  margin: const EdgeInsets
+                                                          .symmetric(
                                                       vertical: 8,
                                                       horizontal: 16),
                                                   child: Align(
@@ -556,7 +565,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                                             ),
                                                           ),
                                                         ),
-                                                        SizedBox(width: 16),
+                                                        const SizedBox(
+                                                            width: 16),
                                                         Expanded(
                                                           child: Column(
                                                             crossAxisAlignment:
@@ -570,7 +580,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                                                       text:
                                                                           '@$username',
                                                                       style:
-                                                                          TextStyle(
+                                                                          const TextStyle(
                                                                         color: AppColors
                                                                             .brownTextColor,
                                                                         fontSize:
@@ -581,10 +591,10 @@ class _SearchScreenState extends State<SearchScreen> {
                                                                     ),
                                                                     if (username ==
                                                                         'plateshare')
-                                                                      WidgetSpan(
+                                                                      const WidgetSpan(
                                                                         child:
                                                                             Padding(
-                                                                          padding: const EdgeInsets.fromLTRB(
+                                                                          padding: EdgeInsets.fromLTRB(
                                                                               6,
                                                                               6,
                                                                               0,
@@ -605,7 +615,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                                             ],
                                                           ),
                                                         ),
-                                                        Icon(
+                                                        const Icon(
                                                           Icons
                                                               .arrow_forward_ios,
                                                           color: AppColors

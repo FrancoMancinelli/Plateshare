@@ -59,7 +59,7 @@ class RecipeDetailsScreen extends StatefulWidget {
   _RecipeDetailsScreenState createState() => _RecipeDetailsScreenState();
 }
 
-var screenSize;
+dynamic screenSize;
 int flag = 1;
 double userValoration = 0;
 
@@ -85,7 +85,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
 
   List<Map<String, dynamic>> data = [];
 
-
+  //Obtieen los datos de una receta y su dueño
   Future<void> getProfileData() async {
     final ownerIdDB = await getDocumentIdByUsername(widget.ownerUsername);
     final recipeList = await getRecipeDocumentIDs(ownerIdDB);
@@ -119,6 +119,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
     getProfileData();
   }
 
+  // Actualiza en tiempo real el listado de comentarios
   void refreshComments() async {
     List<Map<String, dynamic>> updatedComments =
         await getRecipeComments(widget.recipeID);
@@ -128,6 +129,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
     commentListKey.currentState?.updateComments(comments);
   }
 
+  // Comprueba si el dueño de la receta es el usuario actual que esta visionandola
   Future<void> checkOwner() async {
     final ownerId = await getDocumentIdByUsername(widget.ownerUsername);
 
@@ -140,6 +142,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
     });
   }
 
+  // Actualiza el estado de los botones y la bandera si se presiona el boton de ingredientes
   void handleFirstButtonPressed() {
     setState(() {
       secondButtonColor = AppColors.brownButtonsRecipe;
@@ -148,6 +151,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
     });
   }
 
+  // Actualiza el estado de los botones y la bandera si se presiona el boton de instrucciones
   void handleSecondButtonPressed() {
     setState(() {
       firstButtonColor = AppColors.brownButtonsRecipe;
@@ -156,6 +160,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
     });
   }
 
+  // Modifica el contenido del container dependiendo si esta seleccionado ingredientes o instrucciones
   Widget buildContainerBasedOnFlag(int flag) {
     if (flag == 1) {
       return IngredientContainer(
@@ -171,12 +176,13 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
     }
   }
 
+  //Muestra un mensaje informativo en la parte inferior de la pantalla. Dependidendo del valor mostrará un mensaje u otro
   void showBottomMessage(int index) {
     switch (index) {
       case 1:
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('Valoración actualizada con éxito'),
+          const SnackBar(
+            content: Text('Valoración actualizada con éxito'),
             backgroundColor: Colors.green,
             duration: Duration(milliseconds: 1500),
           ),
@@ -184,8 +190,8 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
         break;
       case 2:
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('Se ha eliminado la valoración'),
+          const SnackBar(
+            content: Text('Se ha eliminado la valoración'),
             backgroundColor: Colors.red,
             duration: Duration(milliseconds: 1500),
           ),
@@ -193,8 +199,8 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
         break;
       case 3:
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('Comentario enviado con éxito'),
+          const SnackBar(
+            content: Text('Comentario enviado con éxito'),
             backgroundColor: Colors.green,
             duration: Duration(milliseconds: 1500),
           ),
@@ -226,7 +232,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                   ),
                 ),
                 IconButton(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.arrow_back,
                     color: Colors.white,
                   ),
@@ -254,7 +260,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                       ),
                     ),
                     IconButton(
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.delete_forever,
                         color: Colors.white,
                       ),
@@ -263,22 +269,20 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
-                              title: Text('Confirmar eliminación'),
-                              content: Text(
+                              title: const Text('Confirmar eliminación'),
+                              content: const Text(
                                   '¿Estas seguro que quieres eliminar esta receta para siempre? Se eliminará toda información relacionada a esta receta y los datos no podrán ser recuperados'),
                               actions: [
                                 TextButton(
-                                  child: Text('Cancelar'),
+                                  child: const Text('Cancelar'),
                                   onPressed: () {
-                                    Navigator.of(context).pop(
-                                        false); // Return false to indicate cancellation
+                                    Navigator.of(context).pop(false);
                                   },
                                 ),
                                 TextButton(
-                                  child: Text('Eliminar'),
+                                  child: const Text('Eliminar'),
                                   onPressed: () {
-                                    Navigator.of(context).pop(
-                                        true); // Return true to indicate confirmation
+                                    Navigator.of(context).pop(true);
                                   },
                                 ),
                               ],
@@ -315,7 +319,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
               ),
             ),
             bottom: PreferredSize(
-              preferredSize: Size.fromHeight(50),
+              preferredSize: const Size.fromHeight(50),
               child: Row(
                 children: [
                   Expanded(
@@ -326,7 +330,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                         child: Container(
                           height: 45,
                           color: Colors.black.withOpacity(0.5),
-                          padding: EdgeInsets.symmetric(horizontal: 8),
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
                           child: Row(
                             children: [
                               GestureDetector(
@@ -335,22 +339,22 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => UserProfileScreen(
-                                          ownerUsername: widget.ownerUsername,
-                                           follows: follows,
-                                           likedRecipesIDs: likedRecipesIDs,
-                                           ownerEmail: ownerEmail,
-                                           ownerId: ownerId,
-                                           ownerImage: ownerImage,
-                                           ownerName: ownerName,
-                                           recipeCount: recipeCount,
-                                           recipesIDs: recipesIDs,
-
-                                           currentUseremail: widget.userEmail,
-                                           currentUserimage: widget.userImage,
-                                           currentUsername: widget.userName,
-                                           currentUseruserId: widget.userId,
-                                           currentUserusername: widget.userUsername,
-                                           ),
+                                        ownerUsername: widget.ownerUsername,
+                                        follows: follows,
+                                        likedRecipesIDs: likedRecipesIDs,
+                                        ownerEmail: ownerEmail,
+                                        ownerId: ownerId,
+                                        ownerImage: ownerImage,
+                                        ownerName: ownerName,
+                                        recipeCount: recipeCount,
+                                        recipesIDs: recipesIDs,
+                                        currentUseremail: widget.userEmail,
+                                        currentUserimage: widget.userImage,
+                                        currentUsername: widget.userName,
+                                        currentUseruserId: widget.userId,
+                                        currentUserusername:
+                                            widget.userUsername,
+                                      ),
                                     ),
                                   );
                                 },
@@ -369,10 +373,10 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 5),
+                              const SizedBox(width: 5),
                               Text(
                                 '@${widget.ownerUsername}',
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold,
@@ -405,7 +409,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                             ),
                             Text(
                               amountLikes.toString(),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -450,7 +454,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                           padding: const EdgeInsets.fromLTRB(8, 3, 10, 0),
                           child: Row(
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.star_rounded,
                                 color: AppColors.brownInfoRecipe,
                               ),
@@ -467,10 +471,10 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                                   ),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
-                              Icon(
+                              const Icon(
                                 Icons.access_time,
                                 color: AppColors.brownInfoRecipe,
                                 size: 20,
@@ -488,9 +492,9 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                                   ),
                                 ),
                               ),
-                              Spacer(), // Add a spacer to push the next elements to the right
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(0, 4, 2, 0),
+                              const Spacer(),
+                              const Padding(
+                                padding: EdgeInsets.fromLTRB(0, 4, 2, 0),
                                 child: Icon(
                                   Icons.chat_bubble_outline,
                                   color: AppColors.brownInfoRecipe,
@@ -589,7 +593,6 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                             child: buildContainerBasedOnFlag(flag),
                           ),
                         ),
-
                         Padding(
                           padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
                           child: Container(
@@ -598,7 +601,6 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                             width: screenSize.width,
                           ),
                         ),
-
                         Column(
                           children: [
                             RatingBar.builder(
@@ -608,11 +610,12 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                               allowHalfRating: true,
                               itemCount: 5,
                               itemPadding:
-                                  EdgeInsets.symmetric(horizontal: 4.0),
-                              itemBuilder: (context, _) => Icon(
+                                  const EdgeInsets.symmetric(horizontal: 4.0),
+                              itemBuilder: (context, _) => const Icon(
                                 Icons.star_rounded,
                                 color: AppColors.primaryColor,
                               ),
+                              //Actualizo los datos de las valoraciones en la base de datos
                               onRatingUpdate: (rating) async {
                                 String ownerId = await getDocumentIdByUsername(
                                     widget.ownerUsername);
@@ -692,10 +695,10 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                                                   'Dejar un comentario...',
                                               border: InputBorder.none,
                                               contentPadding:
-                                                  EdgeInsets.fromLTRB(
+                                                  const EdgeInsets.fromLTRB(
                                                       8, 0, 0, 11),
                                               hintStyle: GoogleFonts.acme(
-                                                textStyle: TextStyle(
+                                                textStyle: const TextStyle(
                                                   fontSize: 15,
                                                   color: AppColors.greyColor,
                                                   fontFamily: 'Acme',
@@ -708,10 +711,11 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                                       ),
                                     ),
                                     IconButton(
-                                      icon: Icon(
+                                      icon: const Icon(
                                         Icons.send_rounded,
                                         color: AppColors.whiteColor,
                                       ),
+                                      //Publica un comentario en la receta
                                       onPressed: () async {
                                         if (_commentController
                                             .text.isNotEmpty) {
@@ -734,7 +738,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                                             1,
                                             userImage,
                                           );
-                                          refreshComments(); // Update the comments list
+                                          refreshComments();
                                         }
                                       },
                                     ),
@@ -748,8 +752,6 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                           key: commentListKey,
                           comments: comments,
                         ),
-
-                        //END
                       ],
                     ),
                   ),

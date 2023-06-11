@@ -42,6 +42,7 @@ class RecipesPage extends StatelessWidget {
   String cuartaSeccion = "";
   String quintaSeccion = "";
 
+  //Rellena una lista de contenedores que muestran las recetas. Segun la categoria indicada añadira ese tipo de recetas a la lista
   Future<List<Widget>> printRecipes(String categoria) async {
     List<Widget> containers = [];
 
@@ -244,9 +245,10 @@ class RecipesPage extends StatelessWidget {
     return containers;
   }
 
+  // Obtiene una categoria de clasificación aleatoria y si es escojida la elimina de la lista
   String getRandomClasificationAndRemove() {
     if (listClasificaciones.isEmpty) {
-      return ''; // Return an empty string or handle the case when the list is empty
+      return '';
     }
 
     final random = Random();
@@ -316,7 +318,7 @@ class RecipesPage extends StatelessWidget {
                       } else if (snapshot.hasError) {
                         return Text('Error: ${snapshot.error}');
                       }
-                      return CircularProgressIndicator();
+                      return const CircularProgressIndicator();
                     },
                   )),
             ),
@@ -365,7 +367,7 @@ class RecipesPage extends StatelessWidget {
                       } else if (snapshot.hasError) {
                         return Text('Error: ${snapshot.error}');
                       }
-                      return CircularProgressIndicator();
+                      return const CircularProgressIndicator();
                     },
                   )),
             ),
@@ -414,7 +416,7 @@ class RecipesPage extends StatelessWidget {
                       } else if (snapshot.hasError) {
                         return Text('Error: ${snapshot.error}');
                       }
-                      return CircularProgressIndicator();
+                      return const CircularProgressIndicator();
                     },
                   )),
             ),
@@ -463,7 +465,7 @@ class RecipesPage extends StatelessWidget {
                     } else if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
                     }
-                    return CircularProgressIndicator();
+                    return const CircularProgressIndicator();
                   },
                 ),
               ),
@@ -513,7 +515,7 @@ class RecipesPage extends StatelessWidget {
                     } else if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
                     }
-                    return CircularProgressIndicator();
+                    return const CircularProgressIndicator();
                   },
                 ),
               ),

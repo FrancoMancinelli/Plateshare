@@ -36,7 +36,7 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
         child: Container(
           width: screenSize.width,
           height: screenSize.height,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             image: DecorationImage(
               image: NetworkImage('https://i.imgur.com/pbBleS1.png'),
               fit: BoxFit.cover,
@@ -118,7 +118,7 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50.0),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                               color: AppColors.orangeColor, width: 2),
                         ),
                         labelText: 'Usuario',
@@ -140,7 +140,7 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50.0),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                               color: AppColors.orangeColor, width: 2),
                         ),
                         labelText: 'Contraseña',
@@ -179,7 +179,7 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50.0),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                               color: AppColors.orangeColor, width: 2),
                         ),
                         labelText: 'Repite Contraseña',
@@ -288,6 +288,7 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
     );
   }
 
+  // Valida que los valores introducidos sean validos y correctos
   Future<void> validateFields() async {
     String usernameInput = _usernameController.text.toLowerCase();
     String passwordInput = _passwordController.text;
@@ -307,7 +308,6 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
           //Comprueba que la contraseña mida al menos 8 caracteres
           if (passwordInput.length >= 8 && passwordInput.length <= 24) {
             String pinCode = generatePin();
-            print(pinCode);
             String userId = await getDocumentIdByUsername(usernameInput);
 
             DateTime pinTime = DateTime.now();
@@ -316,12 +316,11 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
             String hashedPassword = BCrypt.hashpw(passwordInput, salt);
 
             String userEmail = await getEmailByUsername(usernameInput);
-            print(userEmail);
 
             await enviarEmail(
                 email: userEmail, pinCode: pinCode, username: usernameInput);
 
-            await Future.delayed(Duration(seconds: 3));
+            await Future.delayed(const Duration(seconds: 3));
 
             Navigator.pushReplacement(
               context,
@@ -333,7 +332,7 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
                       password: hashedPassword)),
             );
           } else {
-            await Future.delayed(Duration(seconds: 3));
+            await Future.delayed(const Duration(seconds: 3));
 
             showDialog(
               context: context,
@@ -356,7 +355,7 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
             });
           }
         } else {
-          await Future.delayed(Duration(seconds: 3));
+          await Future.delayed(const Duration(seconds: 3));
 
           showDialog(
             context: context,
@@ -378,7 +377,7 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
           });
         }
       } else {
-        await Future.delayed(Duration(seconds: 3));
+        await Future.delayed(const Duration(seconds: 3));
 
         showDialog(
           context: context,
@@ -420,35 +419,35 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
     }
   }
 
+  // Envia un Email al correo del usuario indicando el PIN para cambiar su contraseña
   Future enviarEmail({email, pinCode, username}) async {
-    const service_id = 'service_df6jida';
-    const template_id = 'template_2o26bsr';
-    const user_id = 'J0XTNBhNp5LcSKLga';
+    var serviceId = 'service_df6jida';
+    var templateId = 'template_2o26bsr';
+    var userId = 'J0XTNBhNp5LcSKLga';
 
     var url = Uri.parse('https://api.emailjs.com/api/v1.0/email/send');
     try {
-      var response = await http.post(url,
+    await http.post(url,
           headers: {
             'origin': '<http://localhost>',
             'Content-Type': 'application/json'
           },
           body: json.encode({
-            'service_id': service_id,
-            'template_id': template_id,
-            'user_id': user_id,
+            'service_id': serviceId,
+            'template_id': templateId,
+            'user_id': userId,
             'template_params': {
               'username': username,
               'to_email': email,
               'pin_code': pinCode,
             }
           }));
-      print('Pin enviado');
-      print(response.body);
     } catch (error) {
-      print('Error al enviar el email');
+      //
     }
   }
 
+  // Genera un PIN aleatorio de 4 números
   String generatePin() {
     Random random = Random();
     String result = '';

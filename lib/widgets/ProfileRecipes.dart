@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:like_button/like_button.dart';
-import 'package:plateshare/screens/LoginScreen.dart';
 import 'package:plateshare/screens/RecipeDetailsScreen.dart';
 import 'package:plateshare/services/firebase_service.dart';
 import 'package:plateshare/util/AppColors.dart';
@@ -24,7 +22,8 @@ class ProfileRecipes extends StatefulWidget {
     required this.userName,
     required this.userUsername,
     required this.screenWidth,
-    required this.userId, required this.userEmail,
+    required this.userId,
+    required this.userEmail,
   }) : super(key: key);
 
   @override
@@ -52,12 +51,14 @@ class _ProfileRecipesState extends State<ProfileRecipes> {
     super.initState();
     fetchRecipeData();
   }
-
+ 
+  // Obtiene la oformación de las recetas del dueño del perfil
   Future<void> fetchRecipeData() async {
     final recipeData = await getRecipeFields(widget.idRecepieInDatabase);
     final recipeSteps = await getRecipeSteps(widget.idRecepieInDatabase);
     final recipeOwner = await getUserInfoFromRecipe(widget.idRecepieInDatabase);
-    final recipeIngredients = await getRecipeIngredients(widget.idRecepieInDatabase);
+    final recipeIngredients =
+        await getRecipeIngredients(widget.idRecepieInDatabase);
     final formattedIngredients = formatIngredients(recipeIngredients);
     final recipeComments = await getRecipeComments(widget.idRecepieInDatabase);
     final ownerId = await getDocumentIdByUsername(recipeOwner[1]);
@@ -119,48 +120,46 @@ class _ProfileRecipesState extends State<ProfileRecipes> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-         Navigator.push(
+        Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => RecipeDetailsScreen(
-                recipeID: widget.idRecepieInDatabase,
-                recipeImage: image,
-                recipeRate: rate,
-                recipeTime: time,
-                recipeTitle: title,
-                recipeLikes: likes,
-                recipeRations: int.parse(rations),
-                recipeSteps: steps,
-                ownerImage: ownerImage,
-                ownerUsername: ownerUsername,
-                recipeIngredients: ingredients,
-                userId: widget.userId,
-                userImage: widget.userImage,
-                userName: widget.userName,
-                userUsername: widget.userUsername,
-                recipeComments: comentarios,
-                isFavorite: isFavorite, userEmail: widget.userEmail,),
+              recipeID: widget.idRecepieInDatabase,
+              recipeImage: image,
+              recipeRate: rate,
+              recipeTime: time,
+              recipeTitle: title,
+              recipeLikes: likes,
+              recipeRations: int.parse(rations),
+              recipeSteps: steps,
+              ownerImage: ownerImage,
+              ownerUsername: ownerUsername,
+              recipeIngredients: ingredients,
+              userId: widget.userId,
+              userImage: widget.userImage,
+              userName: widget.userName,
+              userUsername: widget.userUsername,
+              recipeComments: comentarios,
+              isFavorite: isFavorite,
+              userEmail: widget.userEmail,
+            ),
           ),
         );
       },
       child: Container(
-        width: widget.screenWidth/2,
+        width: widget.screenWidth / 2,
         height: 245,
         decoration: BoxDecoration(
-          color: AppColors.brownRecepieColor,
-          borderRadius: BorderRadius.circular(0),
-          border: Border.all(
-            color: AppColors.greyColor,
-            width: 0.5
-          )
-        ),
+            color: AppColors.brownRecepieColor,
+            borderRadius: BorderRadius.circular(0),
+            border: Border.all(color: AppColors.greyColor, width: 0.5)),
         child: Column(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            //IMAGEN IMAGEN IMAGEN IMAGEN
+            //IMAGEN
             Padding(
-              padding: EdgeInsets.fromLTRB(5, 5, 5, 0),
+              padding: const EdgeInsets.fromLTRB(5, 5, 5, 0),
               child: Container(
                 width: 182,
                 height: 140,
@@ -170,7 +169,7 @@ class _ProfileRecipesState extends State<ProfileRecipes> {
                     BoxShadow(
                       color: Colors.black.withOpacity(0.3),
                       blurRadius: 4,
-                      offset: Offset(0, 2),
+                      offset: const Offset(0, 2),
                     ),
                   ],
                 ),
@@ -186,22 +185,23 @@ class _ProfileRecipesState extends State<ProfileRecipes> {
               ),
             ),
 
-            //PUNTUACION Y HORA | PUNTUACION Y HORA
+            //PUNTUACION Y HORA
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-                    child: Icon(Icons.star_rounded, color: Colors.white, size: 22),
+                  const Padding(
+                    padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                    child:
+                        Icon(Icons.star_rounded, color: Colors.white, size: 22),
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(1, 2, 0, 0),
                     child: Text(
                       rate,
                       style: GoogleFonts.acme(
-                        textStyle: TextStyle(
+                        textStyle: const TextStyle(
                           color: Colors.white,
                           fontSize: 17,
                           fontFamily: 'Acme',
@@ -209,17 +209,17 @@ class _ProfileRecipesState extends State<ProfileRecipes> {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: Icon(Icons.access_time,
-                        color: Colors.white, size: 20),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 8.0),
+                    child:
+                        Icon(Icons.access_time, color: Colors.white, size: 20),
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(2, 2, 0, 0),
                     child: Text(
                       '$time mins',
                       style: GoogleFonts.acme(
-                        textStyle: TextStyle(
+                        textStyle: const TextStyle(
                           color: Colors.white,
                           fontSize: 17,
                           fontFamily: 'Acme',
@@ -237,14 +237,13 @@ class _ProfileRecipesState extends State<ProfileRecipes> {
                 children: [
                   Expanded(
                     child: Align(
-                      alignment: Alignment
-                          .topLeft, // Align the text at the top and left
+                      alignment: Alignment.topLeft,
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(8, 5, 5, 5),
                         child: Text(
                           title,
                           style: GoogleFonts.acme(
-                            textStyle: TextStyle(
+                            textStyle: const TextStyle(
                               color: Colors.white,
                               fontSize: 20,
                               fontFamily: 'Acme',

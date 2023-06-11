@@ -21,7 +21,6 @@ class _InstructionsContainerState extends State<InstructionsContainer> {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            
             Align(
               alignment: Alignment.centerLeft,
               child: Column(
@@ -31,7 +30,7 @@ class _InstructionsContainerState extends State<InstructionsContainer> {
                     padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
                     child: Text(
                       step,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: AppColors.brownTextColor,
                         fontSize: 17,
                         fontWeight: FontWeight.bold,
@@ -41,7 +40,6 @@ class _InstructionsContainerState extends State<InstructionsContainer> {
                 }).toList(),
               ),
             ),
-            //
           ],
         ),
       ),

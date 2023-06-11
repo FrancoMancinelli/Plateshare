@@ -4,10 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:plateshare/services/firebase_service.dart';
 
-import '../models/Comments.dart';
-import '../models/Ingredient.dart';
-import '../models/MyNotification.dart';
-import '../models/Recipe.dart';
 import '../models/User.dart';
 import '../util/AppColors.dart';
 import 'InicioScreen.dart';
@@ -15,7 +11,9 @@ import 'RecuperarScreen.dart';
 import 'RegistroScreen.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key,}) : super(key: key);
+  const LoginScreen({
+    Key? key,
+  }) : super(key: key);
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -27,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _obscureText = true;
   bool isImageVisible = false;
 
-    List<User> usuarios = [];
+  List<User> usuarios = [];
 
   @override
   void initState() {
@@ -35,16 +33,15 @@ class _LoginScreenState extends State<LoginScreen> {
     getUsuarios();
   }
 
-void getUsuarios() async {
+// Rellena la lista de usuarios con todos los usuarios existentes de la base de datos para optimizar el servicio
+  void getUsuarios() async {
     final userList = await getUsers();
     setState(() {
       usuarios = userList;
     });
   }
 
-
-
-
+  //Comprueba que la autenticación del login sea valida, que el usuario exista y tenga esa contraseña
   void validateAndAuthenticate() async {
     String usernameInput = _usernameController.text.toLowerCase();
     String passwordInput = _passwordController.text;
@@ -63,14 +60,14 @@ void getUsuarios() async {
         String hashedPassword = BCrypt.hashpw(passwordInput, databaseSalt);
         bool validCredentials =
             checkCredentials(actualUser, usernameInput, hashedPassword);
+        //Si la contraseña corresponde a ese usuario...
         if (validCredentials) {
+          await Future.delayed(const Duration(seconds: 5));
 
-          await Future.delayed(Duration(seconds: 5)); // Delay for 5 seconds
-
-          final BuildContext _context = context;
+          final BuildContext buildContext = context;
           Future.microtask(() {
             Navigator.pushReplacement(
-              _context,
+              buildContext,
               MaterialPageRoute(
                 builder: (context) => InicioScreen(
                   emailData: actualUser.email,
@@ -82,8 +79,7 @@ void getUsuarios() async {
             );
           });
         } else {
-          await Future.delayed(Duration(seconds: 3)); // Delay for 5 seconds
-
+          await Future.delayed(const Duration(seconds: 3));
           showDialog(
             context: context,
             builder: (context) => AlertDialog(
@@ -108,7 +104,7 @@ void getUsuarios() async {
           return;
         }
       } else {
-        await Future.delayed(Duration(seconds: 3)); // Delay for 5 seconds
+        await Future.delayed(const Duration(seconds: 3));
 
         showDialog(
           context: context,
@@ -168,7 +164,7 @@ void getUsuarios() async {
         child: Container(
           width: screenSize.width,
           height: screenSize.height,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             image: DecorationImage(
               image: NetworkImage('https://i.imgur.com/pbBleS1.png'),
               fit: BoxFit.cover,
@@ -221,7 +217,7 @@ void getUsuarios() async {
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50.0),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                               color: AppColors.orangeColor, width: 2),
                         ),
                         labelText: 'Username',
@@ -243,7 +239,7 @@ void getUsuarios() async {
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50.0),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                               color: AppColors.orangeColor, width: 2),
                         ),
                         labelText: 'Contraseña',
@@ -343,7 +339,7 @@ void getUsuarios() async {
                     ),
                     InkWell(
                       onTap: () {
-                        if (!isImageVisible)
+                        if (!isImageVisible) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text(
@@ -351,6 +347,7 @@ void getUsuarios() async {
                               backgroundColor: Colors.red,
                             ),
                           );
+                        }
                       },
                       child: Image.network(
                         'https://i.imgur.com/h4jfgvd.png',
@@ -379,7 +376,7 @@ void getUsuarios() async {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                             const RegistroScreen()),
+                                            const RegistroScreen()),
                                   );
                                 }
                               },
@@ -407,7 +404,7 @@ void getUsuarios() async {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                             RecuperarScreen()),
+                                            const RecuperarScreen()),
                                   );
                                 }
                               },
@@ -438,28 +435,32 @@ void getUsuarios() async {
     );
   }
 
+  // Comprueba si el usuario existe en la lista de usuarios
   bool userExists(String username) {
-  for (User user in usuarios) {
-    if (user.username == username) {
-      return true; // Username found
+    for (User user in usuarios) {
+      if (user.username == username) {
+        return true;
+      }
     }
+    return false;
   }
-  return false; // Username not found
-}
 
-User? getUserByUsername(String username) {
-  for (User user in usuarios) {
-    if (user.username == username) {
-      return user; // User with matching username found
+// Obtiene el usuario de la lista de usuarios
+  User? getUserByUsername(String username) {
+    for (User user in usuarios) {
+      if (user.username == username) {
+        return user;
+      }
     }
+    return null;
   }
-  return null; // User with matching username not found
-}
 
-  bool checkCredentials(User user, String usernameInput, String hashedPassword) {
+  // Comprueba las credenciales de un determinado usuario
+  bool checkCredentials(
+      User user, String usernameInput, String hashedPassword) {
     if (user.username == usernameInput && user.password == hashedPassword) {
-      return true; 
+      return true;
     }
-  return false;
-}
+    return false;
+  }
 }

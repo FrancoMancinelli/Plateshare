@@ -1,9 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class MyNotification {
   final String id;
   final String data;
-  final Timestamp date;
+  final String date;
   final String image;
   final int type;
   final String usernotifier;

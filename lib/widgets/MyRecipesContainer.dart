@@ -6,7 +6,6 @@ import 'package:plateshare/widgets/ProfileRecipes.dart';
 
 import '../screens/RecipeFormScreenOne.dart';
 
-
 class MyRecipesContainer extends StatefulWidget {
   final String emailData;
   final String nameData;
@@ -24,14 +23,15 @@ class MyRecipesContainer extends StatefulWidget {
     required this.emailData,
     required this.nameData,
     required this.usernameData,
-    required this.profilePicData, required this.ownerId,
+    required this.profilePicData,
+    required this.ownerId,
   }) : super(key: key);
 
   @override
   _MyRecipesContainerState createState() => _MyRecipesContainerState();
 }
 
-var screenSize;
+dynamic screenSize;
 
 class _MyRecipesContainerState extends State<MyRecipesContainer> {
   @override
@@ -105,13 +105,13 @@ class _MyRecipesContainerState extends State<MyRecipesContainer> {
                   ),
                 ],
               ),
-              if (widget.recipesIDs.isEmpty && widget.userId != widget.ownerId)
+            if (widget.recipesIDs.isEmpty && widget.userId != widget.ownerId)
               Column(
                 children: [
                   Lottie.network(
                     'https://assets6.lottiefiles.com/private_files/lf30_gctc76jz.json',
                     width: 250,
-                    height:250,
+                    height: 250,
                   ),
                   Text(
                     '¡Ups! Aun no se han publicado recetas',
@@ -123,7 +123,6 @@ class _MyRecipesContainerState extends State<MyRecipesContainer> {
                       ),
                     ),
                   ),
-                  
                 ],
               ),
             for (int i = 0; i < widget.recipesIDs.length; i += 2)

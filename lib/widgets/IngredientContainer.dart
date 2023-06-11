@@ -7,7 +7,9 @@ class IngredientContainer extends StatefulWidget {
   final int recipeRations;
   final List<Ingredient> recipeIngredients;
 
-  const IngredientContainer({Key? key, required this.recipeRations, required this.recipeIngredients}) : super(key: key);
+  const IngredientContainer(
+      {Key? key, required this.recipeRations, required this.recipeIngredients})
+      : super(key: key);
 
   @override
   _IngredientContainerState createState() => _IngredientContainerState();
@@ -22,15 +24,16 @@ class _IngredientContainerState extends State<IngredientContainer> {
     _currentRations = widget.recipeRations;
   }
 
+  // Actualiza la candidad de raciones aumentandola en 1
   void _incrementRations() {
     setState(() {
-      if(_currentRations < 50) {
-      _currentRations++;
-
+      if (_currentRations < 50) {
+        _currentRations++;
       }
     });
   }
 
+  // Actualiza la candidad de raciones disminuyendola en 1
   void _decrementRations() {
     setState(() {
       if (_currentRations > 1) {
@@ -56,7 +59,8 @@ class _IngredientContainerState extends State<IngredientContainer> {
                     Container(
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        border: Border.all(color: AppColors.blackColor, width: 2.5),
+                        border:
+                            Border.all(color: AppColors.blackColor, width: 2.5),
                       ),
                       child: InkWell(
                         onTap: _decrementRations,
@@ -77,7 +81,7 @@ class _IngredientContainerState extends State<IngredientContainer> {
                           child: Center(
                             child: Text(
                               '$_currentRations Raciones',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold,
@@ -90,7 +94,8 @@ class _IngredientContainerState extends State<IngredientContainer> {
                     Container(
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        border: Border.all(color: AppColors.blackColor, width: 2.5),
+                        border:
+                            Border.all(color: AppColors.blackColor, width: 2.5),
                       ),
                       child: InkWell(
                         onTap: _incrementRations,
@@ -113,7 +118,7 @@ class _IngredientContainerState extends State<IngredientContainer> {
                     padding: const EdgeInsets.fromLTRB(15, 5, 15, 10),
                     child: Text(
                       '· ${ingredient.name} - ${ingredient.amount * _currentRations} ${ingredient.type}',
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: AppColors.brownTextColor,
                         fontSize: 17,
                         fontWeight: FontWeight.bold,

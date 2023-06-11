@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:plateshare/screens/InicioScreen.dart';
 import 'package:plateshare/util/AppColors.dart';
@@ -37,6 +36,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
     getNotifications();
   }
 
+  //Obtiene todas las notificaciones de la base de datos de un determinado usuario y actualiza la lista de notificaciones
   Future<void> getNotifications() async {
     final notificacionesDB = await getAllNotifications(widget.userId);
 
@@ -60,22 +60,20 @@ class _NotificationsPageState extends State<NotificationsPage> {
     });
   }
 
+  //Elimina una notificación en especifico de la lista  y de la base de datos
   Future<void> removeNotification(String notificationId) async {
-    // Remove the notification from the database
     await deleteNotification(widget.userId, notificationId);
 
-    // Remove the notification from the list
     setState(() {
       listaNotificaciones
           .removeWhere((notification) => notification['id'] == notificationId);
     });
   }
 
+  //Elimina todas las notificaciones del usuario de la lista y base de datos
   Future<void> removeAllNotifications() async {
-    // Remove all notifications from the database
     await deleteAllNotifications(widget.userId);
 
-    // Clear the list of notifications
     setState(() {
       listaNotificaciones.clear();
     });
@@ -107,7 +105,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                       Padding(
                         padding: const EdgeInsets.only(left: 5),
                         child: IconButton(
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.arrow_back_ios,
                             color: AppColors.primaryColor,
                             size: 20,
@@ -128,13 +126,13 @@ class _NotificationsPageState extends State<NotificationsPage> {
                       Padding(
                         padding: const EdgeInsets.only(right: 5),
                         child: IconButton(
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.delete_forever_outlined,
                             color: Colors.white,
                             size: 30,
                           ),
                           onPressed: () {
-                            // Delete all notifications from the database
+                            // Elimina todas las notificaciones
                             removeAllNotifications();
                           },
                         ),
@@ -150,7 +148,9 @@ class _NotificationsPageState extends State<NotificationsPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(height: 80,),
+                      const SizedBox(
+                        height: 80,
+                      ),
                       Lottie.network(
                         'https://assets5.lottiefiles.com/datafiles/vhvOcuUkH41HdrL/data.json',
                         width: 200,
@@ -178,13 +178,8 @@ class _NotificationsPageState extends State<NotificationsPage> {
                     final notificationId = notification['id'] as String?;
                     final imageUrl = notification['image'] as String?;
                     final text1 = notification['data'] as String?;
-                    final text2 =
-                        notification['type'] == 1 ? 'Comment' : 'Favorite';
+                    notification['type'] == 1 ? 'Comment' : 'Favorite';
                     final text3 = notification['date'] as Timestamp?;
-                    final dateFormatter = DateFormat('yyyy-MM-dd HH:mm:ss');
-                    final formattedDate = text3 != null
-                        ? dateFormatter.format(text3.toDate())
-                        : '';
 
                     final currentDate = DateTime.now();
                     final notificationDate =
@@ -213,14 +208,14 @@ class _NotificationsPageState extends State<NotificationsPage> {
                       background: Container(
                         color: Colors.red,
                         alignment: Alignment.centerRight,
-                        padding: EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Icon(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: const Icon(
                           Icons.delete,
                           color: Colors.white,
                         ),
                       ),
                       onDismissed: (direction) {
-                        // Remove the item from the list and database
+                        // Elimina una notificación en concreto
                         removeNotification(notificationId!);
                       },
                       child: Padding(
@@ -232,11 +227,11 @@ class _NotificationsPageState extends State<NotificationsPage> {
                               color: AppColors.greyAccentColor,
                               width: 1.5,
                             ),
-                            borderRadius: BorderRadius.all(
+                            borderRadius: const BorderRadius.all(
                               Radius.circular(20.0),
                             ),
                           ),
-                          padding: EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(8),
                           child: Row(
                             children: [
                               Expanded(
@@ -257,12 +252,12 @@ class _NotificationsPageState extends State<NotificationsPage> {
                                                     backgroundImage:
                                                         NetworkImage(imageUrl),
                                                   )
-                                                : Placeholder(
+                                                : const Placeholder(
                                                     fallbackHeight: 50,
                                                     fallbackWidth: 50,
                                                   ),
                                           )
-                                        : SizedBox(width: 10),
+                                        : const SizedBox(width: 10),
                                     Flexible(
                                       child: Column(
                                         crossAxisAlignment:
@@ -290,7 +285,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                                   ],
                                 ),
                               ),
-                              SizedBox(width: 10),
+                              const SizedBox(width: 10),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [

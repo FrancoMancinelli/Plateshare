@@ -19,7 +19,8 @@ class RecipeContainer extends StatefulWidget {
     required this.idRecepieInDatabase,
     required this.userImage,
     required this.userName,
-    required this.userUsername, required this.userEmail,
+    required this.userUsername,
+    required this.userEmail,
   }) : super(key: key);
 
   @override
@@ -27,8 +28,6 @@ class RecipeContainer extends StatefulWidget {
 }
 
 class _RecipeContainerState extends State<RecipeContainer> {
-  
-
   String title = "Default data information";
   String time = "0";
   String rate = "0.0";
@@ -45,14 +44,13 @@ class _RecipeContainerState extends State<RecipeContainer> {
   String userId = 'userId';
   bool isFavorite = false;
 
-
   @override
   void initState() {
     super.initState();
     fetchRecipeData();
-    
   }
 
+  // Obtiene toda la información de una receta
   Future<void> fetchRecipeData() async {
     final recipeData = await getRecipeFields(widget.idRecepieInDatabase);
     final recipeSteps = await getRecipeSteps(widget.idRecepieInDatabase);
@@ -63,8 +61,10 @@ class _RecipeContainerState extends State<RecipeContainer> {
     final recipeComments = await getRecipeComments(widget.idRecepieInDatabase);
     final id = await getDocumentIdByUsername(widget.userUsername);
     final ownerId = await getDocumentIdByUsername(recipeOwner[1]);
-    final liked = await checkIfRecipeLiked(ownerId, widget.idRecepieInDatabase, id);
-    final likesCount = await getAmountOfLikes(ownerId, widget.idRecepieInDatabase);
+    final liked =
+        await checkIfRecipeLiked(ownerId, widget.idRecepieInDatabase, id);
+    final likesCount =
+        await getAmountOfLikes(ownerId, widget.idRecepieInDatabase);
 
     if (mounted) {
       if (recipeData.isNotEmpty) {
@@ -89,6 +89,7 @@ class _RecipeContainerState extends State<RecipeContainer> {
     }
   }
 
+  // Formatea la información de los ingredientes para poder manipularlos a gusto
   List<Ingredient> formatIngredients(
       List<Map<String, dynamic>> ingredientList) {
     List<Ingredient> ingredients = [];
@@ -110,6 +111,7 @@ class _RecipeContainerState extends State<RecipeContainer> {
     return ingredients;
   }
 
+  // Agrega el número de paso al que corresponde cada uno
   List<String> addIndexToItems(List<String> items) {
     return items.asMap().entries.map((entry) {
       int index = entry.key + 1;
@@ -128,23 +130,25 @@ class _RecipeContainerState extends State<RecipeContainer> {
             context,
             MaterialPageRoute(
               builder: (context) => RecipeDetailsScreen(
-                  recipeID: widget.idRecepieInDatabase,
-                  recipeImage: image,
-                  recipeRate: rate,
-                  recipeTime: time,
-                  recipeTitle: title,
-                  recipeLikes: likes,
-                  recipeRations: int.parse(rations),
-                  recipeSteps: steps,
-                  ownerImage: ownerImage,
-                  ownerUsername: ownerUsername,
-                  recipeIngredients: ingredients,
-                  userId: userId,
-                  userImage: widget.userImage,
-                  userName: widget.userName,
-                  userUsername: widget.userUsername,
-                  recipeComments: comentarios,
-                  isFavorite: isFavorite, userEmail: widget.userEmail,),
+                recipeID: widget.idRecepieInDatabase,
+                recipeImage: image,
+                recipeRate: rate,
+                recipeTime: time,
+                recipeTitle: title,
+                recipeLikes: likes,
+                recipeRations: int.parse(rations),
+                recipeSteps: steps,
+                ownerImage: ownerImage,
+                ownerUsername: ownerUsername,
+                recipeIngredients: ingredients,
+                userId: userId,
+                userImage: widget.userImage,
+                userName: widget.userName,
+                userUsername: widget.userUsername,
+                recipeComments: comentarios,
+                isFavorite: isFavorite,
+                userEmail: widget.userEmail,
+              ),
             ),
           );
         },
@@ -159,9 +163,9 @@ class _RecipeContainerState extends State<RecipeContainer> {
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              //IMAGEN IMAGEN IMAGEN IMAGEN
+              //IMAGEN
               Padding(
-                padding: EdgeInsets.only(top: 8),
+                padding: const EdgeInsets.only(top: 8),
                 child: Container(
                   width: 200,
                   height: 160,
@@ -171,7 +175,7 @@ class _RecipeContainerState extends State<RecipeContainer> {
                       BoxShadow(
                         color: Colors.black.withOpacity(0.3),
                         blurRadius: 4,
-                        offset: Offset(0, 2),
+                        offset: const Offset(0, 2),
                       ),
                     ],
                   ),
@@ -187,22 +191,23 @@ class _RecipeContainerState extends State<RecipeContainer> {
                 ),
               ),
 
-              //PUNTUACION Y HORA | PUNTUACION Y HORA
+              //PUNTUACION Y HORA
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-                      child: Icon(Icons.star_rounded, color: Colors.white, size: 22),
+                    const Padding(
+                      padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                      child: Icon(Icons.star_rounded,
+                          color: Colors.white, size: 22),
                     ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(1, 2, 0, 0),
                       child: Text(
                         rate,
                         style: GoogleFonts.acme(
-                          textStyle: TextStyle(
+                          textStyle: const TextStyle(
                             color: Colors.white,
                             fontSize: 17,
                             fontFamily: 'Acme',
@@ -210,17 +215,17 @@ class _RecipeContainerState extends State<RecipeContainer> {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child:
-                          Icon(Icons.access_time, color: Colors.white, size: 20),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 8.0),
+                      child: Icon(Icons.access_time,
+                          color: Colors.white, size: 20),
                     ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(2, 2, 0, 0),
                       child: Text(
                         '$time mins',
                         style: GoogleFonts.acme(
-                          textStyle: TextStyle(
+                          textStyle: const TextStyle(
                             color: Colors.white,
                             fontSize: 17,
                             fontFamily: 'Acme',
@@ -244,7 +249,7 @@ class _RecipeContainerState extends State<RecipeContainer> {
                           child: Text(
                             title,
                             style: GoogleFonts.acme(
-                              textStyle: TextStyle(
+                              textStyle: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 20,
                                 fontFamily: 'Acme',
@@ -263,7 +268,7 @@ class _RecipeContainerState extends State<RecipeContainer> {
                         child: Container(
                           height: 50,
                           width: 55,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(20),
@@ -271,14 +276,14 @@ class _RecipeContainerState extends State<RecipeContainer> {
                             ),
                           ),
                           child: Padding(
-                            padding: EdgeInsets.fromLTRB(5, 1, 0, 0),
+                            padding: const EdgeInsets.fromLTRB(5, 1, 0, 0),
                             child: LikeButton(
-                              bubblesColor: BubblesColor(
+                              bubblesColor: const BubblesColor(
                                   dotPrimaryColor:
                                       Color.fromARGB(255, 89, 182, 151),
                                   dotSecondaryColor:
                                       Color.fromARGB(255, 76, 253, 129)),
-                              circleColor: CircleColor(
+                              circleColor: const CircleColor(
                                   end: Color.fromARGB(255, 89, 182, 151),
                                   start: Color.fromARGB(255, 76, 253, 194)),
                               likeBuilder: (isLiked) {
@@ -306,6 +311,7 @@ class _RecipeContainerState extends State<RecipeContainer> {
     );
   }
 
+  // Actualiza el estado del boton al dar like y actualiza la información en base de datos
   Future<bool> onLikeButtonTapped(bool isLiked) async {
     if (isFavorite == true) {
       isFavorite = false;
@@ -322,5 +328,3 @@ class _RecipeContainerState extends State<RecipeContainer> {
     }
   }
 }
-
-

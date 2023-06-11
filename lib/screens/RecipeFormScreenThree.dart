@@ -40,12 +40,11 @@ class RecipeFormScreenThree extends StatefulWidget {
 }
 
 class _RecipeFormScreenThreeState extends State<RecipeFormScreenThree> {
-  final TextEditingController _tituloController = TextEditingController();
-
   List<String> texts = [];
   TextEditingController textController1 = TextEditingController();
   bool isButtonVisible = true;
 
+  // Añade de ser posible un nuevo paso a la lista
   void addTexts() {
     String text1 = textController1.text;
 
@@ -60,6 +59,7 @@ class _RecipeFormScreenThreeState extends State<RecipeFormScreenThree> {
     }
   }
 
+  // Muestra un mensaje indicativo en la parte inferior de la pantalla
   void showLowMessage(int index) {
     switch (index) {
       case 1:
@@ -91,6 +91,7 @@ class _RecipeFormScreenThreeState extends State<RecipeFormScreenThree> {
     }
   }
 
+  // Elimina un paso de la lista
   void deleteText(int index) {
     setState(() {
       texts.removeAt(index);
@@ -118,90 +119,96 @@ class _RecipeFormScreenThreeState extends State<RecipeFormScreenThree> {
                   child: Column(
                     children: [
                       Container(
-  height: 45,
-  width: screenSize.width,
-  color: AppColors.primaryColor,
-  child: Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      Expanded(
-        child: Stack(
-          children: [
-            Align(
-              alignment: Alignment.center,
-              child: Text(
-                'Sube una receta',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.acme(
-                  textStyle: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontFamily: 'Acme',
-                  ),
-                ),
-              ),
-            ),
-            Visibility(
-              visible: isButtonVisible,
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: IconButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title: const Text('Confirmación'),
-                        content: const Text(
-                          '¿Estás seguro que deseas abandonar el proceso? Si abandonas, el progreso no se guardará',
-                        ),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.pop(context); // Close the dialog
-                            },
-                            child: const Text(
-                              'Continuar',
-                              style: TextStyle(color: Colors.blueGrey),
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => InicioScreen(
-                                    emailData: widget.emailData,
-                                    nameData: widget.nameData,
-                                    profilePicData: widget.profilePicData,
-                                    usernameData: widget.usernameData,
+                        height: 45,
+                        width: screenSize.width,
+                        color: AppColors.primaryColor,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Stack(
+                                children: [
+                                  Align(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      'Sube una receta',
+                                      textAlign: TextAlign.center,
+                                      style: GoogleFonts.acme(
+                                        textStyle: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 24,
+                                          fontFamily: 'Acme',
+                                        ),
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              );
-                            },
-                            child: const Text(
-                              'Abandonar',
-                              style: TextStyle(color: Colors.red),
+                                  Visibility(
+                                    visible: isButtonVisible,
+                                    child: Align(
+                                      alignment: Alignment.centerRight,
+                                      child: IconButton(
+                                        onPressed: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) => AlertDialog(
+                                              title: const Text('Confirmación'),
+                                              content: const Text(
+                                                '¿Estás seguro que deseas abandonar el proceso? Si abandonas, el progreso no se guardará',
+                                              ),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: const Text(
+                                                    'Continuar',
+                                                    style: TextStyle(
+                                                        color: Colors.blueGrey),
+                                                  ),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.pushReplacement(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            InicioScreen(
+                                                          emailData:
+                                                              widget.emailData,
+                                                          nameData:
+                                                              widget.nameData,
+                                                          profilePicData: widget
+                                                              .profilePicData,
+                                                          usernameData: widget
+                                                              .usernameData,
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: const Text(
+                                                    'Abandonar',
+                                                    style: TextStyle(
+                                                        color: Colors.red),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        },
+                                        icon: const Icon(
+                                          Icons.close,
+                                          color: Colors.white,
+                                          size: 25,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    );
-                  },
-                  icon: const Icon(
-                    Icons.close,
-                    color: Colors.white,
-                    size: 25,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    ],
-  ),
-)
-,
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: ClipRRect(
@@ -414,8 +421,7 @@ class _RecipeFormScreenThreeState extends State<RecipeFormScreenThree> {
                                       visible: isButtonVisible,
                                       child: ElevatedButton(
                                         onPressed: () {
-                                          Navigator.pop(
-                                              context); // Close the current screen
+                                          Navigator.pop(context);
                                         },
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: Colors.white,
@@ -447,9 +453,8 @@ class _RecipeFormScreenThreeState extends State<RecipeFormScreenThree> {
                                           child: ElevatedButton(
                                             onPressed: () async {
                                               setState(() {
-                                                  isButtonVisible =
-                                                      false; // Hide the button
-                                                });
+                                                isButtonVisible = false;
+                                              });
                                               if (widget.imageRecipe != null) {
                                                 String uniqueFileName =
                                                     DateTime.now()
@@ -473,13 +478,13 @@ class _RecipeFormScreenThreeState extends State<RecipeFormScreenThree> {
                                                   imageUrl =
                                                       await referenceImageToUpload
                                                           .getDownloadURL();
-                                                } catch (erorr) {}
+                                                } catch (erorr) {//
+                                                }
                                               }
 
-                                              if (texts.length >= 1) {
-
-
-                                                          await Future.delayed(Duration(seconds: 3));
+                                              if (texts.isNotEmpty) {
+                                                await Future.delayed(
+                                                    const Duration(seconds: 3));
 
                                                 final recipeData = {
                                                   'category':
@@ -521,8 +526,7 @@ class _RecipeFormScreenThreeState extends State<RecipeFormScreenThree> {
                                                 showLowMessage(3);
                                               } else {
                                                 setState(() {
-                                                  isButtonVisible =
-                                                      true; // Hide the button
+                                                  isButtonVisible = true;
                                                 });
                                                 showLowMessage(2);
                                               }

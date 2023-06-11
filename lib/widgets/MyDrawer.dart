@@ -18,7 +18,8 @@ class MyDrawer extends StatelessWidget {
     required this.profilePicData,
     required this.nameData,
     required this.usernameData,
-    required this.emailData, required this.fechaData,
+    required this.emailData,
+    required this.fechaData,
   }) : super(key: key);
 
   @override
@@ -89,12 +90,11 @@ class MyDrawer extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: screenSize.height - 200, // tamaño determinado del contenedor
+            height: screenSize.height - 200,
             child: Column(
               children: [
                 Expanded(
-                  child:
-                      Container(), // aquí iría el contenido que va en la parte superior de la pantalla
+                  child: Container(),
                 ),
                 Column(
                   children: [
@@ -121,17 +121,19 @@ class MyDrawer extends StatelessWidget {
                           ),
                         ),
                       ),
-                      onTap: () {Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SettingsScreen(
-                          emailData: emailData,
-                          nameData: nameData,
-                          profilePicData: profilePicData,
-                          usernameData: usernameData,
-                          fechaData: fechaData),
-                    ),
-                  );},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SettingsScreen(
+                                emailData: emailData,
+                                nameData: nameData,
+                                profilePicData: profilePicData,
+                                usernameData: usernameData,
+                                fechaData: fechaData),
+                          ),
+                        );
+                      },
                     ),
                     ListTile(
                       leading: const Icon(
@@ -149,17 +151,19 @@ class MyDrawer extends StatelessWidget {
                           ),
                         ),
                       ),
-                      onTap: () {Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ContactScreen(
-                          emailData: emailData,
-                          nameData: nameData,
-                          profilePicData: profilePicData,
-                          usernameData: usernameData,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ContactScreen(
+                              emailData: emailData,
+                              nameData: nameData,
+                              profilePicData: profilePicData,
+                              usernameData: usernameData,
+                            ),
                           ),
-                    ),
-                  );},
+                        );
+                      },
                     ),
                     ListTile(
                       leading: const Icon(

@@ -9,6 +9,7 @@ import '../models/Comments.dart';
 
 FirebaseFirestore db = FirebaseFirestore.instance;
 
+//Comprueba que las credenciales de un usuario sean validad
 Future<bool> checkCredentials(String username, String password) async {
   QuerySnapshot snapshot = await db
       .collection('user')
@@ -18,23 +19,26 @@ Future<bool> checkCredentials(String username, String password) async {
   return snapshot.docs.isNotEmpty;
 }
 
+// Comprueba si el nombre de usuario existe
 Future<bool> checkIfUsernameExists(String username) async {
   QuerySnapshot snapshot =
       await db.collection('user').where('username', isEqualTo: username).get();
   return snapshot.docs.isNotEmpty;
 }
 
+// Comprueba si el email existe
 Future<bool> checkIfEmailExists(String email) async {
   QuerySnapshot snapshot =
       await db.collection('user').where('email', isEqualTo: email).get();
   return snapshot.docs.isNotEmpty;
 }
 
+// Añade un nuevo usuario
 Future<void> addNewUser(String email, String name, String username,
     String password, String salt) async {
   final userRef = db.collection('user');
   final currentDate = DateFormat('dd/MM/yyyy').format(DateTime.now());
-  final userDocRef = await userRef.add({
+  await userRef.add({
     'email': email,
     'name': name,
     'username': username,
@@ -49,6 +53,7 @@ Future<void> addNewUser(String email, String name, String username,
   });
 }
 
+// Actualiza la contraseña de un usuario
 Future<void> updateUserPasswordByUsername(
     String username, String newPassword) async {
   QuerySnapshot snapshot =
@@ -63,6 +68,7 @@ Future<void> updateUserPasswordByUsername(
   }
 }
 
+//Obtiene el nombre de un usuario a parti de su username
 Future<String> getNameByUsername(String username) async {
   QuerySnapshot snapshot =
       await db.collection('user').where('username', isEqualTo: username).get();
@@ -73,6 +79,7 @@ Future<String> getNameByUsername(String username) async {
   }
 }
 
+// Obtiene el email de un usuario a partir de su username
 Future<String> getEmailByUsername(String username) async {
   QuerySnapshot snapshot =
       await db.collection('user').where('username', isEqualTo: username).get();
@@ -83,6 +90,7 @@ Future<String> getEmailByUsername(String username) async {
   }
 }
 
+// Obtiene la imegen de un usuario a partir de su username
 Future<String> getProfilePicByUsername(String username) async {
   QuerySnapshot snapshot =
       await db.collection('user').where('username', isEqualTo: username).get();
@@ -93,6 +101,7 @@ Future<String> getProfilePicByUsername(String username) async {
   }
 }
 
+// Obtiene la salt de un usuario a partir de su username
 Future<String> getSaltByUsername(String username) async {
   QuerySnapshot snapshot =
       await db.collection('user').where('username', isEqualTo: username).get();
@@ -103,6 +112,7 @@ Future<String> getSaltByUsername(String username) async {
   }
 }
 
+// Obtiene el ID del document a partir de un usuario
 Future<String> getDocumentIdByUsername(String username) async {
   String documentId = '';
 
@@ -119,15 +129,14 @@ Future<String> getDocumentIdByUsername(String username) async {
   return documentId;
 }
 
+// Agrega una receta a un usuario
 Future<void> addRecipeToUser(String username, Map<String, dynamic> recipeData,
     List<String> ingredientList) async {
   final userRef = FirebaseFirestore.instance.collection('user').doc(username);
   final recipeRef = userRef.collection('recipe').doc();
 
-  // Add recipe data to the 'recipe' document
   await recipeRef.set(recipeData);
 
-  // Create 'ingredients' collection and add documents
   final ingredientsRef = recipeRef.collection('ingredient');
   for (String ingredient in ingredientList) {
     List<String> parts = ingredient.split(' - ');
@@ -151,6 +160,7 @@ Future<void> addRecipeToUser(String username, Map<String, dynamic> recipeData,
   }
 }
 
+// Obtiene una lista de recetas que pertenezcan a una categoría
 Future<List<String>> getRecipesFromCategory(String categoryToFilter) async {
   final QuerySnapshot usersSnapshot =
       await FirebaseFirestore.instance.collection('user').get();
@@ -163,7 +173,6 @@ Future<List<String>> getRecipesFromCategory(String categoryToFilter) async {
 
     final QuerySnapshot recipesSnapshot = await recipeCollectionRef.get();
 
-    // Check if the 'recipe' collection exists and has any documents
     if (recipesSnapshot.docs.isNotEmpty) {
       for (final DocumentSnapshot recipeDoc in recipesSnapshot.docs) {
         final List<dynamic> categories = recipeDoc.get('category');
@@ -177,6 +186,7 @@ Future<List<String>> getRecipesFromCategory(String categoryToFilter) async {
   return categoryRecipes;
 }
 
+// Obtiene una lista de recetas que lleven menos de 15 minutos de preparación
 Future<List<String>> getRecepiesLessThan15Min() async {
   final QuerySnapshot usersSnapshot =
       await FirebaseFirestore.instance.collection('user').get();
@@ -198,6 +208,7 @@ Future<List<String>> getRecepiesLessThan15Min() async {
   return recipiesWithShortTime;
 }
 
+// Obtiene una lista de recetas que lleven 3 ingredientes solamente
 Future<List<String>> getRecipiesWith3Ingredients() async {
   final QuerySnapshot usersSnapshot =
       await FirebaseFirestore.instance.collection('user').get();
@@ -221,6 +232,7 @@ Future<List<String>> getRecipiesWith3Ingredients() async {
   return recipiesWithThreeIngredients;
 }
 
+// Obtiene la información de un usuario a partir de una receta
 Future<List<String>> getUserInfoFromRecipe(String recipeId) async {
   final QuerySnapshot userSnapshot =
       await FirebaseFirestore.instance.collection('user').get();
@@ -244,9 +256,10 @@ Future<List<String>> getUserInfoFromRecipe(String recipeId) async {
     }
   }
 
-  return []; // Return an empty list if the recipe document is not found
+  return [];
 }
 
+// Obtiene los datos de una receta
 Future<List<String>> getRecipeFields(String recipeId) async {
   final QuerySnapshot userSnapshot =
       await FirebaseFirestore.instance.collection('user').get();
@@ -265,17 +278,17 @@ Future<List<String>> getRecipeFields(String recipeId) async {
       final String title = recipeData['title'].toString();
       final String time = recipeData['time'].toString();
       final String rate = recipeData['rate'].toString();
-      //final String likes = recipeData['likes'].toString();
       final String rations = recipeData['rations'].toString();
 
       fields.addAll([image, title, time, rate, rations]);
-      break; // Exit the loop once the recipe document is found
+      break;
     }
   }
 
   return fields;
 }
 
+// Obtiene los ingredientes de una receta
 Future<List<Map<String, dynamic>>> getRecipeIngredients(String recipeId) async {
   final QuerySnapshot userSnapshot =
       await FirebaseFirestore.instance.collection('user').get();
@@ -293,13 +306,14 @@ Future<List<Map<String, dynamic>>> getRecipeIngredients(String recipeId) async {
       ingredients = ingredientSnapshot.docs
           .map((doc) => doc.data() as Map<String, dynamic>)
           .toList();
-      break; // Exit the loop once the recipe document is found
+      break;
     }
   }
 
   return ingredients;
 }
 
+// Obtiene los comentarios de una receta
 Future<List<Map<String, dynamic>>> getRecipeComments(String recipeId) async {
   final QuerySnapshot userSnapshot =
       await FirebaseFirestore.instance.collection('user').get();
@@ -318,7 +332,6 @@ Future<List<Map<String, dynamic>>> getRecipeComments(String recipeId) async {
           .map((doc) => doc.data() as Map<String, dynamic>)
           .toList();
 
-      // Sort the comments by the most recent date
       comentarios.sort((a, b) {
         final DateFormat format = DateFormat("MM/dd/yyyy HH:mm:ss");
         final DateTime dateA = format.parse(a['date'] as String);
@@ -326,13 +339,14 @@ Future<List<Map<String, dynamic>>> getRecipeComments(String recipeId) async {
         return dateB.compareTo(dateA);
       });
 
-      break; // Exit the loop once the recipe document is found
+      break;
     }
   }
 
   return comentarios;
 }
 
+// Obtiene los pasos a seguir de una receta
 Future<List<String>> getRecipeSteps(String recipeId) async {
   final QuerySnapshot userSnapshot =
       await FirebaseFirestore.instance.collection('user').get();
@@ -349,13 +363,14 @@ Future<List<String>> getRecipeSteps(String recipeId) async {
 
       final List<dynamic> stepsData = recipeData['steps'];
       steps = stepsData.cast<String>().toList();
-      break; // Exit the loop once the recipe document is found
+      break;
     }
   }
 
   return steps;
 }
 
+// Obtiene el username de un usuario a partir de su id
 Future<String?> getUserUsernameByDocumentId(String documentId) async {
   String? username;
 
@@ -369,6 +384,7 @@ Future<String?> getUserUsernameByDocumentId(String documentId) async {
   return username;
 }
 
+// Obtiene la imagen de un usuario a partir de su id
 Future<String?> getUserImageByDocumentId(String documentId) async {
   String? username;
 
@@ -382,6 +398,7 @@ Future<String?> getUserImageByDocumentId(String documentId) async {
   return username;
 }
 
+// Obtiene el nombre de un usuario a partir de su id
 Future<String?> getUserNameByDocumentId(String documentId) async {
   String? username;
 
@@ -395,6 +412,7 @@ Future<String?> getUserNameByDocumentId(String documentId) async {
   return username;
 }
 
+// Agrega un comentario a una receta
 Future<void> addCommentToRecipe(
     String recipeId, String owner, String text) async {
   final QuerySnapshot userSnapshot =
@@ -414,11 +432,12 @@ Future<void> addCommentToRecipe(
         'text': text,
         'date': formattedDate,
       });
-      break; // Exit the loop once the recipe document is found
+      break;
     }
   }
 }
 
+// Comprueba si la receta ha sido likeada por un usuario
 Future<bool> checkIfRecipeLiked(
     String recipeOwner, String recipeId, String value) async {
   final DocumentSnapshot<Map<String, dynamic>> recipeSnapshot =
@@ -435,7 +454,6 @@ Future<bool> checkIfRecipeLiked(
   if (likes != null) {
     if (likes is List<dynamic>) {
       if (likes.contains(value)) {
-        // The provided value exists in the 'likes' array
         return true;
       }
     }
@@ -444,6 +462,7 @@ Future<bool> checkIfRecipeLiked(
   return false;
 }
 
+// Añade o quita el like a una receta
 Future<void> modifyLikeToRecipe(String recipeId, String value, int flag) async {
   final QuerySnapshot userSnapshot =
       await FirebaseFirestore.instance.collection('user').get();
@@ -469,11 +488,12 @@ Future<void> modifyLikeToRecipe(String recipeId, String value, int flag) async {
         }
       }
 
-      break; // Exit the loop once the recipe document is found
+      break;
     }
   }
 }
 
+// Devuelve la cantidad de likes de una receta
 Future<int> getAmountOfLikes(String recipeOwner, String recipeId) async {
   final DocumentSnapshot<Map<String, dynamic>> recipeSnapshot =
       await FirebaseFirestore.instance
@@ -495,30 +515,29 @@ Future<int> getAmountOfLikes(String recipeOwner, String recipeId) async {
   return 0;
 }
 
+// Obtiene todas las receta a partir del id de un usuario
 Future<List<String>> getRecipeDocumentIDs(String userID) async {
   List<String> recipeIDs = [];
 
   try {
-    // Get the 'recipe' collection reference inside the user document
     CollectionReference userRecipeCollection = FirebaseFirestore.instance
         .collection('user')
         .doc(userID)
         .collection('recipe');
 
-    // Get all the documents in the 'recipe' collection
     QuerySnapshot snapshot = await userRecipeCollection.get();
 
-    // Extract the document IDs and add them to the list
     snapshot.docs.forEach((doc) {
       recipeIDs.add(doc.id);
     });
   } catch (e) {
-    print('Error getting recipe document IDs: $e');
+//
   }
 
   return recipeIDs;
 }
 
+// Obtiene los seguidoress de un usuario
 Future<List<dynamic>> getFollowers(String userId) async {
   DocumentSnapshot userSnapshot =
       await FirebaseFirestore.instance.collection('user').doc(userId).get();
@@ -529,6 +548,7 @@ Future<List<dynamic>> getFollowers(String userId) async {
   return followers;
 }
 
+// Obtiene los seguidos de un usuario
 Future<List<dynamic>> getFollows(String userId) async {
   DocumentSnapshot userSnapshot =
       await FirebaseFirestore.instance.collection('user').doc(userId).get();
@@ -539,6 +559,7 @@ Future<List<dynamic>> getFollows(String userId) async {
   return followers;
 }
 
+// Obtiene las recetas likeadas por un usuario
 Future<List<dynamic>> getLikedRecipes(String userId) async {
   DocumentSnapshot userSnapshot =
       await FirebaseFirestore.instance.collection('user').doc(userId).get();
@@ -564,41 +585,38 @@ Future<List<dynamic>> getLikedRecipes(String userId) async {
   return existingRecipes;
 }
 
+// Añade una receta como favorita
 Future<void> addFavorite(String userId, String favoriteId) async {
   DocumentReference userRef =
       FirebaseFirestore.instance.collection('user').doc(userId);
 
-  // Get the current favorites array
   DocumentSnapshot userSnapshot = await userRef.get();
   List<dynamic>? favorites = (userSnapshot.data()
       as Map<String, dynamic>)['favorites'] as List<dynamic>?;
 
-  // Add the new favorite to the array
   favorites ??= [];
   favorites.add(favoriteId);
 
-  // Update the 'favorites' field with the updated array
   await userRef.update({'favorites': favorites});
 }
 
+// Elimina una receta de favoritos
 Future<void> removeFavorite(String userId, String favoriteId) async {
   DocumentReference userRef =
       FirebaseFirestore.instance.collection('user').doc(userId);
 
-  // Get the current favorites array
   DocumentSnapshot userSnapshot = await userRef.get();
   List<dynamic>? favorites = (userSnapshot.data()
       as Map<String, dynamic>)['favorites'] as List<dynamic>?;
 
-  // Remove the specified favorite from the array
   if (favorites != null) {
     favorites.remove(favoriteId);
   }
 
-  // Update the 'favorites' field with the updated array
   await userRef.update({'favorites': favorites});
 }
 
+// Añade una nueva notificacion a un usuario
 Future<void> addNewNotification(String userId, String notificationData,
     int type, String userNotifierImage) async {
   final CollectionReference userCollectionRef =
@@ -619,6 +637,7 @@ Future<void> addNewNotification(String userId, String notificationData,
   });
 }
 
+// Obtiene todas las notificaciones de un usuario
 Future<List<Map<String, dynamic>>> getAllNotifications(String userId) async {
   final CollectionReference userCollectionRef =
       FirebaseFirestore.instance.collection('user');
@@ -634,7 +653,6 @@ Future<List<Map<String, dynamic>>> getAllNotifications(String userId) async {
       .then((snapshot) => snapshot.size > 0);
 
   if (!notificationCollectionExists) {
-    // The notification collection does not exist or is empty
     return [];
   }
 
@@ -647,7 +665,7 @@ Future<List<Map<String, dynamic>>> getAllNotifications(String userId) async {
     final Map<String, dynamic>? data =
         notificationDoc.data() as Map<String, dynamic>?;
     if (data != null) {
-      data['id'] = notificationDoc.id; // Include the document ID in the map
+      data['id'] = notificationDoc.id;
       notifications.add(data);
     }
   }
@@ -655,6 +673,7 @@ Future<List<Map<String, dynamic>>> getAllNotifications(String userId) async {
   return notifications;
 }
 
+// Elimina todas las notificaciones de un usuario
 Future<void> deleteAllNotifications(String userId) async {
   try {
     final userRef = FirebaseFirestore.instance.collection('user').doc(userId);
@@ -665,7 +684,6 @@ Future<void> deleteAllNotifications(String userId) async {
     if (collectionSnapshot.docs.isNotEmpty) {
       final batch = FirebaseFirestore.instance.batch();
 
-      // Iterate over each document and add delete operation to the batch
       for (final doc in collectionSnapshot.docs) {
         batch.delete(doc.reference);
       }
@@ -673,10 +691,11 @@ Future<void> deleteAllNotifications(String userId) async {
       await batch.commit();
     }
   } catch (error) {
-    // Handle the error as per your requirements
+    //
   }
 }
 
+// Elimina una notificacion en concreto del usuario
 Future<void> deleteNotification(String userId, String notificationId) async {
   try {
     final userRef = FirebaseFirestore.instance.collection('user').doc(userId);
@@ -685,10 +704,11 @@ Future<void> deleteNotification(String userId, String notificationId) async {
 
     await notificationRef.delete();
   } catch (error) {
-    // Handle the error as per your requirements
+    //
   }
 }
 
+// Actualiza o añade la valoracion de un usuario a una rectea
 Future<void> addOrUpdateRatingToRecipe(
   String ownerId,
   String recipeId,
@@ -721,10 +741,8 @@ Future<void> addOrUpdateRatingToRecipe(
       };
 
       if (existingRatingIndex != -1) {
-        // User has already rated, update the existing rating
         ratings[existingRatingIndex]['points'] = rate;
       } else {
-        // User has not rated, add the new rating
         ratings.add(newRating);
       }
 
@@ -733,10 +751,11 @@ Future<void> addOrUpdateRatingToRecipe(
       });
     }
   } catch (error) {
-    // Handle the error as per your requirements
+    //
   }
 }
 
+// Elimina la valoracion de un usuario a una receta
 Future<void> removeUserRatingFromRecipe(
     String ownerId, String recipeId, String userId) async {
   try {
@@ -751,7 +770,6 @@ Future<void> removeUserRatingFromRecipe(
 
       ratings.removeWhere((rating) => rating['userid'] == userId);
 
-      // Convert the updated ratings list back to a list of dynamic
       final updatedRatings =
           ratings.map((rating) => Map<String, dynamic>.from(rating)).toList();
 
@@ -760,10 +778,11 @@ Future<void> removeUserRatingFromRecipe(
       });
     }
   } catch (error) {
-    // Handle the error as per your requirements
+    //
   }
 }
 
+// Obtiene el puntaje de todas las valoraciones de una receta
 Future<List<double>> getAllRatings(String userId, String recipeId) async {
   try {
     final recipeRef = FirebaseFirestore.instance
@@ -783,13 +802,13 @@ Future<List<double>> getAllRatings(String userId, String recipeId) async {
       return allRatings;
     }
 
-    return []; // Return an empty list if the recipe does not exist or has no ratings
+    return [];
   } catch (error) {
-    // Handle the error as per your requirements
-    return []; // Return an empty list in case of an error
+    return [];
   }
 }
 
+// Actualiza el puntaje total de una receta
 Future<void> updateRecipeRating(
     String ownerId, String recipeId, double newRate) async {
   try {
@@ -800,46 +819,44 @@ Future<void> updateRecipeRating(
       'rate': newRate,
     });
   } catch (error) {
-    // Handle the error as per your requirements
+    //
   }
 }
 
+// Elimina una receta
 Future<void> deleteRecipe(String userId, String recipeId) async {
   try {
     final userRef = FirebaseFirestore.instance.collection('user').doc(userId);
     final recipeRef = userRef.collection('recipe').doc(recipeId);
 
     await recipeRef.delete();
-
-    print('Recipe deleted successfully');
   } catch (error) {
-    print('Error deleting recipe: $error');
-    // Handle the error as per your requirements
+    //
   }
 }
 
+// Elimina las colleciones dentro de una receta
 Future<void> deleteCollections(String userId, String recipeId) async {
   final userRef = FirebaseFirestore.instance.collection('user').doc(userId);
   final recipeRef = userRef.collection('recipe').doc(recipeId);
 
-  // Delete the 'ingredient' collection
   final ingredientCollectionRef = recipeRef.collection('ingredient');
   final ingredientDocs = await ingredientCollectionRef.get();
   for (final doc in ingredientDocs.docs) {
     await doc.reference.delete();
   }
   try {
-    // Delete the 'comment' collection
     final commentCollectionRef = recipeRef.collection('comment');
     final commentDocs = await commentCollectionRef.get();
     for (final doc in commentDocs.docs) {
       await doc.reference.delete();
     }
   } catch (error) {
-    // Handle the error as per your requirements
+    //
   }
 }
 
+// Obtiene la fecha de creación de un usuario
 Future<String> getCreationDate(String userId) async {
   try {
     final DocumentSnapshot<Map<String, dynamic>> snapshot =
@@ -853,35 +870,35 @@ Future<String> getCreationDate(String userId) async {
       }
     }
   } catch (error) {
-    // Handle any errors that occur during the process
-    print('Error retrieving creation date: $error');
+//
   }
 
-  return ''; // Return null if the creation date is not found or an error occurs
+  return '';
 }
 
+// Actualiza el nombre de un usuario
 Future<void> updateUserName(String userId, String newName) async {
   final userRef = FirebaseFirestore.instance.collection('user').doc(userId);
 
   try {
     await userRef.update({'name': newName});
-    print('User name updated successfully');
   } catch (error) {
-    print('Error updating user name: $error');
+    //
   }
 }
 
+// Actualiza el username de un usuario
 Future<void> updateUserUsername(String userId, String newName) async {
   final userRef = FirebaseFirestore.instance.collection('user').doc(userId);
 
   try {
     await userRef.update({'username': newName});
-    print('Username updated successfully');
   } catch (error) {
-    print('Error updating username: $error');
+//
   }
 }
 
+// Actualiza la foto de perfil de un usuario
 Future<void> updateProfilePic(String userId, String newProfilePic) async {
   final userRef = FirebaseFirestore.instance.collection('user').doc(userId);
 
@@ -889,12 +906,12 @@ Future<void> updateProfilePic(String userId, String newProfilePic) async {
     await userRef.update({
       'profilepic': newProfilePic,
     });
-    print('Profile picture updated successfully.');
   } catch (e) {
-    print('Error updating profile picture: $e');
+    //
   }
 }
 
+// Agrega un follower a un usuario
 Future<void> addFollower(String userId, String followerId) async {
   DocumentReference userRef =
       FirebaseFirestore.instance.collection('user').doc(userId);
@@ -909,6 +926,7 @@ Future<void> addFollower(String userId, String followerId) async {
   await userRef.update({'followers': favorites});
 }
 
+// Elimina un follower a un usuario
 Future<void> removeFollower(String userId, String followerId) async {
   DocumentReference userRef =
       FirebaseFirestore.instance.collection('user').doc(userId);
@@ -924,6 +942,7 @@ Future<void> removeFollower(String userId, String followerId) async {
   await userRef.update({'followers': followers});
 }
 
+// Agrega un usuario a los seguidos de un usuario
 Future<void> addMyFollows(String userId, String followId) async {
   DocumentReference userRef =
       FirebaseFirestore.instance.collection('user').doc(userId);
@@ -938,6 +957,7 @@ Future<void> addMyFollows(String userId, String followId) async {
   await userRef.update({'follows': follows});
 }
 
+// Elimina un usuario de los seguidos de un usuario
 Future<void> removeMyFollows(String userId, String followId) async {
   DocumentReference userRef =
       FirebaseFirestore.instance.collection('user').doc(userId);
@@ -953,6 +973,7 @@ Future<void> removeMyFollows(String userId, String followId) async {
   await userRef.update({'follows': favorites});
 }
 
+// Comprueba si un usuario sigue a otro
 Future<bool> checkIfFollowsExist(String userId, String searchString) async {
   try {
     final userDoc =
@@ -965,11 +986,11 @@ Future<bool> checkIfFollowsExist(String userId, String searchString) async {
 
     return false;
   } catch (e) {
-    print('Error: $e');
     return false;
   }
 }
 
+// Obtiene TODOS los usuarios de la base de datos 
 Future<List<User>> getUsers() async {
   List<User> userList = [];
 
@@ -984,12 +1005,10 @@ Future<List<User>> getUsers() async {
       QuerySnapshot<Map<String, dynamic>> recipeSnapshot =
           await doc.reference.collection('recipe').get();
 
-
       for (QueryDocumentSnapshot<Map<String, dynamic>> recipeDoc
           in recipeSnapshot.docs) {
         List<Ingredient> ingredientsList = [];
-        List<Comments> commentsList =[];
-
+        List<Comments> commentsList = [];
 
         QuerySnapshot<Map<String, dynamic>> ingredientSnapshot =
             await recipeDoc.reference.collection('ingredient').get();
@@ -1019,7 +1038,9 @@ Future<List<User>> getUsers() async {
 
             commentsList.add(comment);
           }
-        } catch (e) {}
+        } catch (e) {
+          //
+        }
 
         Recipe recipe = Recipe(
           id: recipeDoc.id,
@@ -1038,12 +1059,12 @@ Future<List<User>> getUsers() async {
         recipesList.add(recipe);
       }
     } catch (e) {
+      //
     }
 
     try {
       QuerySnapshot<Map<String, dynamic>> notificationSnapshot =
           await doc.reference.collection('notification').get();
-
 
       for (QueryDocumentSnapshot<Map<String, dynamic>> notificationDoc
           in notificationSnapshot.docs) {
@@ -1058,6 +1079,7 @@ Future<List<User>> getUsers() async {
         notificationsList.add(notification);
       }
     } catch (e) {
+      //
     }
 
     User user = User(
@@ -1081,45 +1103,36 @@ Future<List<User>> getUsers() async {
   return userList;
 }
 
-Future<List<String>> searchRecipesByIngredients(List<String> ingredientNames) async {
+// Busca recetas a partir de sus ingredientes
+Future<List<String>> searchRecipesByIngredients(
+    List<String> ingredientNames) async {
   List<String> recipeIds = [];
 
-  // Query all users
   QuerySnapshot<Map<String, dynamic>> userSnapshot =
       await FirebaseFirestore.instance.collection('user').get();
 
-  // Iterate through each user document
-  for (QueryDocumentSnapshot<Map<String, dynamic>> userDoc in userSnapshot.docs) {
-    // Check if the 'recipe' collection exists in the user document
-      // Query all recipes of the user
-      QuerySnapshot<Map<String, dynamic>> recipeSnapshot =
-          await userDoc.reference.collection('recipe').get();
+  for (QueryDocumentSnapshot<Map<String, dynamic>> userDoc
+      in userSnapshot.docs) {
+    QuerySnapshot<Map<String, dynamic>> recipeSnapshot =
+        await userDoc.reference.collection('recipe').get();
 
-      // Iterate through each recipe document
-      for (QueryDocumentSnapshot<Map<String, dynamic>> recipeDoc in recipeSnapshot.docs) {
-        // Check if the 'ingredient' collection exists in the recipe document
-          // Query all ingredients of the recipe
-          QuerySnapshot<Map<String, dynamic>> ingredientSnapshot =
-              await recipeDoc.reference.collection('ingredient').get();
+    for (QueryDocumentSnapshot<Map<String, dynamic>> recipeDoc
+        in recipeSnapshot.docs) {
+      QuerySnapshot<Map<String, dynamic>> ingredientSnapshot =
+          await recipeDoc.reference.collection('ingredient').get();
 
-          // Create a set to store matched ingredient names
-          Set<String> matchedIngredientNames = Set<String>.from(ingredientNames);
+      Set<String> matchedIngredientNames = Set<String>.from(ingredientNames);
 
-          // Iterate through each ingredient document
-          for (QueryDocumentSnapshot<Map<String, dynamic>> ingredientDoc
-              in ingredientSnapshot.docs) {
-            String ingredientName = ingredientDoc.get('name');
+      for (QueryDocumentSnapshot<Map<String, dynamic>> ingredientDoc
+          in ingredientSnapshot.docs) {
+        String ingredientName = ingredientDoc.get('name');
 
-            // Remove matched ingredient names from the set
-            matchedIngredientNames.remove(ingredientName);
+        matchedIngredientNames.remove(ingredientName);
 
-            // Break the loop if all ingredient names have been matched
-            if (matchedIngredientNames.isEmpty) {
-              recipeIds.add(recipeDoc.id);
-              break;
-            }
-          
-      
+        if (matchedIngredientNames.isEmpty) {
+          recipeIds.add(recipeDoc.id);
+          break;
+        }
       }
     }
   }
@@ -1127,55 +1140,48 @@ Future<List<String>> searchRecipesByIngredients(List<String> ingredientNames) as
   return recipeIds;
 }
 
+// Busca recetas a partir de su titulo
 Future<List<String>> searchRecipesByTitle(String searchString) async {
   List<String> recipeIds = [];
 
   try {
-    // Query all users
-    QuerySnapshot<Map<String, dynamic>> userSnapshot = await FirebaseFirestore.instance.collection('user').get();
+    QuerySnapshot<Map<String, dynamic>> userSnapshot =
+        await FirebaseFirestore.instance.collection('user').get();
 
-    // Iterate through each user document
     for (DocumentSnapshot<Map<String, dynamic>> userDoc in userSnapshot.docs) {
-      // Get the user data
-      Map<String, dynamic>? userData = userDoc.data();
+      CollectionReference<Map<String, dynamic>> recipeCollectionRef =
+          userDoc.reference.collection('recipe');
 
-        // Get the 'recipe' subcollection reference
-        CollectionReference<Map<String, dynamic>> recipeCollectionRef = userDoc.reference.collection('recipe');
+      QuerySnapshot<Map<String, dynamic>> recipeSnapshot =
+          await recipeCollectionRef.get();
 
-        // Query all recipes of the user
-        QuerySnapshot<Map<String, dynamic>> recipeSnapshot = await recipeCollectionRef.get();
+      for (DocumentSnapshot<Map<String, dynamic>> recipeDoc
+          in recipeSnapshot.docs) {
+        String title = recipeDoc.get('title');
 
-        // Iterate through each recipe document
-        for (DocumentSnapshot<Map<String, dynamic>> recipeDoc in recipeSnapshot.docs) {
-          String title = recipeDoc.get('title');
-
-          // Check if the title contains the search string
-          if (title.toLowerCase().contains(searchString.toLowerCase())) {
-            recipeIds.add(recipeDoc.id);
-          }
+        if (title.toLowerCase().contains(searchString.toLowerCase())) {
+          recipeIds.add(recipeDoc.id);
         }
-      
+      }
     }
   } catch (e) {
-    print('Error fetching recipes: $e');
+    //
   }
 
   return recipeIds;
 }
 
-
+// Busca un usuario a partir de su username
 Future<List<String>> searchUsersByUsername(String searchString) async {
   List<String> userDocIds = [];
 
-  // Query all users
   QuerySnapshot<Map<String, dynamic>> userSnapshot =
       await FirebaseFirestore.instance.collection('user').get();
 
-  // Iterate through each user document
-  for (QueryDocumentSnapshot<Map<String, dynamic>> userDoc in userSnapshot.docs) {
+  for (QueryDocumentSnapshot<Map<String, dynamic>> userDoc
+      in userSnapshot.docs) {
     String username = userDoc.get('username');
 
-    // Check if the username starts with the search string
     if (username.toLowerCase().startsWith(searchString.toLowerCase())) {
       userDocIds.add(userDoc.id);
     }
@@ -1184,16 +1190,13 @@ Future<List<String>> searchUsersByUsername(String searchString) async {
   return userDocIds;
 }
 
+// Obtiene la data de un usuario a partir de su ID
 Future<DocumentSnapshot> getUserDataById(String userId) async {
   try {
-    DocumentSnapshot snapshot = await FirebaseFirestore.instance
-        .collection('user')
-        .doc(userId)
-        .get();
+    DocumentSnapshot snapshot =
+        await FirebaseFirestore.instance.collection('user').doc(userId).get();
     return snapshot;
   } catch (e) {
-    // Handle any errors that occur during fetching
-    print('Error fetching user data: $e');
     rethrow;
   }
 }

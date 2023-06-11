@@ -26,11 +26,11 @@ class ContactScreen extends StatefulWidget {
   _ContactScreenState createState() => _ContactScreenState();
 }
 
-var screenSizeContactScreen;
+dynamic screenSizeContactScreen;
 
 class _ContactScreenState extends State<ContactScreen> {
-  TextEditingController _asuntoController = TextEditingController();
-  TextEditingController _mensajeController = TextEditingController();
+  final TextEditingController _asuntoController = TextEditingController();
+  final TextEditingController _mensajeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +45,7 @@ class _ContactScreenState extends State<ContactScreen> {
               child: Row(
                 children: [
                   IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.arrow_back_ios,
                       color: AppColors.primaryColor,
                     ),
@@ -66,7 +66,7 @@ class _ContactScreenState extends State<ContactScreen> {
                     ),
                   ),
                   IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.close,
                       color: AppColors.whiteColor,
                       size: 22,
@@ -124,8 +124,8 @@ class _ContactScreenState extends State<ContactScreen> {
                         child: Column(
                           children: [
                             Container(
-                              margin: EdgeInsets.symmetric(vertical: 4),
-                              padding: EdgeInsets.fromLTRB(3, 1, 3, 1),
+                              margin: const EdgeInsets.symmetric(vertical: 4),
+                              padding: const EdgeInsets.fromLTRB(3, 1, 3, 1),
                               decoration: BoxDecoration(
                                 color: AppColors.greyAccentColor,
                                 borderRadius: BorderRadius.circular(10),
@@ -135,13 +135,13 @@ class _ContactScreenState extends State<ContactScreen> {
                                   Expanded(
                                     child: TextField(
                                       controller: _asuntoController,
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         hintText: 'Asunto...',
                                         border: InputBorder.none,
                                         counterText: '',
                                       ),
                                       maxLines: 1,
-                                      style: TextStyle(fontSize: 18),
+                                      style: const TextStyle(fontSize: 18),
                                       maxLength: 50,
                                     ),
                                   ),
@@ -151,7 +151,6 @@ class _ContactScreenState extends State<ContactScreen> {
                           ],
                         ),
                       ),
-
                       Row(
                         children: [
                           Padding(
@@ -169,14 +168,13 @@ class _ContactScreenState extends State<ContactScreen> {
                           ),
                         ],
                       ),
-
                       Padding(
                         padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
                         child: Column(
                           children: [
                             Container(
-                              margin: EdgeInsets.symmetric(vertical: 4),
-                              padding: EdgeInsets.fromLTRB(3, 1, 3, 1),
+                              margin: const EdgeInsets.symmetric(vertical: 4),
+                              padding: const EdgeInsets.fromLTRB(3, 1, 3, 1),
                               decoration: BoxDecoration(
                                 color: AppColors.greyAccentColor,
                                 borderRadius: BorderRadius.circular(10),
@@ -188,13 +186,13 @@ class _ContactScreenState extends State<ContactScreen> {
                                       height: 200,
                                       child: TextField(
                                         controller: _mensajeController,
-                                        decoration: InputDecoration(
+                                        decoration: const InputDecoration(
                                           hintText: 'Mensaje...',
                                           border: InputBorder.none,
                                           counterText: '',
                                         ),
                                         maxLines: null,
-                                        style: TextStyle(fontSize: 18),
+                                        style: const TextStyle(fontSize: 18),
                                         maxLength: 500,
                                       ),
                                     ),
@@ -205,7 +203,6 @@ class _ContactScreenState extends State<ContactScreen> {
                           ],
                         ),
                       ),
-
                       Padding(
                         padding: const EdgeInsets.fromLTRB(0, 12, 0, 0),
                         child: GestureDetector(
@@ -251,7 +248,7 @@ class _ContactScreenState extends State<ContactScreen> {
                               alignment: Alignment.center,
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
-                                children: [
+                                children: const [
                                   Text(
                                     'Enviar',
                                     style: TextStyle(
@@ -271,8 +268,6 @@ class _ContactScreenState extends State<ContactScreen> {
                           ),
                         ),
                       ),
-
-                      //END
                     ],
                   ),
                 ),
@@ -285,21 +280,21 @@ class _ContactScreenState extends State<ContactScreen> {
   }
 
   Future enviarEmail({email, name, message, asunto}) async {
-    const service_id = 'service_df6jida';
-    const template_id = 'template_o3926cs';
-    const user_id = 'J0XTNBhNp5LcSKLga';
+    var serviceId = 'service_df6jida';
+    var templateId = 'template_o3926cs';
+    var userId = 'J0XTNBhNp5LcSKLga';
 
     var url = Uri.parse('https://api.emailjs.com/api/v1.0/email/send');
     try {
-      var response = await http.post(url,
+      await http.post(url,
           headers: {
             'origin': '<http://localhost>',
             'Content-Type': 'application/json'
           },
           body: json.encode({
-            'service_id': service_id,
-            'template_id': template_id,
-            'user_id': user_id,
+            'service_id': serviceId,
+            'template_id': templateId,
+            'user_id': userId,
             'template_params': {
               'name': name,
               'useremail': email,
@@ -307,10 +302,8 @@ class _ContactScreenState extends State<ContactScreen> {
               'asunto': asunto,
             }
           }));
-      print('Email enviado');
-      print(response.body);
     } catch (error) {
-      print('Error al enviar el email');
-    }
+     //    
   }
+}
 }

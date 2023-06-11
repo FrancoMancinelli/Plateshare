@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:like_button/like_button.dart';
-import 'package:plateshare/screens/LoginScreen.dart';
-import 'package:plateshare/screens/RecipeDetailsScreen.dart';
 import 'package:plateshare/services/firebase_service.dart';
 import 'package:plateshare/util/AppColors.dart';
 
@@ -42,6 +39,7 @@ class _RecipeCommentState extends State<RecipeComment> {
     fetchCommentData();
   }
 
+  // Obtiene información del dueño de cada comentarios
   Future<void> fetchCommentData() async {
     final image = await getUserImageByDocumentId(widget.commentOwnerID);
     final name = await getUserNameByDocumentId(widget.commentOwnerID);
@@ -59,6 +57,7 @@ class _RecipeCommentState extends State<RecipeComment> {
     });
   }
 
+  // Formatea los textos según cuanto tiempo ha transcurrido
   String formatTimeDifference(Duration difference) {
     if (difference.inSeconds < 60) {
       return '${difference.inSeconds} segundos';

@@ -29,8 +29,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-      
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Container(
               color: AppColors.primaryColor,
@@ -43,7 +42,6 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                   ),
                   child: Column(
                     children: [
-                      
                       Align(
                         alignment: Alignment.bottomCenter,
                         child: Padding(
@@ -74,7 +72,8 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                                   Visibility(
                                     visible: currentStep != 1,
                                     child: Padding(
-                                      padding: const EdgeInsets.fromLTRB(0, 5, 10, 0),
+                                      padding: const EdgeInsets.fromLTRB(
+                                          0, 5, 10, 0),
                                       child: ElevatedButton(
                                         onPressed: () {
                                           setState(() {
@@ -87,7 +86,8 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                                           backgroundColor: AppColors
                                               .whiteColor, // Customize the color as needed
                                           shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(100),
+                                            borderRadius:
+                                                BorderRadius.circular(100),
                                           ),
                                         ),
                                         child: Text(
@@ -104,7 +104,8 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.fromLTRB(0, 5, 20, 0),
+                                    padding:
+                                        const EdgeInsets.fromLTRB(0, 5, 20, 0),
                                     child: ElevatedButton(
                                       onPressed: () {
                                         setState(() {
@@ -116,7 +117,8 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors.orange,
                                         shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(100),
+                                          borderRadius:
+                                              BorderRadius.circular(100),
                                         ),
                                       ),
                                       child: Text(

@@ -31,11 +31,13 @@ class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
     ['Vegetariano', 'Salsas', 'Agridulce', 'Picante', 'Mexicana', 'Fácil'],
   ];
 
+  // Listado con el estado de los botones de categorias
   List<List<bool>> buttonStates = List.generate(
     4,
     (rowIndex) => List.generate(6, (colIndex) => false),
   );
 
+  // Obtiene los botones que hayan sido seleccionados y los devuelve en una List<String>
   List<String> getSelectedButtonValues() {
     List<String> selectedValues = [];
 
@@ -53,6 +55,7 @@ class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
     return selectedValues;
   }
 
+  // Actualiza el estado de los botones de categorias
   void updateButtonState(int rowIndex, int colIndex) {
     setState(() {
       buttonStates[rowIndex][colIndex] = !buttonStates[rowIndex][colIndex];
@@ -71,6 +74,7 @@ class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
     });
   }
 
+  // Muestra mensajes de requerimientos en la parte inferior de la panatalla
   void showRequired(int index) {
     switch (index) {
       case 1:
@@ -101,6 +105,7 @@ class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
     }
   }
 
+  // Actualiza el valor del slider que indica el tiempo
   void _updateSliderValue(double newValue) {
     setState(() {
       _sliderValue = newValue;
@@ -137,7 +142,7 @@ class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
                         Padding(
                           padding: const EdgeInsets.only(left: 5),
                           child: IconButton(
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.arrow_back_ios,
                               color: AppColors.primaryColor,
                               size: 20,
@@ -158,7 +163,7 @@ class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
                         Padding(
                           padding: const EdgeInsets.only(right: 5),
                           child: IconButton(
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.close,
                               color: Colors.white,
                               size: 25,
@@ -173,8 +178,7 @@ class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
                                   actions: [
                                     TextButton(
                                       onPressed: () {
-                                        Navigator.pop(
-                                            context); // Close the dialog
+                                        Navigator.pop(context);
                                       },
                                       child: const Text(
                                         'Continuar',
@@ -184,7 +188,6 @@ class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
                                     ),
                                     TextButton(
                                       onPressed: () {
-                                        // set all selection states to false
                                         setState(() {
                                           buttonStates = List.generate(
                                               4,
@@ -244,8 +247,7 @@ class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
                                   const TextSpan(
                                     text: '*',
                                     style: TextStyle(
-                                      color: Color(
-                                          0xFFFF6600), // Set your desired color for the '*'
+                                      color: Color(0xFFFF6600),
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16,
                                     ),
@@ -268,8 +270,8 @@ class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
                                       source: ImageSource.gallery);
                                 },
                                 child: Container(
-                                  width: 160, // Set the desired width
-                                  height: 160, // Set the desired height
+                                  width: 160,
+                                  height: 160,
                                   child: Image.network(
                                     'https://i.imgur.com/zjmuaBZ.png',
                                     fit: BoxFit.contain,
@@ -280,7 +282,6 @@ class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
                           ),
                         ],
                       ),
-
                       Padding(
                         padding: const EdgeInsets.fromLTRB(10, 20, 0, 0),
                         child: Row(
@@ -319,12 +320,10 @@ class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
                           height: 50,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            color: Colors
-                                .white, // Set the desired background color
+                            color: Colors.white,
                             border: Border.all(
-                              color: const Color(
-                                  0xFFCCDDD7), // Set the desired border color
-                              width: 2.5, // Set the desired border width
+                              color: const Color(0xFFCCDDD7),
+                              width: 2.5,
                             ),
                           ),
                           child: Center(
@@ -383,9 +382,7 @@ class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
                                 padding: const EdgeInsets.only(right: 10),
                                 child: Text(
                                   '${_sliderValue.round()} mins',
-                                  textAlign: TextAlign
-                                      .right, // Align the text to the right
-
+                                  textAlign: TextAlign.right,
                                   style: const TextStyle(
                                     color: AppColors.brownTextColor,
                                     fontWeight: FontWeight.bold,
@@ -412,7 +409,6 @@ class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
                           inactiveColor: const Color(0xFFCCDDD7),
                         ),
                       ),
-
                       Padding(
                         padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
                         child: Row(
@@ -450,11 +446,11 @@ class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
                           scrollDirection: Axis.horizontal,
                           child: Column(
                             children: List.generate(
-                              4, // Number of rows
+                              4, // Número de filas de botones
                               (rowIndex) => Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: List.generate(
-                                  6, // Number of columns
+                                  6, // Número de columnas de botones
                                   (colIndex) => Container(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 3.0),
@@ -464,8 +460,7 @@ class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
                                       },
                                       style: TextButton.styleFrom(
                                         minimumSize: const Size(90, 35),
-                                        backgroundColor:
-                                            Colors.white, // Enabled state
+                                        backgroundColor: Colors.white,
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(5.0),
@@ -473,8 +468,7 @@ class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
                                             color: buttonStates[rowIndex]
                                                     [colIndex]
                                                 ? AppColors.orangeColor
-                                                : Colors
-                                                    .transparent, // Border color for enabled buttons
+                                                : Colors.transparent,
                                             width: 2.0,
                                           ),
                                         ),
@@ -497,7 +491,6 @@ class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
                           ),
                         ),
                       ),
-
                       Align(
                         alignment: Alignment.bottomCenter,
                         child: Padding(
@@ -530,18 +523,18 @@ class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
                                         const EdgeInsets.fromLTRB(0, 5, 20, 0),
                                     child: ElevatedButton(
                                       onPressed: () {
-                                        //Check the user insert a image
+                                        //Comprueba si el usuario introduce una imagen
                                         if (imageRecipe != null &&
                                             imageRecipe!.path.isNotEmpty) {
-                                          // Check if _tituloController is not null or empty
+                                          // Comprueba si el titulo no esta vacio
                                           if (_tituloController
                                               .text.isNotEmpty) {
-                                            // Check if at least one button in buttonStates is true
+                                            // Comprueba que al menos una categoria haya sido seleccionada
                                             bool isButtonSelected =
                                                 buttonStates.any((row) =>
                                                     row.any((col) => col));
                                             if (isButtonSelected) {
-                                              // Navigate to the screen where you want to add a recipe
+                                              // Continua al paso 2
                                               Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
@@ -599,7 +592,6 @@ class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
                           ),
                         ),
                       ),
-                      //END
                     ],
                   ),
                 ),

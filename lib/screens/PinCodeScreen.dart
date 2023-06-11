@@ -1,4 +1,3 @@
-import 'package:bcrypt/bcrypt.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -27,27 +26,27 @@ class PinCodeScreen extends StatefulWidget {
 }
 
 class _PinCodeScreenState extends State<PinCodeScreen> {
-  final TextEditingController _1DigitController = TextEditingController();
-  final TextEditingController _2DigitController = TextEditingController();
-  final TextEditingController _3DigitController = TextEditingController();
-  final TextEditingController _4DigitController = TextEditingController();
+  final TextEditingController digitController1 = TextEditingController();
+  final TextEditingController digitController2 = TextEditingController();
+  final TextEditingController digitController3 = TextEditingController();
+  final TextEditingController digitController4 = TextEditingController();
 
-  FocusNode _1DigitFocusNode = FocusNode();
-  FocusNode _2DigitFocusNode = FocusNode();
-  FocusNode _3DigitFocusNode = FocusNode();
-  FocusNode _4DigitFocusNode = FocusNode();
+  FocusNode digitFocusNode1 = FocusNode();
+  FocusNode digitFocusNode2 = FocusNode();
+  FocusNode digitFocusNode3 = FocusNode();
+  FocusNode digitFocusNode4 = FocusNode();
 
   @override
   void dispose() {
-    _1DigitController.dispose();
-    _2DigitController.dispose();
-    _3DigitController.dispose();
-    _4DigitController.dispose();
+    digitController1.dispose();
+    digitController2.dispose();
+    digitController3.dispose();
+    digitController4.dispose();
 
-    _1DigitFocusNode.dispose();
-    _2DigitFocusNode.dispose();
-    _3DigitFocusNode.dispose();
-    _4DigitFocusNode.dispose();
+    digitFocusNode1.dispose();
+    digitFocusNode2.dispose();
+    digitFocusNode3.dispose();
+    digitFocusNode4.dispose();
 
     super.dispose();
   }
@@ -56,21 +55,21 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
   void initState() {
     super.initState();
 
-    _1DigitController.addListener(() {
-      if (_1DigitController.text.length == 1) {
-        FocusScope.of(context).requestFocus(_2DigitFocusNode);
+    digitController1.addListener(() {
+      if (digitController1.text.length == 1) {
+        FocusScope.of(context).requestFocus(digitFocusNode2);
       }
     });
 
-    _2DigitController.addListener(() {
-      if (_2DigitController.text.length == 1) {
-        FocusScope.of(context).requestFocus(_3DigitFocusNode);
+    digitController2.addListener(() {
+      if (digitController2.text.length == 1) {
+        FocusScope.of(context).requestFocus(digitFocusNode3);
       }
     });
 
-    _3DigitController.addListener(() {
-      if (_3DigitController.text.length == 1) {
-        FocusScope.of(context).requestFocus(_4DigitFocusNode);
+    digitController3.addListener(() {
+      if (digitController3.text.length == 1) {
+        FocusScope.of(context).requestFocus(digitFocusNode4);
       }
     });
   }
@@ -83,7 +82,7 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
         child: Container(
           width: screenSize.width,
           height: screenSize.height,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             image: DecorationImage(
               image: NetworkImage('https://i.imgur.com/pbBleS1.png'),
               fit: BoxFit.cover,
@@ -162,8 +161,8 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
                   children: [
                     Expanded(
                       child: TextField(
-                        controller: _1DigitController,
-                        focusNode: _1DigitFocusNode,
+                        controller: digitController1,
+                        focusNode: digitFocusNode1,
                         style: GoogleFonts.acme(
                           textStyle: const TextStyle(
                             fontSize: 30,
@@ -177,7 +176,7 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
                           fillColor: Colors.white,
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20.0),
-                            borderSide: BorderSide(
+                            borderSide: const BorderSide(
                               color: AppColors.orangeColor,
                               width: 2.0,
                             ),
@@ -185,7 +184,7 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20.0),
                           ),
-                          counterText: '', // Hides the character counter
+                          counterText: '',
                         ),
                         keyboardType: TextInputType.number,
                         inputFormatters: <TextInputFormatter>[
@@ -194,11 +193,11 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
                         maxLength: 1,
                       ),
                     ),
-                    SizedBox(width: 10.0),
+                    const SizedBox(width: 10.0),
                     Expanded(
                       child: TextField(
-                        controller: _2DigitController,
-                        focusNode: _2DigitFocusNode,
+                        controller: digitController2,
+                        focusNode: digitFocusNode2,
                         style: GoogleFonts.acme(
                           textStyle: const TextStyle(
                             fontSize: 30,
@@ -212,7 +211,7 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
                           fillColor: Colors.white,
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20.0),
-                            borderSide: BorderSide(
+                            borderSide: const BorderSide(
                               color: AppColors.orangeColor,
                               width: 2.0,
                             ),
@@ -220,7 +219,7 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20.0),
                           ),
-                          counterText: '', // Hides the character counter
+                          counterText: '',
                         ),
                         keyboardType: TextInputType.number,
                         inputFormatters: <TextInputFormatter>[
@@ -229,11 +228,11 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
                         maxLength: 1,
                       ),
                     ),
-                    SizedBox(width: 10.0),
+                    const SizedBox(width: 10.0),
                     Expanded(
                       child: TextField(
-                        controller: _3DigitController,
-                        focusNode: _3DigitFocusNode,
+                        controller: digitController3,
+                        focusNode: digitFocusNode3,
                         style: GoogleFonts.acme(
                           textStyle: const TextStyle(
                             fontSize: 30,
@@ -247,7 +246,7 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
                           fillColor: Colors.white,
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20.0),
-                            borderSide: BorderSide(
+                            borderSide: const BorderSide(
                               color: AppColors.orangeColor,
                               width: 2.0,
                             ),
@@ -255,7 +254,7 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20.0),
                           ),
-                          counterText: '', // Hides the character counter
+                          counterText: '',
                         ),
                         keyboardType: TextInputType.number,
                         inputFormatters: <TextInputFormatter>[
@@ -264,11 +263,11 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
                         maxLength: 1,
                       ),
                     ),
-                    SizedBox(width: 10.0),
+                    const SizedBox(width: 10.0),
                     Expanded(
                       child: TextField(
-                        controller: _4DigitController,
-                        focusNode: _4DigitFocusNode,
+                        controller: digitController4,
+                        focusNode: digitFocusNode4,
                         style: GoogleFonts.acme(
                           textStyle: const TextStyle(
                             fontSize: 30,
@@ -282,7 +281,7 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
                           fillColor: Colors.white,
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20.0),
-                            borderSide: BorderSide(
+                            borderSide: const BorderSide(
                               color: AppColors.orangeColor,
                               width: 2.0,
                             ),
@@ -290,7 +289,7 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20.0),
                           ),
-                          counterText: '', // Hides the character counter
+                          counterText: '',
                         ),
                         keyboardType: TextInputType.number,
                         inputFormatters: <TextInputFormatter>[
@@ -342,17 +341,21 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
     );
   }
 
+  //Valida que el pin introducido sea el que se haya enviado por correo
   void validatePin() async {
-    String d1 = _1DigitController.text;
-    String d2 = _2DigitController.text;
-    String d3 = _3DigitController.text;
-    String d4 = _4DigitController.text;
+    String d1 = digitController1.text;
+    String d2 = digitController2.text;
+    String d3 = digitController3.text;
+    String d4 = digitController4.text;
 
+    //Si los campos no estan vacios
     if (d1.isNotEmpty && d2.isNotEmpty && d3.isNotEmpty && d4.isNotEmpty) {
       DateTime now = DateTime.now();
       Duration difference = now.difference(widget.pinTime);
-      if (difference.inMinutes < 2) {
+      //Comprueba que el PIN no haya caducado (30 segundos)
+      if (difference.inSeconds < 30) {
         String pinCompletoInput = d1 + d2 + d3 + d4;
+        //Si el PIN es valido...
         if (widget.pin == pinCompletoInput) {
           updateUserPasswordByUsername(widget.username, widget.password);
           ScaffoldMessenger.of(context).showSnackBar(

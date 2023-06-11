@@ -33,7 +33,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
         child: Container(
           width: screenSize.width,
           height: screenSize.height,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             image: DecorationImage(
               image: NetworkImage('https://i.imgur.com/pbBleS1.png'),
               fit: BoxFit.cover,
@@ -108,7 +108,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50.0),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                               color: AppColors.orangeColor, width: 2),
                         ),
                         labelText: 'Correo',
@@ -130,7 +130,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50.0),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                               color: AppColors.orangeColor, width: 2),
                         ),
                         labelText: 'Nombre',
@@ -152,7 +152,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50.0),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                               color: AppColors.orangeColor, width: 2),
                         ),
                         labelText: 'Usuario',
@@ -174,7 +174,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50.0),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                               color: AppColors.orangeColor, width: 2),
                         ),
                         labelText: 'Contraseña',
@@ -213,7 +213,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50.0),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                               color: AppColors.orangeColor, width: 2),
                         ),
                         labelText: 'Repite Contraseña',
@@ -327,6 +327,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
     );
   }
 
+  //Valida que sea posible realizar el registro
   Future<void> validateRegiser() async {
     String emailInput = _emailController.text.toLowerCase();
     String nameInput = _nameController.text;
@@ -361,7 +362,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                   String hashedPassword = BCrypt.hashpw(passwordInput, salt);
                   addNewUser(emailInput, nameInput, usernameInput,
                       hashedPassword, salt);
-                  await Future.delayed(Duration(seconds: 3));
+                  await Future.delayed(const Duration(seconds: 3));
                   Future.microtask(() {
                     Navigator.pushReplacement(
                       context,
@@ -370,7 +371,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                     );
                   });
                 } else {
-                  await Future.delayed(Duration(seconds: 3));
+                  await Future.delayed(const Duration(seconds: 3));
                   // ignore: use_build_context_synchronously
                   showDialog(
                     context: context,
@@ -392,9 +393,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                   });
                 }
               } else {
-                await Future.delayed(Duration(seconds: 3));
-                // ignore: use_build_context
-                // _synchronously
+                await Future.delayed(const Duration(seconds: 3));
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
@@ -415,8 +414,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                 });
               }
             } else {
-              await Future.delayed(Duration(seconds: 3));
-              // ignore: use_build_context_synchronously
+              await Future.delayed(const Duration(seconds: 3));
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
@@ -437,7 +435,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
               });
             }
           } else {
-            await Future.delayed(Duration(seconds: 3));
+            await Future.delayed(const Duration(seconds: 3));
             showDialog(
               context: context,
               builder: (BuildContext context) {
@@ -459,7 +457,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
             });
           }
         } else {
-          await Future.delayed(Duration(seconds: 3));
+          await Future.delayed(const Duration(seconds: 3));
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -481,7 +479,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
           });
         }
       } else {
-        await Future.delayed(Duration(seconds: 3));
+        await Future.delayed(const Duration(seconds: 3));
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -524,6 +522,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
   }
 }
 
+// Clase que valida que un string sea un Email
 class Validator {
   static bool isEmail(String value) {
     final RegExp regex =
@@ -532,6 +531,7 @@ class Validator {
   }
 }
 
+//Comprueba que un nombre de usuario no tenga espacios en blanco y solo tenga letras, números y ciertos caracteres especiales
 bool isValidUsername(String username) {
   // Verificar si no hay espacios en blanco
   if (username.contains(' ')) {
