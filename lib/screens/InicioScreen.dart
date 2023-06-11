@@ -84,7 +84,7 @@ class _InicioScreenState extends State<InicioScreen> {
       top: false,
       child: Scaffold(
         //El AppBar y Drawer solo se muestran si la pagina es la de recetas
-        appBar: _selectedIndex == 1 ? MyAppBar() : null,
+        appBar: _selectedIndex == 1 ? MyAppBar(emailData: widget.emailData, nameData: widget.nameData, profilePicData: widget.profilePicData, usernameData: widget.usernameData,) : null,
         drawer: _selectedIndex == 1
             ? MyDrawer(
                 nameData: widget.nameData,

@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:plateshare/screens/SearchScreen.dart';
 import 'package:plateshare/util/AppColors.dart';
 
+import '../screens/InicioScreen.dart';
+
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final String emailData;
+  final String nameData;
+  final String profilePicData;
+  final String usernameData;
   MyAppBar({
-    Key? key,
+    Key? key, required this.emailData, required this.nameData, required this.profilePicData, required this.usernameData,
   }) : super(key: key);
 
   final TextEditingController _searchController = TextEditingController();
@@ -17,7 +24,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
   backgroundColor: AppColors.primaryColor,
   title: Text(
-    'Home',
+    'Inicio',
     style: TextStyle(
       color: AppColors.whiteColor,
       fontSize: 22,
@@ -26,9 +33,24 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   ),
   centerTitle: true, // Add this line to center the title
   actions: [
-    IconButton(
-      onPressed: () {},
-      icon: const Icon(Icons.search_rounded),
+    Padding(
+      padding: const EdgeInsets.fromLTRB(0,0,2,0),
+      child: IconButton(
+        onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SearchScreen(
+                            emailData: emailData,
+                            nameData: nameData,
+                            profilePicData: profilePicData,
+                            usernameData: usernameData,
+                          ),
+                        ),
+                      );
+        },
+        icon: const Icon(Icons.search_rounded),
+      ),
     ),
   ],
 );
