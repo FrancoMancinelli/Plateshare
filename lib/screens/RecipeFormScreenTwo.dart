@@ -201,7 +201,7 @@ class _RecipeFormScreenTwoState extends State<RecipeFormScreenTwo> {
                                   icon: const Icon(
                                     Icons.close,
                                     color: Colors.white,
-                                    size: 20,
+                                    size: 25,
                                   ),
                                 ),
                                 Positioned.fill(

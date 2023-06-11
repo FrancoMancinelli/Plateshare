@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lottie/lottie.dart';
 import 'package:plateshare/screens/InicioScreen.dart';
 import 'package:plateshare/services/firebase_service.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -43,6 +44,7 @@ class _RecipeFormScreenThreeState extends State<RecipeFormScreenThree> {
 
   List<String> texts = [];
   TextEditingController textController1 = TextEditingController();
+  bool isButtonVisible = true;
 
   void addTexts() {
     String text1 = textController1.text;
@@ -116,92 +118,90 @@ class _RecipeFormScreenThreeState extends State<RecipeFormScreenThree> {
                   child: Column(
                     children: [
                       Container(
-                        height: 45,
-                        width: screenSize.width,
-                        color: AppColors.primaryColor,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: Stack(
-                                alignment: Alignment.centerLeft,
-                                children: [
-                                  IconButton(
-                                    onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) => AlertDialog(
-                                          title: const Text('Confirmación'),
-                                          content: const Text(
-                                              '¿Estás seguro que deseas abandonar el proceso? Si abandonas, el progreso no se guardará'),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(
-                                                    context); // Close the dialog
-                                              },
-                                              child: const Text(
-                                                'Continuar',
-                                                style: TextStyle(
-                                                    color: Colors.blueGrey),
-                                              ),
-                                            ),
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pushReplacement(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        InicioScreen(
-                                                      emailData:
-                                                          widget.emailData,
-                                                      nameData: widget.nameData,
-                                                      profilePicData:
-                                                          widget.profilePicData,
-                                                      usernameData:
-                                                          widget.usernameData,
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                              child: const Text(
-                                                'Abandonar',
-                                                style: TextStyle(
-                                                    color: Colors.red),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                    icon: const Icon(
-                                      Icons.close,
-                                      color: Colors.white,
-                                      size: 20,
-                                    ),
-                                  ),
-                                  Positioned.fill(
-                                    child: Align(
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        'Sube una receta',
-                                        textAlign: TextAlign.center,
-                                        style: GoogleFonts.acme(
-                                          textStyle: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 24,
-                                            fontFamily: 'Acme',
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
+  height: 45,
+  width: screenSize.width,
+  color: AppColors.primaryColor,
+  child: Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      Expanded(
+        child: Stack(
+          children: [
+            Align(
+              alignment: Alignment.center,
+              child: Text(
+                'Sube una receta',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.acme(
+                  textStyle: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontFamily: 'Acme',
+                  ),
+                ),
+              ),
+            ),
+            Visibility(
+              visible: isButtonVisible,
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: IconButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text('Confirmación'),
+                        content: const Text(
+                          '¿Estás seguro que deseas abandonar el proceso? Si abandonas, el progreso no se guardará',
                         ),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context); // Close the dialog
+                            },
+                            child: const Text(
+                              'Continuar',
+                              style: TextStyle(color: Colors.blueGrey),
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => InicioScreen(
+                                    emailData: widget.emailData,
+                                    nameData: widget.nameData,
+                                    profilePicData: widget.profilePicData,
+                                    usernameData: widget.usernameData,
+                                  ),
+                                ),
+                              );
+                            },
+                            child: const Text(
+                              'Abandonar',
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          ),
+                        ],
                       ),
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.close,
+                    color: Colors.white,
+                    size: 25,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ],
+  ),
+)
+,
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: ClipRRect(
@@ -410,25 +410,28 @@ class _RecipeFormScreenThreeState extends State<RecipeFormScreenThree> {
                                   Padding(
                                     padding:
                                         const EdgeInsets.fromLTRB(0, 5, 20, 0),
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.pop(
-                                            context); // Close the current screen
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.white,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(100),
+                                    child: Visibility(
+                                      visible: isButtonVisible,
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.pop(
+                                              context); // Close the current screen
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.white,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(100),
+                                          ),
                                         ),
-                                      ),
-                                      child: Text(
-                                        'Volver',
-                                        style: GoogleFonts.acme(
-                                          textStyle: const TextStyle(
-                                            color: AppColors.brownTextColor,
-                                            fontSize: 16,
-                                            fontFamily: 'Acme',
+                                        child: Text(
+                                          'Volver',
+                                          style: GoogleFonts.acme(
+                                            textStyle: const TextStyle(
+                                              color: AppColors.brownTextColor,
+                                              fontSize: 16,
+                                              fontFamily: 'Acme',
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -437,88 +440,121 @@ class _RecipeFormScreenThreeState extends State<RecipeFormScreenThree> {
                                   Padding(
                                     padding:
                                         const EdgeInsets.fromLTRB(0, 5, 20, 0),
-                                    child: ElevatedButton(
-                                      onPressed: () async {
-                                        if (widget.imageRecipe != null) {
-                                          String uniqueFileName = DateTime.now()
-                                              .millisecondsSinceEpoch
-                                              .toString();
-                                          Reference referenceRoot =
-                                              FirebaseStorage.instance.ref();
-                                          Reference referenceDirImages =
-                                              referenceRoot.child('imgaes');
-                  
-                                          Reference referenceImageToUpload =
-                                              referenceDirImages
-                                                  .child(uniqueFileName);
-                                          try {
-                                            await referenceImageToUpload
-                                                .putFile(File(
-                                                    widget.imageRecipe!.path));
-                                            imageUrl =
-                                                await referenceImageToUpload
-                                                    .getDownloadURL();
-                                          } catch (erorr) {}
-                                        }
-                  
-                                        if (texts.length >= 1) {
-                                          final recipeData = {
-                                            'category':
-                                                widget.categoriasRecepie,
-                                            'likes': [],
-                                            'steps': texts,
-                                            'rate': 5.0,
-                                            'rations': widget.racionesRecepie,
-                                            'time': widget.tiempoRecepie,
-                                            'title': widget.tituloRecepie,
-                                            'image': imageUrl,
-                                            'ratings': [],
-                                          };
-                  
-                                          final ingredientList =
-                                              widget.ingredientesRecepie;
-                                          String? documentId =
-                                              await getDocumentIdByUsername(
-                                                  widget.usernameData);
-                                          addRecipeToUser(documentId,
-                                              recipeData, ingredientList);
-                  
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  InicioScreen(
-                                                      emailData:
-                                                          widget.emailData,
-                                                      nameData: widget.nameData,
-                                                      profilePicData:
-                                                          widget.profilePicData,
-                                                      usernameData:
-                                                          widget.usernameData),
+                                    child: Stack(
+                                      children: [
+                                        Visibility(
+                                          visible: isButtonVisible,
+                                          child: ElevatedButton(
+                                            onPressed: () async {
+                                              setState(() {
+                                                  isButtonVisible =
+                                                      false; // Hide the button
+                                                });
+                                              if (widget.imageRecipe != null) {
+                                                String uniqueFileName =
+                                                    DateTime.now()
+                                                        .millisecondsSinceEpoch
+                                                        .toString();
+                                                Reference referenceRoot =
+                                                    FirebaseStorage.instance
+                                                        .ref();
+                                                Reference referenceDirImages =
+                                                    referenceRoot
+                                                        .child('imgaes');
+
+                                                Reference
+                                                    referenceImageToUpload =
+                                                    referenceDirImages
+                                                        .child(uniqueFileName);
+                                                try {
+                                                  await referenceImageToUpload
+                                                      .putFile(File(widget
+                                                          .imageRecipe!.path));
+                                                  imageUrl =
+                                                      await referenceImageToUpload
+                                                          .getDownloadURL();
+                                                } catch (erorr) {}
+                                              }
+
+                                              if (texts.length >= 1) {
+
+
+                                                          await Future.delayed(Duration(seconds: 3));
+
+                                                final recipeData = {
+                                                  'category':
+                                                      widget.categoriasRecepie,
+                                                  'likes': [],
+                                                  'steps': texts,
+                                                  'rate': 5.0,
+                                                  'rations':
+                                                      widget.racionesRecepie,
+                                                  'time': widget.tiempoRecepie,
+                                                  'title': widget.tituloRecepie,
+                                                  'image': imageUrl,
+                                                  'ratings': [],
+                                                };
+
+                                                final ingredientList =
+                                                    widget.ingredientesRecepie;
+                                                String? documentId =
+                                                    await getDocumentIdByUsername(
+                                                        widget.usernameData);
+                                                addRecipeToUser(documentId,
+                                                    recipeData, ingredientList);
+
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        InicioScreen(
+                                                            emailData: widget
+                                                                .emailData,
+                                                            nameData:
+                                                                widget.nameData,
+                                                            profilePicData: widget
+                                                                .profilePicData,
+                                                            usernameData: widget
+                                                                .usernameData),
+                                                  ),
+                                                );
+                                                showLowMessage(3);
+                                              } else {
+                                                setState(() {
+                                                  isButtonVisible =
+                                                      true; // Hide the button
+                                                });
+                                                showLowMessage(2);
+                                              }
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Colors.orange,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(100),
+                                              ),
                                             ),
-                                          );
-                                          showLowMessage(3);
-                                        } else {
-                                          showLowMessage(2);
-                                        }
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.orange,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(100),
-                                        ),
-                                      ),
-                                      child: Text(
-                                        'Publicar',
-                                        style: GoogleFonts.acme(
-                                          textStyle: const TextStyle(
-                                            color: AppColors.whiteColor,
-                                            fontSize: 16,
-                                            fontFamily: 'Acme',
+                                            child: Text(
+                                              'Publicar',
+                                              style: GoogleFonts.acme(
+                                                textStyle: const TextStyle(
+                                                  color: AppColors.whiteColor,
+                                                  fontSize: 16,
+                                                  fontFamily: 'Acme',
+                                                ),
+                                              ),
+                                            ),
                                           ),
                                         ),
-                                      ),
+                                        Visibility(
+                                          visible: !isButtonVisible,
+                                          child: Lottie.network(
+                                            'https://assets1.lottiefiles.com/packages/lf20_zuyjlvgp.json',
+                                            width: 40,
+                                            height: 40,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ],
