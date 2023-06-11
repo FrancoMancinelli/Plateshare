@@ -1183,3 +1183,17 @@ Future<List<String>> searchUsersByUsername(String searchString) async {
 
   return userDocIds;
 }
+
+Future<DocumentSnapshot> getUserDataById(String userId) async {
+  try {
+    DocumentSnapshot snapshot = await FirebaseFirestore.instance
+        .collection('user')
+        .doc(userId)
+        .get();
+    return snapshot;
+  } catch (e) {
+    // Handle any errors that occur during fetching
+    print('Error fetching user data: $e');
+    rethrow;
+  }
+}
