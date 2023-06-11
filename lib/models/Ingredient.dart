@@ -1,7 +1,7 @@
 class Ingredient {
   final String name;
   final String type;
-  int amount;
+  final int amount;
 
   Ingredient({
     required this.name,

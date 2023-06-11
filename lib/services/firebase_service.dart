@@ -1,6 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
+import '../models/Ingredient.dart';
+import '../models/MyNotification.dart';
+import '../models/Recipe.dart';
+import '../models/User.dart';
+import '../models/Comments.dart';
+
 FirebaseFirestore db = FirebaseFirestore.instance;
 
 Future<bool> checkCredentials(String username, String password) async {
@@ -24,7 +30,6 @@ Future<bool> checkIfEmailExists(String email) async {
   return snapshot.docs.isNotEmpty;
 }
 
-
 Future<void> addNewUser(String email, String name, String username,
     String password, String salt) async {
   final userRef = db.collection('user');
@@ -43,8 +48,6 @@ Future<void> addNewUser(String email, String name, String username,
     'creationdate': currentDate,
   });
 }
-
-
 
 Future<void> updateUserPasswordByUsername(
     String username, String newPassword) async {
@@ -330,7 +333,6 @@ Future<List<Map<String, dynamic>>> getRecipeComments(String recipeId) async {
   return comentarios;
 }
 
-
 Future<List<String>> getRecipeSteps(String recipeId) async {
   final QuerySnapshot userSnapshot =
       await FirebaseFirestore.instance.collection('user').get();
@@ -416,7 +418,6 @@ Future<void> addCommentToRecipe(
     }
   }
 }
-
 
 Future<bool> checkIfRecipeLiked(
     String recipeOwner, String recipeId, String value) async {
@@ -548,8 +549,12 @@ Future<List<dynamic>> getLikedRecipes(String userId) async {
   List<dynamic> existingRecipes = [];
 
   for (var recipeId in favorites) {
-    DocumentSnapshot recipeSnapshot =
-        await FirebaseFirestore.instance.collection('user').doc(userId).collection('recipe').doc(recipeId).get();
+    DocumentSnapshot recipeSnapshot = await FirebaseFirestore.instance
+        .collection('user')
+        .doc(userId)
+        .collection('recipe')
+        .doc(recipeId)
+        .get();
 
     if (recipeSnapshot.exists) {
       existingRecipes.add(recipeId);
@@ -698,7 +703,8 @@ Future<void> addOrUpdateRatingToRecipe(
 
     if (recipeSnapshot.exists) {
       final List<Map<String, dynamic>> ratings =
-          List<Map<String, dynamic>>.from((recipeSnapshot.data() as Map<String, dynamic>)['ratings'] ?? []);
+          List<Map<String, dynamic>>.from(
+              (recipeSnapshot.data() as Map<String, dynamic>)['ratings'] ?? []);
 
       int existingRatingIndex = -1;
 
@@ -731,10 +737,8 @@ Future<void> addOrUpdateRatingToRecipe(
   }
 }
 
-
-
-
-Future<void> removeUserRatingFromRecipe(String ownerId, String recipeId, String userId) async {
+Future<void> removeUserRatingFromRecipe(
+    String ownerId, String recipeId, String userId) async {
   try {
     final userRef = FirebaseFirestore.instance.collection('user').doc(ownerId);
     final recipeRef = userRef.collection('recipe').doc(recipeId);
@@ -748,7 +752,8 @@ Future<void> removeUserRatingFromRecipe(String ownerId, String recipeId, String 
       ratings.removeWhere((rating) => rating['userid'] == userId);
 
       // Convert the updated ratings list back to a list of dynamic
-      final updatedRatings = ratings.map((rating) => Map<String, dynamic>.from(rating)).toList();
+      final updatedRatings =
+          ratings.map((rating) => Map<String, dynamic>.from(rating)).toList();
 
       await recipeRef.update({
         'ratings': updatedRatings,
@@ -772,9 +777,8 @@ Future<List<double>> getAllRatings(String userId, String recipeId) async {
     if (recipeSnapshot.exists) {
       final List<dynamic> ratings = recipeSnapshot['ratings'] ?? [];
 
-      final List<double> allRatings = ratings
-          .map<double>((rating) => rating['points'] as double)
-          .toList();
+      final List<double> allRatings =
+          ratings.map<double>((rating) => rating['points'] as double).toList();
 
       return allRatings;
     }
@@ -786,10 +790,8 @@ Future<List<double>> getAllRatings(String userId, String recipeId) async {
   }
 }
 
-
-
-
-Future<void> updateRecipeRating(String ownerId, String recipeId, double newRate) async {
+Future<void> updateRecipeRating(
+    String ownerId, String recipeId, double newRate) async {
   try {
     final userRef = FirebaseFirestore.instance.collection('user').doc(ownerId);
     final recipeRef = userRef.collection('recipe').doc(recipeId);
@@ -817,17 +819,16 @@ Future<void> deleteRecipe(String userId, String recipeId) async {
 }
 
 Future<void> deleteCollections(String userId, String recipeId) async {
-  
-    final userRef = FirebaseFirestore.instance.collection('user').doc(userId);
-    final recipeRef = userRef.collection('recipe').doc(recipeId);
+  final userRef = FirebaseFirestore.instance.collection('user').doc(userId);
+  final recipeRef = userRef.collection('recipe').doc(recipeId);
 
-    // Delete the 'ingredient' collection
-    final ingredientCollectionRef = recipeRef.collection('ingredient');
-    final ingredientDocs = await ingredientCollectionRef.get();
-    for (final doc in ingredientDocs.docs) {
-      await doc.reference.delete();
-    }
-try {
+  // Delete the 'ingredient' collection
+  final ingredientCollectionRef = recipeRef.collection('ingredient');
+  final ingredientDocs = await ingredientCollectionRef.get();
+  for (final doc in ingredientDocs.docs) {
+    await doc.reference.delete();
+  }
+  try {
     // Delete the 'comment' collection
     final commentCollectionRef = recipeRef.collection('comment');
     final commentDocs = await commentCollectionRef.get();
@@ -842,10 +843,7 @@ try {
 Future<String> getCreationDate(String userId) async {
   try {
     final DocumentSnapshot<Map<String, dynamic>> snapshot =
-        await FirebaseFirestore.instance
-            .collection('user')
-            .doc(userId)
-            .get();
+        await FirebaseFirestore.instance.collection('user').doc(userId).get();
 
     if (snapshot.exists) {
       final data = snapshot.data();
@@ -957,7 +955,8 @@ Future<void> removeMyFollows(String userId, String followId) async {
 
 Future<bool> checkIfFollowsExist(String userId, String searchString) async {
   try {
-    final userDoc = await FirebaseFirestore.instance.collection('user').doc(userId).get();
+    final userDoc =
+        await FirebaseFirestore.instance.collection('user').doc(userId).get();
     final follows = userDoc.data()?['follows'] as List<dynamic>?;
 
     if (follows != null && follows.contains(searchString)) {
@@ -971,4 +970,270 @@ Future<bool> checkIfFollowsExist(String userId, String searchString) async {
   }
 }
 
+//----------------------------
 
+Future<List<User>> getUsers() async {
+  List<User> userList = [];
+
+  QuerySnapshot<Map<String, dynamic>> querySnapshot =
+      await FirebaseFirestore.instance.collection('user').get();
+
+  for (QueryDocumentSnapshot<Map<String, dynamic>> doc in querySnapshot.docs) {
+    List<Recipe> recipesList = [];
+    List<MyNotification> notificationsList = [];
+
+    // Check if the 'recipe' subcollection exists in the document
+    try {
+      QuerySnapshot<Map<String, dynamic>> recipeSnapshot =
+          await doc.reference.collection('recipe').get();
+
+
+      for (QueryDocumentSnapshot<Map<String, dynamic>> recipeDoc
+          in recipeSnapshot.docs) {
+        // Process recipes
+        List<Ingredient> ingredientsList = [];
+        List<Comments> commentsList =[];
+
+        // Retrieve ingredients for the recipe
+
+        QuerySnapshot<Map<String, dynamic>> ingredientSnapshot =
+            await recipeDoc.reference.collection('ingredient').get();
+
+        for (QueryDocumentSnapshot<Map<String, dynamic>> ingredientDoc
+            in ingredientSnapshot.docs) {
+          Ingredient ingredient = Ingredient(
+            name: ingredientDoc.get('name'),
+            type: ingredientDoc.get('type'),
+            amount: ingredientDoc.get('amount'),
+          );
+
+          ingredientsList.add(ingredient);
+        }
+
+        // Retrieve comments for the recipe
+        try {
+          QuerySnapshot<Map<String, dynamic>> commentSnapshot =
+              await recipeDoc.reference.collection('comment').get();
+
+          for (QueryDocumentSnapshot<Map<String, dynamic>> commentDoc
+              in commentSnapshot.docs) {
+            Comments comment = Comments(
+              date: commentDoc.get('date'),
+              owner: commentDoc.get('owner'),
+              text: commentDoc.get('text'),
+            );
+
+            commentsList.add(comment);
+          }
+        } catch (e) {}
+
+        Recipe recipe = Recipe(
+          id: recipeDoc.id,
+          titulo: recipeDoc.get('title'),
+          imagen: recipeDoc.get('image'),
+          rate: recipeDoc.get('rate'),
+          rations: recipeDoc.get('rations'),
+          time: recipeDoc.get('time'),
+          steps: List<String>.from(recipeDoc.get('steps')),
+          comments: commentsList,
+          ingredientes: ingredientsList,
+          categories: List<String>.from(recipeDoc.get('category')),
+          likes: [],
+        );
+
+        recipesList.add(recipe);
+      }
+    } catch (e) {
+    }
+
+    // Check if the 'notification' subcollection exists in the document
+    try {
+      QuerySnapshot<Map<String, dynamic>> notificationSnapshot =
+          await doc.reference.collection('notification').get();
+
+
+      for (QueryDocumentSnapshot<Map<String, dynamic>> notificationDoc
+          in notificationSnapshot.docs) {
+        // Process notifications
+        MyNotification notification = MyNotification(
+          id: notificationDoc.id,
+          data: notificationDoc.get('data'),
+          type: notificationDoc.get('type'),
+          date: notificationDoc.get('date'),
+          image: notificationDoc.get('image'),
+          usernotifier: notificationDoc.get('usernotifier'),
+        );
+        notificationsList.add(notification);
+      }
+    } catch (e) {
+    }
+
+    // Create User instance
+    User user = User(
+      id: doc.id,
+      email: doc.get('email'),
+      favorites: List<String>.from(doc.get('favorites')),
+      followers: List<String>.from(doc.get('followers')),
+      follows: List<String>.from(doc.get('follows')),
+      name: doc.get('name'),
+      password: doc.get('password'),
+      profilepic: doc.get('profilepic'),
+      salt: doc.get('salt'),
+      username: doc.get('username'),
+      recipes: recipesList,
+      fechaCreacion: doc.get('creationdate'),
+      notifications: notificationsList,
+    );
+
+    /* print('User:');
+    print('ID: ${user.id}');
+    print('Username: ${user.username}');
+    print('Email: ${user.email}');
+    print('Salt: ${user.salt}');
+    print('Name: ${user.name}');
+    print('Password: ${user.password}');
+    print('Profile Picture: ${user.profilepic}');
+    print('Favorites: ${user.favorites}');
+    print('Followers: ${user.followers}');
+    print('Follows: ${user.follows}');
+    print('Recipes:');
+    for (Recipe recipe in user.recipes) {
+      print('  Recipe ID: ${recipe.id}');
+      print('  Title: ${recipe.titulo}');
+      print('  Image: ${recipe.imagen}');
+      print('  Rate: ${recipe.rate}');
+      print('  Rations: ${recipe.rations}');
+      print('  Time: ${recipe.time}');
+      print('  Steps: ${recipe.steps}');
+      print('  Comments:');
+      for (Comments comment in recipe.comments) {
+        print('    Date: ${comment.date}');
+        print('    Owner: ${comment.owner}');
+        print('    Text: ${comment.text}');
+      }
+      print('  Ingredients:');
+      for (Ingredient ingredient in recipe.ingredientes) {
+        print('    Name: ${ingredient.name}');
+        print('    Type: ${ingredient.type}');
+        print('    Amount: ${ingredient.amount}');
+      }
+      print('  Categories: ${recipe.categories}');
+      print('  Likes: ${recipe.likes}');
+    }
+    print('Creation Date: ${user.fechaCreacion}');
+    print('Notifications:');
+    for (MyNotification notification in user.notifications) {
+      print('  ID: ${notification.id}');
+      print('  Data: ${notification.data}');
+      print('  Date: ${notification.date}');
+      print('  Image: ${notification.image}');
+      print('  Type: ${notification.type}');
+      print('  User Notifier: ${notification.usernotifier}');
+    }
+    print('-------------------'); */
+
+    userList.add(user);
+  }
+
+  return userList;
+}
+
+Future<Recipe> getRecipeFromFirestore(String recipeId) async {
+  QuerySnapshot<Map<String, dynamic>> userSnapshot =
+      await FirebaseFirestore.instance.collection('user').get();
+
+  for (QueryDocumentSnapshot<Map<String, dynamic>> userDoc
+      in userSnapshot.docs) {
+    QuerySnapshot<Map<String, dynamic>> recipeSnapshot =
+        await userDoc.reference.collection('recipe').get();
+
+    for (QueryDocumentSnapshot<Map<String, dynamic>> recipeDoc
+        in recipeSnapshot.docs) {
+      if (recipeDoc.id == recipeId) {
+        // Recipe found
+        Map<String, dynamic> data = recipeDoc.data();
+        List<String> steps = List<String>.from(data['steps']);
+        List<String> categories = List<String>.from(data['category']);
+        List<String> likes = List<String>.from(data['likes']);
+        List<Comments> comments = [];
+        List<Ingredient> ingredients = [];
+
+        // Retrieve comments for the recipe if they exist
+        if (recipeDoc.data().containsKey('comments')) {
+          QuerySnapshot<Map<String, dynamic>> commentSnapshot =
+              await recipeDoc.reference.collection('comments').get();
+
+          comments = commentSnapshot.docs.map((commentDoc) {
+            Map<String, dynamic> commentData = commentDoc.data();
+            return Comments(
+              date: commentData['date'],
+              owner: commentData['owner'],
+              text: commentData['text'],
+            );
+          }).toList();
+        }
+
+        // Retrieve ingredients for the recipe (assuming they always exist)
+        QuerySnapshot<Map<String, dynamic>> ingredientSnapshot =
+            await recipeDoc.reference.collection('ingredients').get();
+
+        ingredients = ingredientSnapshot.docs.map((ingredientDoc) {
+          Map<String, dynamic> ingredientData = ingredientDoc.data();
+          return Ingredient(
+            name: ingredientData['name'],
+            type: ingredientData['type'],
+            amount: ingredientData['amount'],
+          );
+        }).toList();
+
+        return Recipe(
+          id: recipeId,
+          titulo: data['title'],
+          imagen: data['image'],
+          rate: data['rate'],
+          rations: data['rations'],
+          time: data['time'],
+          steps: steps,
+          comments: comments,
+          ingredientes: ingredients,
+          categories: categories,
+          likes: likes,
+        );
+      }
+    }
+  }
+
+  // Recipe not found
+  return Recipe(
+      categories: [],
+      comments: [],
+      id: '',
+      imagen: '',
+      ingredientes: [],
+      likes: [],
+      rate: 0,
+      rations: '',
+      steps: [],
+      time: 0,
+      titulo: '');
+}
+
+List<Comments> _parseComments(List<dynamic> commentsData) {
+  return commentsData
+      .map((comment) => Comments(
+            date: comment['date'],
+            owner: comment['owner'],
+            text: comment['text'],
+          ))
+      .toList();
+}
+
+List<Ingredient> _parseIngredients(List<dynamic> ingredientsData) {
+  return ingredientsData
+      .map((ingredient) => Ingredient(
+            name: ingredient['name'],
+            type: ingredient['type'],
+            amount: ingredient['amount'],
+          ))
+      .toList();
+}

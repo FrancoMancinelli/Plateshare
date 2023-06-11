@@ -4,13 +4,18 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:plateshare/services/firebase_service.dart';
 
+import '../models/Comments.dart';
+import '../models/Ingredient.dart';
+import '../models/MyNotification.dart';
+import '../models/Recipe.dart';
+import '../models/User.dart';
 import '../util/AppColors.dart';
 import 'InicioScreen.dart';
 import 'RecuperarScreen.dart';
 import 'RegistroScreen.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({Key? key,}) : super(key: key);
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -22,6 +27,24 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _obscureText = true;
   bool isImageVisible = false;
 
+    List<User> usuarios = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getUsuarios();
+  }
+
+void getUsuarios() async {
+    final userList = await getUsers();
+    setState(() {
+      usuarios = userList;
+    });
+  }
+
+
+
+
   void validateAndAuthenticate() async {
     String usernameInput = _usernameController.text.toLowerCase();
     String passwordInput = _passwordController.text;
@@ -32,18 +55,17 @@ class _LoginScreenState extends State<LoginScreen> {
     if (usernameInput.isNotEmpty && passwordInput.isNotEmpty) {
       // Compruebo si el usuario introducido existe, de ser así, encrypto la contraseña
       // y compruebo las credenciales
-      Future<bool> userExist = checkIfUsernameExists(usernameInput);
-      if (await userExist) {
-        String databaseSalt = await getSaltByUsername(usernameInput);
-        String hashedPassword = BCrypt.hashpw(passwordInput, databaseSalt);
-        Future<bool> validCredentials =
-            checkCredentials(usernameInput, hashedPassword);
-        if (await validCredentials) {
-          String emailData = await getEmailByUsername(usernameInput);
-          String nameData = await getNameByUsername(usernameInput);
-          String profilePicData = await getProfilePicByUsername(usernameInput);
+      bool userExist = userExists(usernameInput);
+      if (userExist) {
+        User? actualUser = getUserByUsername(usernameInput);
 
-          await Future.delayed(Duration(seconds: 1)); // Delay for 5 seconds
+        String databaseSalt = actualUser!.salt;
+        String hashedPassword = BCrypt.hashpw(passwordInput, databaseSalt);
+        bool validCredentials =
+            checkCredentials(actualUser, usernameInput, hashedPassword);
+        if (validCredentials) {
+
+          await Future.delayed(Duration(seconds: 5)); // Delay for 5 seconds
 
           final BuildContext _context = context;
           Future.microtask(() {
@@ -51,10 +73,10 @@ class _LoginScreenState extends State<LoginScreen> {
               _context,
               MaterialPageRoute(
                 builder: (context) => InicioScreen(
-                  emailData: emailData,
-                  nameData: nameData,
-                  usernameData: usernameInput,
-                  profilePicData: profilePicData,
+                  emailData: actualUser.email,
+                  nameData: actualUser.name,
+                  profilePicData: actualUser.profilepic,
+                  usernameData: actualUser.username,
                 ),
               ),
             );
@@ -357,7 +379,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            const RegistroScreen()),
+                                             const RegistroScreen()),
                                   );
                                 }
                               },
@@ -385,7 +407,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            const RecuperarScreen()),
+                                             RecuperarScreen()),
                                   );
                                 }
                               },
@@ -415,4 +437,29 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
+
+  bool userExists(String username) {
+  for (User user in usuarios) {
+    if (user.username == username) {
+      return true; // Username found
+    }
+  }
+  return false; // Username not found
+}
+
+User? getUserByUsername(String username) {
+  for (User user in usuarios) {
+    if (user.username == username) {
+      return user; // User with matching username found
+    }
+  }
+  return null; // User with matching username not found
+}
+
+  bool checkCredentials(User user, String usernameInput, String hashedPassword) {
+    if (user.username == usernameInput && user.password == hashedPassword) {
+      return true; 
+    }
+  return false;
+}
 }
