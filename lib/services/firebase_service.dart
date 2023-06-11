@@ -1081,3 +1081,105 @@ Future<List<User>> getUsers() async {
   return userList;
 }
 
+Future<List<String>> searchRecipesByIngredients(List<String> ingredientNames) async {
+  List<String> recipeIds = [];
+
+  // Query all users
+  QuerySnapshot<Map<String, dynamic>> userSnapshot =
+      await FirebaseFirestore.instance.collection('user').get();
+
+  // Iterate through each user document
+  for (QueryDocumentSnapshot<Map<String, dynamic>> userDoc in userSnapshot.docs) {
+    // Check if the 'recipe' collection exists in the user document
+      // Query all recipes of the user
+      QuerySnapshot<Map<String, dynamic>> recipeSnapshot =
+          await userDoc.reference.collection('recipe').get();
+
+      // Iterate through each recipe document
+      for (QueryDocumentSnapshot<Map<String, dynamic>> recipeDoc in recipeSnapshot.docs) {
+        // Check if the 'ingredient' collection exists in the recipe document
+          // Query all ingredients of the recipe
+          QuerySnapshot<Map<String, dynamic>> ingredientSnapshot =
+              await recipeDoc.reference.collection('ingredient').get();
+
+          // Create a set to store matched ingredient names
+          Set<String> matchedIngredientNames = Set<String>.from(ingredientNames);
+
+          // Iterate through each ingredient document
+          for (QueryDocumentSnapshot<Map<String, dynamic>> ingredientDoc
+              in ingredientSnapshot.docs) {
+            String ingredientName = ingredientDoc.get('name');
+
+            // Remove matched ingredient names from the set
+            matchedIngredientNames.remove(ingredientName);
+
+            // Break the loop if all ingredient names have been matched
+            if (matchedIngredientNames.isEmpty) {
+              recipeIds.add(recipeDoc.id);
+              break;
+            }
+          
+      
+      }
+    }
+  }
+
+  return recipeIds;
+}
+
+Future<List<String>> searchRecipesByTitle(String searchString) async {
+  List<String> recipeIds = [];
+
+  try {
+    // Query all users
+    QuerySnapshot<Map<String, dynamic>> userSnapshot = await FirebaseFirestore.instance.collection('user').get();
+
+    // Iterate through each user document
+    for (DocumentSnapshot<Map<String, dynamic>> userDoc in userSnapshot.docs) {
+      // Get the user data
+      Map<String, dynamic>? userData = userDoc.data();
+
+        // Get the 'recipe' subcollection reference
+        CollectionReference<Map<String, dynamic>> recipeCollectionRef = userDoc.reference.collection('recipe');
+
+        // Query all recipes of the user
+        QuerySnapshot<Map<String, dynamic>> recipeSnapshot = await recipeCollectionRef.get();
+
+        // Iterate through each recipe document
+        for (DocumentSnapshot<Map<String, dynamic>> recipeDoc in recipeSnapshot.docs) {
+          String title = recipeDoc.get('title');
+
+          // Check if the title contains the search string
+          if (title.toLowerCase().contains(searchString.toLowerCase())) {
+            recipeIds.add(recipeDoc.id);
+          }
+        }
+      
+    }
+  } catch (e) {
+    print('Error fetching recipes: $e');
+  }
+
+  return recipeIds;
+}
+
+
+Future<List<String>> searchUsersByUsername(String searchString) async {
+  List<String> userDocIds = [];
+
+  // Query all users
+  QuerySnapshot<Map<String, dynamic>> userSnapshot =
+      await FirebaseFirestore.instance.collection('user').get();
+
+  // Iterate through each user document
+  for (QueryDocumentSnapshot<Map<String, dynamic>> userDoc in userSnapshot.docs) {
+    String username = userDoc.get('username');
+
+    // Check if the username starts with the search string
+    if (username.toLowerCase().startsWith(searchString.toLowerCase())) {
+      userDocIds.add(userDoc.id);
+    }
+  }
+
+  return userDocIds;
+}
