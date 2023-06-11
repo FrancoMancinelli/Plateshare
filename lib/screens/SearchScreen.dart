@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+import 'package:plateshare/screens/UserProfileScreen.dart';
 
 import '../services/firebase_service.dart';
 import '../util/AppColors.dart';
@@ -217,8 +219,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                 'Filtrar por:',
                                 style: GoogleFonts.acme(
                                   textStyle: const TextStyle(
-                                    color: AppColors.brownTextColor,
-                                    fontSize: 16,
+                                    color: AppColors.blackColor,
+                                    fontSize: 18,
                                     fontFamily: 'Acme',
                                   ),
                                 ),
@@ -424,20 +426,171 @@ class _SearchScreenState extends State<SearchScreen> {
                                 itemCount: busquedaRealizada.length,
                                 itemBuilder: (context, index) {
                                   String elemento = busquedaRealizada[index];
-                                  return Container(
-                                    width: double.infinity,
-                                    color: Colors.white,
-                                    padding: EdgeInsets.all(16),
-                                    margin: EdgeInsets.symmetric(
-                                        vertical: 8, horizontal: 16),
-                                    child: Text(
-                                      elemento,
-                                      style: TextStyle(
-                                        color: AppColors.brownTextColor,
-                                        fontSize: 16,
-                                        fontFamily: 'Acme',
-                                      ),
-                                    ),
+                                  return FutureBuilder<DocumentSnapshot>(
+                                    future: getUserDataById(elemento),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return CircularProgressIndicator();
+                                      } else if (snapshot.hasError) {
+                                        return Text('Error fetching user data');
+                                      } else if (!snapshot.hasData) {
+                                        return Text('No user data found');
+                                      } else {
+                                        String name =
+                                            snapshot.data!.get('name');
+                                        String username =
+                                            snapshot.data!.get('username');
+                                        String profilePic =
+                                            snapshot.data!.get('profilepic');
+                                        List<dynamic> followsList =
+                                            snapshot.data!.get('follows');
+
+                                        List<dynamic> likedRecipes =
+                                            snapshot.data!.get('favorites');
+                                        String email =
+                                            snapshot.data!.get('email');
+
+                                        return FutureBuilder<List<String>>(
+                                          future:
+                                              getRecipeDocumentIDs(elemento),
+                                          builder: (context, recipeSnapshot) {
+                                            if (recipeSnapshot
+                                                    .connectionState ==
+                                                ConnectionState.waiting) {
+                                              return CircularProgressIndicator();
+                                            } else if (recipeSnapshot
+                                                .hasError) {
+                                              return Text(
+                                                  'Error fetching recipe data');
+                                            } else if (!recipeSnapshot
+                                                .hasData) {
+                                              return Text(
+                                                  'No recipe data found');
+                                            } else {
+                                              List<String> recipes =
+                                                  recipeSnapshot.data!;
+
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          UserProfileScreen(
+                                                        currentUseremail:
+                                                            widget.emailData,
+                                                        currentUserimage: widget
+                                                            .profilePicData,
+                                                        currentUsername:
+                                                            widget.nameData,
+                                                        currentUseruserId:
+                                                            userId,
+                                                        currentUserusername:
+                                                            widget.usernameData,
+                                                        follows:
+                                                            followsList.length,
+                                                        likedRecipesIDs:
+                                                            likedRecipes,
+                                                        ownerEmail: email,
+                                                        ownerId: elemento,
+                                                        ownerImage: profilePic,
+                                                        ownerName: name,
+                                                        ownerUsername: username,
+                                                        recipeCount:
+                                                            recipes.length,
+                                                        recipesIDs: recipes,
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                                child: Container(
+                                                  width: double.infinity,
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                  ),
+                                                  padding: EdgeInsets.all(8),
+                                                  margin: EdgeInsets.symmetric(
+                                                      vertical: 8,
+                                                      horizontal: 16),
+                                                  child: Align(
+                                                    alignment: Alignment.center,
+                                                    child: Row(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        ClipOval(
+                                                          child: Container(
+                                                            width: 50,
+                                                            height: 50,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              shape: BoxShape
+                                                                  .circle,
+                                                              border:
+                                                                  Border.all(
+                                                                color: Colors
+                                                                    .black,
+                                                                width: 1.5,
+                                                              ),
+                                                            ),
+                                                            child: CircleAvatar(
+                                                              radius: 25,
+                                                              backgroundColor:
+                                                                  Colors
+                                                                      .transparent,
+                                                              backgroundImage:
+                                                                  NetworkImage(
+                                                                      profilePic),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        SizedBox(width: 16),
+                                                        Expanded(
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Text(
+                                                                '@$username',
+                                                                style:
+                                                                    GoogleFonts
+                                                                        .acme(
+                                                                  textStyle:
+                                                                      const TextStyle(
+                                                                    color: AppColors
+                                                                        .brownTextColor,
+                                                                    fontSize:
+                                                                        22,
+                                                                    fontFamily:
+                                                                        'Acme',
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        Icon(
+                                                          Icons
+                                                              .arrow_forward_ios,
+                                                          color: AppColors
+                                                              .desabledField,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            }
+                                          },
+                                        );
+                                      }
+                                    },
                                   );
                                 },
                               ),
