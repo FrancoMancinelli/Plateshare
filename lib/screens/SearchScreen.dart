@@ -170,8 +170,9 @@ class _SearchScreenState extends State<SearchScreen> {
                                             List<String> recetasEncontradas =
                                                 await searchRecipesByIngredients(
                                                     busquedaDividida);
-                                             setState(() {
-                                              busquedaRealizada = recetasEncontradas;
+                                            setState(() {
+                                              busquedaRealizada =
+                                                  recetasEncontradas;
                                             });
                                           }
 
@@ -179,16 +180,18 @@ class _SearchScreenState extends State<SearchScreen> {
                                             List<String> recetasEncontradas =
                                                 await searchRecipesByTitle(
                                                     _searchController.text);
-                                             setState(() {
-                                              busquedaRealizada = recetasEncontradas;
+                                            setState(() {
+                                              busquedaRealizada =
+                                                  recetasEncontradas;
                                             });
                                           }
                                           if (selectedCheckbox == 'usuarios') {
                                             List<String> usuariosEncontrados =
                                                 await searchUsersByUsername(
                                                     _searchController.text);
-                                             setState(() {
-                                              busquedaRealizada = usuariosEncontrados;
+                                            setState(() {
+                                              busquedaRealizada =
+                                                  usuariosEncontrados;
                                             });
                                             print('USUARIOS::' +
                                                 usuariosEncontrados.length
@@ -413,6 +416,31 @@ class _SearchScreenState extends State<SearchScreen> {
                                     ),
                                   ],
                                 ),
+                            if (busquedaRealizada.isNotEmpty &&
+                                selectedCheckbox == 'usuarios')
+                              ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: busquedaRealizada.length,
+                                itemBuilder: (context, index) {
+                                  String elemento = busquedaRealizada[index];
+                                  return Container(
+                                    width: double.infinity,
+                                    color: Colors.white,
+                                    padding: EdgeInsets.all(16),
+                                    margin: EdgeInsets.symmetric(
+                                        vertical: 8, horizontal: 16),
+                                    child: Text(
+                                      elemento,
+                                      style: TextStyle(
+                                        color: AppColors.brownTextColor,
+                                        fontSize: 16,
+                                        fontFamily: 'Acme',
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
                           ],
                         ),
                       ),
