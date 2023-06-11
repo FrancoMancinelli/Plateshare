@@ -382,14 +382,31 @@ class _ProfileHeaderDelegate extends SliverPersistentHeaderDelegate {
               onPressed: onBackButtonPressed,
             ),
           ),
-          Text(
-            '@$username',
+          Text.rich(
+      TextSpan(
+        children: [
+          TextSpan(
+            text: '@$username',
             style: TextStyle(
               color: Colors.white,
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
           ),
+          if (username == 'plateshare')
+            WidgetSpan(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(6, 6, 0, 0),
+                child: Icon(
+                  Icons.verified,
+                  color: Colors.white,
+                  size: 21,
+                ),
+              ),
+            ),
+        ],
+      ),
+    ),
           Padding(
             padding: const EdgeInsets.only(right: 5),
             child: IconButton(

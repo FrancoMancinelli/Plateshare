@@ -563,20 +563,43 @@ class _SearchScreenState extends State<SearchScreen> {
                                                                 CrossAxisAlignment
                                                                     .start,
                                                             children: [
-                                                              Text(
-                                                                '@$username',
-                                                                style:
-                                                                    GoogleFonts
-                                                                        .acme(
-                                                                  textStyle:
-                                                                      const TextStyle(
-                                                                    color: AppColors
-                                                                        .brownTextColor,
-                                                                    fontSize:
-                                                                        22,
-                                                                    fontFamily:
-                                                                        'Acme',
-                                                                  ),
+                                                              Text.rich(
+                                                                TextSpan(
+                                                                  children: [
+                                                                    TextSpan(
+                                                                      text:
+                                                                          '@$username',
+                                                                      style:
+                                                                          TextStyle(
+                                                                        color: AppColors
+                                                                            .brownTextColor,
+                                                                        fontSize:
+                                                                            20,
+                                                                        fontWeight:
+                                                                            FontWeight.bold,
+                                                                      ),
+                                                                    ),
+                                                                    if (username ==
+                                                                        'plateshare')
+                                                                      WidgetSpan(
+                                                                        child:
+                                                                            Padding(
+                                                                          padding: const EdgeInsets.fromLTRB(
+                                                                              6,
+                                                                              6,
+                                                                              0,
+                                                                              0),
+                                                                          child:
+                                                                              Icon(
+                                                                            Icons.verified,
+                                                                            color:
+                                                                                AppColors.brownTextColor,
+                                                                            size:
+                                                                                22,
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                  ],
                                                                 ),
                                                               ),
                                                             ],

@@ -292,40 +292,58 @@ class _ProfileHeaderDelegate extends SliverPersistentHeaderDelegate {
       height: 50,
       color: AppColors.primaryColor,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  children: [
+    Padding(
+      padding: const EdgeInsets.only(left: 5),
+      child: IconButton(
+        icon: Icon(
+          Icons.arrow_back_ios,
+          color: AppColors.primaryColor,
+          size: 20,
+        ),
+        onPressed: onBackButtonPressed,
+      ),
+    ),
+    Text.rich(
+      TextSpan(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 5),
-            child: IconButton(
-              icon: Icon(
-                Icons.arrow_back_ios,
-                color: AppColors.primaryColor,
-                size: 20,
-              ),
-              onPressed: onBackButtonPressed,
-            ),
-          ),
-          Text(
-            '@$username',
+          TextSpan(
+            text: '@$username',
             style: TextStyle(
               color: Colors.white,
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(right: 5),
-            child: IconButton(
-              icon: Icon(
-                Icons.add_rounded,
-                color: Colors.white,
-                size: 30,
+          if (username == 'plateshare')
+            WidgetSpan(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(6, 6, 0, 0),
+                child: Icon(
+                  Icons.verified,
+                  color: Colors.white,
+                  size: 21,
+                ),
               ),
-              onPressed: onAddButtonPressed,
             ),
-          ),
         ],
       ),
+    ),
+    Padding(
+      padding: const EdgeInsets.only(right: 5),
+      child: IconButton(
+        icon: Icon(
+          Icons.add_rounded,
+          color: Colors.white,
+          size: 30,
+        ),
+        onPressed: onAddButtonPressed,
+      ),
+    ),
+  ],
+),
+
     );
   }
 
