@@ -272,8 +272,8 @@ class _RecipeFormScreenOneState extends State<RecipeFormScreenOne> {
                                 child: Container(
                                   width: 160,
                                   height: 160,
-                                  child: Image.network(
-                                    'https://i.imgur.com/zjmuaBZ.png',
+                                  child: Image.asset(
+                                    'assets/subirimagen.png',
                                     fit: BoxFit.contain,
                                   ),
                                 ),

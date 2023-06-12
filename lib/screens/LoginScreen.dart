@@ -166,7 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
           height: screenSize.height,
           decoration: const BoxDecoration(
             image: DecorationImage(
-              image: NetworkImage('https://i.imgur.com/pbBleS1.png'),
+              image: AssetImage('assets/fondo.png'),
               fit: BoxFit.cover,
             ),
           ),
@@ -349,9 +349,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           );
                         }
                       },
-                      child: Image.network(
-                        'https://i.imgur.com/h4jfgvd.png',
-                      ),
+                      child: Image.asset('assets/continuegoogle.png'),
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

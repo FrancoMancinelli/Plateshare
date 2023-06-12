@@ -38,7 +38,7 @@ class _RecuperarScreenState extends State<RecuperarScreen> {
           height: screenSize.height,
           decoration: const BoxDecoration(
             image: DecorationImage(
-              image: NetworkImage('https://i.imgur.com/pbBleS1.png'),
+              image: AssetImage('assets/fondo.png'),
               fit: BoxFit.cover,
             ),
           ),

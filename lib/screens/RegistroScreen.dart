@@ -35,7 +35,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
           height: screenSize.height,
           decoration: const BoxDecoration(
             image: DecorationImage(
-              image: NetworkImage('https://i.imgur.com/pbBleS1.png'),
+              image: AssetImage('assets/fondo.png'),
               fit: BoxFit.cover,
             ),
           ),
