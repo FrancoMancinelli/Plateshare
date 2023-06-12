@@ -28,10 +28,10 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
-  
 
 flutter:
+  assets:
+    - assets/continuegoogle.png
+    - assets/fondo.png
+    - assets/subirimagen.png
   uses-material-design: true
-
-
-
